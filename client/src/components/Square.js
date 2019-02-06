@@ -2,8 +2,7 @@ import React from 'react';
 
 const box = {
   borderStyle: 'solid',
-  width: '9vmin', height: '9vmin',
-  // width: '5.2vmin', height: '5.2vmin',
+  width: '9vmin', height: '9vmin'
 }
 
 function Square({ row, col, colors, ...props }) {
@@ -14,8 +13,7 @@ function Square({ row, col, colors, ...props }) {
       borderLeftColor,
       special] = colors;
 
-  const borderWidth = special ? '3.2vmin' : '4.6vmin';
-  // const borderWidth = special ? '2vmin' : '2.6vmin';
+  const borderWidth = special ? '3.2vmin' : '4.5vmin';
 
   return (
     <div

@@ -1,15 +1,15 @@
 import React from 'react';
 
 const boardStyle = {
-  height: '81vmin', width: '81vmin',
-  // height: '45vmin', width: '45vmin',
+  height: '83vmin', width: '83vmin',
   outlineStyle: 'solid',
   display: 'grid',
-  gridGap: 0,
+  gridGap: '2px',
+  paddingTop: '2px',
+  paddingLeft: '2px',
+  paddingRight: '2px',
   gridTemplateColumns: 'repeat(9, 9vmin)',
-  // gridTemplateColumns: 'repeat(9, 5vmin)',
   gridTemplateRows   : 'repeat(9, 9vmin)',
-  // gridTemplateRows   : 'repeat(9, 5vmin)',
   gridAutoFlow: 'row',
 };
 
