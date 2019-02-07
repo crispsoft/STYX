@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
 
 // Define API routes here
 app.get("/api/test", (req,res) =>{
-  res.status(200).json({'a': 'OK'});
+  res.json({'a': 'OK'});
 })
 
 // Send every other request to the React app
