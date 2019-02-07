@@ -1,20 +1,21 @@
 import React from 'react';
 
-import './BorderSquare.css'
+import styled from 'styled-components';
 
-const box = {
-  borderStyle : 'solid',
-  width: '9vmin', height: '9vmin'
-}
+const StyledBorderSquare = styled.div`
+  border: solid;
+
+  background: cyan;
+  &:hover {
+    background: red;
+  }
+`;
+
 
 function BorderSquare({ gridRow, gridColumn, ...props }) {
   return (
-      <div className="BorderSquare"
-        style={{...box,
-
-          gridColumn, 
-          gridRow   , 
-        }}
+      <StyledBorderSquare
+        style={{ gridColumn, gridRow }}
 
         {...props}
       />
