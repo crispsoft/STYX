@@ -14,6 +14,9 @@ function GameInfo(props) {
           <DedicationCards />
         </div>
         <div>
+        <div className="lanternCardsContainer">
+            <LanternCards />
+          </div>
           <div className="lanternCardsContainer">
             <LanternCards />
             <LanternCards />
@@ -23,7 +26,7 @@ function GameInfo(props) {
           <div className="lanternCardsContainer">
             <LanternCards />
             <LanternCards />
-            <LanternCards />
+           
           </div>
         </div>
       </Card>
