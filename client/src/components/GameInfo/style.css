@@ -1,0 +1,10 @@
+#gameInfo {
+    border: 3px solid grey;
+   height: 50vh;
+   width: 20vw;
+   /* background: red; */
+   display: flex;
+   flex-wrap: nowrap;
+    justify-content: space-evenly;
+    padding: 3vh 0vh;
+}
