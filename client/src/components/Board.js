@@ -7,7 +7,7 @@ import gameTiles from './../gameTiles.json';
 import BorderSquare from './BorderSquare';
 
 
-class AG extends Component {
+class Board extends Component {
 
   state = {
     test: null,
@@ -16,7 +16,7 @@ class AG extends Component {
 
     playerTile: null,
     
-    board: Array(AG.boardSize * AG.boardSize)
+    board: Array(Board.boardSize * Board.boardSize)
   }
 
   componentWillMount() {
@@ -28,21 +28,21 @@ class AG extends Component {
         })
       })
 
-    // console.log(AG.gameTiles, AG.gameTiles.startTile);
+    // console.log(Board.gameTiles, Board.gameTiles.startTile);
 
-    this.addTileToBoard({ row: 4, col: 4, tile: AG.gameTiles.startTile });
+    this.addTileToBoard({ row: 4, col: 4, tile: Board.gameTiles.startTile });
 
 
     this.setState({
-      playerTile: AG.gameTiles.lakeTiles[0]
+      playerTile: Board.gameTiles.lakeTiles[0]
     });
 
   }
 
 
   addTileToBoard({ row, col, tile }) {
-    const [N, E, S, W, special] = tile.slice(0,4).map(v=>AG.colorMap[v]).concat(tile.slice(4));
-    const sz = AG.boardSize;
+    const [N, E, S, W, special] = tile.slice(0,4).map(v=>Board.colorMap[v]).concat(tile.slice(4));
+    const sz = Board.boardSize;
 
     let board = this.state.board.slice();
 
@@ -90,8 +90,8 @@ class AG extends Component {
     const squares =
       this.state.board.map((square, squareIdx) => {
 
-        const row = Math.floor(squareIdx / AG.boardSize) + 1;
-        const col = squareIdx % AG.boardSize + 1;
+        const row = Math.floor(squareIdx / Board.boardSize) + 1;
+        const col = squareIdx % Board.boardSize + 1;
 
         if (square.isBorder) {
           return <BorderSquare
@@ -120,37 +120,30 @@ class AG extends Component {
 
 
     return (
+      <>
 
-      <div className="container">
-
-        <p>{this.state.test}</p>
-
-        <div className="row">
-
-          <div className="col-2">
-            <Square
-              colors={this.state.playerTile.map(v => AG.colorMap[v])}
-              onClick={this.rotateTileInHand} />
-          </div>
-
-          <div key={`player-${1}`} className="col-5 my-1 mt-3">
-            <PlayerView playerNum={1} bg={this.state.PlayerBGs[0]}>
-              {squares}
-            </PlayerView>
-          </div>
-
+        <div className="col-2">
+          <Square
+            colors={this.state.playerTile.map(v => Board.colorMap[v])}
+            onClick={this.rotateTileInHand} />
         </div>
-        
-      </div>
+
+        <div key={`player-${1}`} className="col-5 my-1 mt-3">
+          <PlayerView playerNum={1} bg={this.state.PlayerBGs[0]}>
+            {squares}
+          </PlayerView>
+        </div>
+
+      </>
     );
   }
 
 }
 
 
-AG.boardSize=9;
-AG.gameTiles = gameTiles;
-AG.colorMap = ['red', 'orange', 'yellow', 'green', 'blue', 'violet', 'black'];
+Board.boardSize=9;
+Board.gameTiles = gameTiles;
+Board.colorMap = ['red', 'orange', 'yellow', 'green', 'blue', 'violet', 'black'];
 
 
-export default AG;
+export default Board;
