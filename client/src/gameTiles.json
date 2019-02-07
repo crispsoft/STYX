@@ -1,5 +1,5 @@
 {
-  "startTile": [0,2,6,4,"start"],
+  "startTile": [0,2,6,4],
 
   "lakeTiles": [
     [0,0,3,6],
