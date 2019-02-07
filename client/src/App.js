@@ -3,8 +3,13 @@ import logo from "./logo.svg";
 import "./App.css";
 import axios from 'axios';
 import PlayerView from './components/PlayerView';
+import PlayerPane from './components/PlayerPane';
+import SideOpponentPane from './components/OpponentPane'
 import Square from './components/Square';
 import gameTiles from './gameTiles.json';
+import Button from '@material-ui/core/Button';
+import { SSL_OP_PKCS1_CHECK_1 } from "constants";
+
 
 
 
@@ -71,6 +76,19 @@ class App extends Component {
         <p>{this.state.test}</p>
 
         <div className="row">
+
+          <PlayerPane playerNum={2} bg="red">
+          </PlayerPane>
+        
+        
+        </div>
+
+
+        <div className="row">
+          <div className="col-md-2">
+            <SideOpponentPane bg={"red"}/>
+          </div>
+          <div className="col-md-8">
           
           {/* {[...Array(4)].map((_, playerIdx) => ( */}
 
@@ -87,7 +105,27 @@ class App extends Component {
                       /> )
                 }
               </PlayerView>
+          
+          </div>
+
+        
+          </div>
+          <div className="col-md-2">
+                <SideOpponentPane bg="yellow" />
+          </div>
+          <div className="row">
+              <br></br>
+              <PlayerPane bg="blue">
+
+                <Button variant="contained" color="primary">
+                Hello, world!
+                </Button>
+
+                
+              </PlayerPane>
+
             </div>
+          
 
           {/* ))} */}
 
