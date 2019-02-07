@@ -1,10 +1,24 @@
 #gameInfo {
-    border: 3px solid grey;
-   height: 50vh;
-   width: 20vw;
-   /* background: red; */
+  border: 3px solid grey;
+  height: 50vh;
+  width: 20vw;
+  /* background: red; */
    display: flex;
-   flex-wrap: nowrap;
+   flex-direction: column;
+   justify-content: space-between;
+  padding: 3vh 0vh;
+}
+
+.dedicationCardsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+}
+
+.lanternCardsContainer {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
-    padding: 3vh 0vh;
+    margin-top: 1vh;
+
 }
