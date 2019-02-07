@@ -1,20 +1,14 @@
 import React from 'react';
 
-const opponentPaneStyle = {
-  height: '70vh', width: '20vmin',
-};
 
-
-function SideOpponentPane({ bg }) {
+function OpponentPane({ bg }) {
   return (
     <>
-      <br></br>
-      <div id="playerPane" style={{...opponentPaneStyle, outlineColor: bg}}>
-        <br></br>
-        Opponent Panel (Side)
+      <div id="playerPane" style={{ outlineColor: bg }}>
+        Opponent Panel
       </div>
     </>
   );
 }
 
-export default SideOpponentPane;
+export default OpponentPane;

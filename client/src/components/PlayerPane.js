@@ -1,16 +1,16 @@
-import React, { Children } from 'react';
-
-const playerPaneStyle = {
-  height: '20vmin', width: '70vw',
-};
+import React from 'react';
 
 
 function PlayerPane({ bg, children }) {
   return (
     <>
-      <br></br>
-      <div id="playerPane" style={{...playerPaneStyle, outlineColor: bg}}>
-        <br></br>
+      <div id="playerPane"
+        style={{
+          outlineColor: bg,
+          display: 'flex',
+          
+        }}
+      >
         {children}
       </div>
     </>
