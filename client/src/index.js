@@ -6,5 +6,5 @@ import registerServiceWorker from "./registerServiceWorker";
 // Delete this before merging
 import GameInfo from "./components/GameInfo"
 
-ReactDOM.render(<GameInfo />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();

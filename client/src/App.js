@@ -6,6 +6,7 @@ import PlayerPane from './components/PlayerPane';
 import OpponentPane from './components/OpponentPane'
 import Square from './components/Square';
 import BorderSquare from './components/BorderSquare';
+import GameInfo from './components/GameInfo';
 
 import gameTiles from './gameTiles.json'
 
@@ -90,9 +91,14 @@ const BottomSidePane = styled.div`
 
 
 const CenterPane = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+
   & > * {
     width: ${props => props.childW};
     height: ${props => props.childH};
+    margin: auto;
   }
 `;
 
@@ -264,6 +270,7 @@ class App extends Component {
           <BoardGrid>
             {squares}
           </BoardGrid>
+          <GameInfo />
         </CenterPane>
 
       </FullScreenView>
