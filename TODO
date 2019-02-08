@@ -1,0 +1,3 @@
+☐ indicators of player's turn or not 
+  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
+☐ 
