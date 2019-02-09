@@ -7,6 +7,7 @@ import OpponentPane from './components/OpponentPane'
 import Square from './components/Square';
 import BorderSquare from './components/BorderSquare';
 import GameInfo from './components/GameInfo';
+import LanternCards from './components/LanternCards';
 
 import gameTiles from './gameTiles.json'
 
@@ -66,12 +67,13 @@ const TopSidePane = styled.div`
   position: fixed;
   top: 0;
   left: 0; right: 0;
+`;
 
-  & > * {
-    margin: auto;
-    width: ${props => props.childW};
-    height: ${props => props.childH};
-  }
+const TopOpponentPane = styled.div`
+  margin: auto;
+  width: 60vh;
+  min-height: 8.5vw;
+  max-height: 8.5vh;
 `;
 
 
@@ -130,7 +132,6 @@ class App extends Component {
           test: results.data.a
         })
       })
-
 
     this.addTileToBoard({ row: 3, col: 3, tile: App.gameTiles.startTile });
 
@@ -235,30 +236,56 @@ class App extends Component {
 
 
         {/** Opponents **/}
-        <TopSidePane childW='60vh' childH='8.5vw'>
-          <OpponentPane />
+        <TopSidePane >
+          <TopOpponentPane>
+            <OpponentPane />
+          </TopOpponentPane>
         </TopSidePane>
 
         <LeftSidePane childW='8.5vw' childH='60vh'>
-          <OpponentPane bg="red" />
+          <OpponentPane />
         </LeftSidePane>
 
         <RightSidePane childW='8.5vw' childH='60vh'>
-          <OpponentPane bg="yellow" />
+          <OpponentPane />
         </RightSidePane>
 
 
         {/** Player **/}
         <BottomSidePane childW='80vw' childH='8.5vw'>
 
-          <PlayerPane bg="blue">
+          <PlayerPane>
+            <div style={{
+              display: 'flex',
+              flexFlow: 'row nowrap',
+              justifyContent: 'space around'
+            }}>
             <Square
               colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={this.rotateTileInHand} />
-
-            <Button variant="contained" color="primary">
-              Hello, world!
-            </Button>
+              onClick={this.rotateTileInHand} 
+            />
+            <Square
+              colors={this.state.playerTile.map(v => App.colorMap[v])}
+              onClick={this.rotateTileInHand} 
+            />
+            <Square
+              colors={this.state.playerTile.map(v => App.colorMap[v])}
+              onClick={this.rotateTileInHand} 
+            />
+            </div>
+            
+            <div style={{
+              display: 'flex',
+              flexFlow: 'row nowrap'
+            }}>
+              <LanternCards/>
+              <LanternCards/>
+              <LanternCards/>
+              <LanternCards/>
+              <LanternCards/>
+              <LanternCards/>
+              <LanternCards/>
+            </div>
 
           </PlayerPane>
 

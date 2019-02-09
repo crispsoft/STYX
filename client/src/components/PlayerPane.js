@@ -8,7 +8,8 @@ function PlayerPane({ bg, children }) {
         style={{
           outlineColor: bg,
           display: 'flex',
-          
+          justifyContent: 'space-around',
+          alignItems: 'center'
         }}
       >
         {children}
