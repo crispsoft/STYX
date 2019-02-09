@@ -3,8 +3,11 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-const server = require('http').createServer(app); 
+
+const server = require('http').Server(app); 
 const io = require('socket.io')(server);
+
+require('./config/gameSocket')(io.of('/'));
 
 
 app.use(
@@ -25,19 +28,6 @@ app.get("/api/test", (req, res) => {
 // Send every other request to the React app
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
-
-
-const playerConnections = Array(4).fill(null);
-
-io.on('connection', client => {
-  console.log("conn!?", Object.keys(client), client.id);
-  client.on('event', data => { 
-    console.log("event!?", data)
-  });
-  client.on('disconnect', () => { 
-    console.log("disconn?!");
-  });
 });
 
 
