@@ -19,6 +19,7 @@ import {
    RightPane,
   BottomPane,
     LeftPane,
+  CenterPane,
 
     TopOppPanel,
    LeftOppPanel,
@@ -40,17 +41,6 @@ const FullScreenView = styled.div`
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-`;
-
-
-const CenterPane = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: space-around;
-
-  & > * {
-    margin: auto;
-  }
 `;
 
 const BoardGrid = styled.div`

@@ -4,6 +4,7 @@ import {
    RightPane,
   BottomPane,
     LeftPane,
+  CenterPane,
 } from './Panes.style';
 
 import {
@@ -27,6 +28,7 @@ export {
    RightPane,
   BottomPane,
     LeftPane,
+  CenterPane,
 
     TopOppPanel,
    LeftOppPanel,
