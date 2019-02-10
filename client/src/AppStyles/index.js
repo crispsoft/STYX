@@ -1,42 +1,18 @@
+import styled from 'styled-components';
 
-import {
-     TopPane,
-   RightPane,
-  BottomPane,
-    LeftPane,
-  CenterPane,
-} from './Panes.style';
-
-import {
-    TopOppPanel,
-  RightOppPanel,
-   LeftOppPanel,
-
-    PlayerPanel,
-    PlayerPanelTiles,
-} from './Panels.style';
-
-import {
-    TopName,
-  RightName,
-   LeftName,
-} from './OppNames.style';
-
+const FullScreenView = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+`;
 
 export {
-     TopPane,
-   RightPane,
-  BottomPane,
-    LeftPane,
-  CenterPane,
-
-    TopOppPanel,
-   LeftOppPanel,
-  RightOppPanel,
-    PlayerPanel,
-    PlayerPanelTiles,
-
-    TopName,
-   LeftName,
-  RightName
+  FullScreenView
 };
+
+export * from './Panes.style';
+export * from './Panels.style';
+export * from './OppNames.style';

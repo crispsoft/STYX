@@ -10,12 +10,13 @@ import LanternCards from './components/LanternCards';
 
 import gameTiles from './gameTiles.json'
 
+
 import styled from 'styled-components';
 
-
 // #region Styles
-
 import {
+  FullScreenView,
+  
      TopPane,
    RightPane,
   BottomPane,
@@ -33,18 +34,9 @@ import {
   RightName,
 } from './AppStyles';
 
-
-const FullScreenView = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-`;
-
 const BoardGrid = styled.div`
-  width: calc(70vh+12px);  height: calc(70vh+12px);
+  width : calc(70vh+12px);
+  height: calc(70vh+12px);
   outline-style: solid;
   display: grid;
   grid-gap: 2px;
@@ -52,17 +44,21 @@ const BoardGrid = styled.div`
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(7, 1fr);
 `;
-
 // #endregion Styles
 
 
 class App extends Component {
   state = {
-    test: null,
-    tilesInHand: [null, null, null],
-    board: Array(App.boardSize * App.boardSize),
-
     socket: openSocket('/'),
+    gameReady: false,
+    test: null,
+
+    names: Array(3).fill(null),
+
+    tilesInHand: [null, null, null],
+    selectedTileIndex: NaN,
+    colorQtys: Array(7).fill(0),
+    board: Array(App.boardSize * App.boardSize),
   }
 
   componentWillMount() {
@@ -74,9 +70,27 @@ class App extends Component {
         })
       })
     
+
     this.state.socket.on('connect', () => {
-      this.setState({ connection: 'connected' })
+      this.setState({ connection: 'connected' });
     });
+
+    this.state.socket.on('seat', index => {
+      this.setState({ seatedAt: index+1 });
+    });
+
+    this.state.socket.on('disconnect', () => {
+      this.setState({ connection: 'not connected' });
+    });
+
+    this.state.socket.on('ready', readyStatus => {
+      this.setState({ gameReady: readyStatus });
+    });
+
+    this.state.socket.on('players', names => {
+      this.setState({ names });
+    });
+
 
     this.addTileToBoard({ row: 3, col: 3, tile: App.gameTiles.startTile });
 
@@ -115,7 +129,11 @@ class App extends Component {
   }
 
   clickAvail = (row, col) => {
-    this.addTileToBoard({ row, col, tile: this.state.tilesInHand[0] }); //! TODO: change this to SELECTED tile in hand
+    const { selectedTileIndex: idx } = this.state;
+
+    if (!Number.isInteger(idx)) return;
+    
+    this.addTileToBoard({ row, col, tile: this.state.tilesInHand[idx] }); //! TODO: change this to SELECTED tile in hand
   }
 
 
@@ -126,12 +144,15 @@ class App extends Component {
     tilesInHand[index] = [W, N, E, S, special];
 
     this.setState({
-      tilesInHand
+      tilesInHand,
+      selectedTileIndex: index
     });
 
   }
 
   render() {
+
+    const [leftName, topName, rightName] = [0,1,2].map(n => `Player ${(this.state.seatedAt + n) %4 + 1}`);
 
     const squares =
       this.state.board.map((square, squareIdx) => {
@@ -182,6 +203,12 @@ class App extends Component {
           Server says: {this.state.test}
           <br/>
           Socket says: {this.state.connection}
+          <br/>
+          I'm Player #{this.state.seatedAt}
+          <br />
+          Players joined: {this.state.names.map((bool, i) => bool ? i : '')}
+          <br />
+          <p>{this.state.gameReady ? "READY!" : "..waiting for players.."}</p>
         </p>
 
 
@@ -194,7 +221,7 @@ class App extends Component {
               ))}
           </TopOppPanel>
 
-          <TopName>{` Top Name `}</TopName>
+          <TopName>{topName}</TopName>
         </TopPane>
 
         <LeftPane>
@@ -205,7 +232,7 @@ class App extends Component {
               ))}
           </LeftOppPanel>
 
-          <LeftName>{` Left Name `}</LeftName>
+          <LeftName>{leftName}</LeftName>
         </LeftPane>
 
         <RightPane>
@@ -216,7 +243,7 @@ class App extends Component {
               ))}
           </RightOppPanel>
 
-          <RightName>{` Right Name `}</RightName>
+          <RightName>{rightName}</RightName>
         </RightPane>
 
 
@@ -234,8 +261,8 @@ class App extends Component {
 
           <PlayerPanel>
             <p>{`Points: 0`}</p>
-            {[...Array(7)].map((_, i) => (
-              <LanternCards color={App.colorMap[i]} number={i} />
+            {this.state.colorQtys.map((qty, i) => (
+              <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
           </PlayerPanel>
 

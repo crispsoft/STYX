@@ -25,7 +25,7 @@ const SideName = styled(OppNameBase)`
   padding: 0.5rem 0.2rem;
 
   /* Chrome (72.0.3626.96) would not vertically center name without this */
-  /* FireFox (65.0) would without this. But possibly not per spec due to position: absolute?
+  /* FireFox (65.0) would, but possibly not per spec due to position: absolute?
   https://www.w3.org/TR/css-flexbox-1/#abspos-items */
   top: 50%; transform: translate(0,-50%);
 `;
