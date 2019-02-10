@@ -2,24 +2,36 @@ import axios from 'axios';
 
 import React, { Component } from "react";
 
-import PlayerPane from './components/PlayerPane';
-import OpponentPane from './components/OpponentPane'
-import Square from './components/Square';
+import Square       from './components/Square';
 import BorderSquare from './components/BorderSquare';
-import GameInfo from './components/GameInfo';
+import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
 
 import gameTiles from './gameTiles.json'
 
-
 import styled from 'styled-components';
-
-import Button from '@material-ui/core/Button';
-
-import "./App.css";
 
 
 // #region Styles
+
+import {
+     TopPane,
+   RightPane,
+  BottomPane,
+    LeftPane,
+
+    TopOppPanel,
+   LeftOppPanel,
+  RightOppPanel,
+    PlayerPanel,
+    PlayerPanelTiles,
+
+    TopName,
+   LeftName,
+  RightName,
+} from './AppStyles';
+
+
 
 const FullScreenView = styled.div`
   height: 100vh;
@@ -31,80 +43,18 @@ const FullScreenView = styled.div`
 `;
 
 
-const LeftSidePane = styled.div`
-  display: flex;
-
-  position: fixed;
-  left: 0;
-  top: 0; bottom: 0;
-
-  & > * {
-    margin: auto;
-    width: ${props => props.childW};
-    height: ${props => props.childH};
-  }
-`;
-
-
-const RightSidePane = styled.div`
-  display: flex;
-
-  position: fixed;
-  right: 0;
-  top: 0; bottom: 0;
-
-  & > * {
-    margin: auto;
-    width: ${props => props.childW};
-    height: ${props => props.childH};
-  }
-`;
-
-
-const TopSidePane = styled.div`
-  display: flex;
-
-  position: fixed;
-  top: 0;
-  left: 0; right: 0;
-`;
-
-const TopOpponentPane = styled.div`
-  margin: auto;
-  width: 60vh;
-  min-height: 8.5vw;
-  max-height: 8.5vh;
-`;
-
-
-const BottomSidePane = styled.div`
-  display: flex;
-
-  position: fixed;
-  bottom: 0;
-  left: 0; right: 0;
-
-  & > * {
-    margin: auto;
-    width: ${props => props.childW};
-    height: ${props => props.childH};
-  }
-`;
-
-
 const CenterPane = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-around;
 
   & > * {
-    width: ${props => props.childW};
-    height: ${props => props.childH};
     margin: auto;
   }
 `;
 
 const BoardGrid = styled.div`
+  width: calc(70vh+12px);  height: calc(70vh+12px);
   outline-style: solid;
   display: grid;
   grid-gap: 2px;
@@ -143,38 +93,38 @@ class App extends Component {
 
 
   addTileToBoard({ row, col, tile }) {
-    const [N, E, S, W, special] = tile.slice(0,4).map(v=>App.colorMap[v]).concat(tile.slice(4));
+    const [N, E, S, W, special] = tile.slice(0, 4).map(v => App.colorMap[v]).concat(tile.slice(4));
     const sz = App.boardSize;
 
     let board = this.state.board.slice();
 
     //* Player 1 board = as-is
-    board[row*sz + col] = [N, E, S, W, special];
+    board[row * sz + col] = [N, E, S, W, special];
 
     // Extend borders if not a tile or already a border
     // include check for edge of board
-    if ((row+1) < sz) { 
-      board[ (row+1)*sz + col  ] = board[ (row+1)*sz + col  ] || { isBorder:true };
+    if ((row + 1) < sz) {
+      board[(row + 1) * sz + col] = board[(row + 1) * sz + col] || { isBorder: true };
     }
-    if (row-1 >= 0) {
-      board[ (row-1)*sz + col  ] = board[ (row-1)*sz + col  ] || { isBorder:true };
+    if (row - 1 >= 0) {
+      board[(row - 1) * sz + col] = board[(row - 1) * sz + col] || { isBorder: true };
     }
-    if ((col+1) < sz){
-      board[ (row  )*sz + col+1] = board[ (row  )*sz + col+1] || { isBorder:true };
+    if ((col + 1) < sz) {
+      board[(row) * sz + col + 1] = board[(row) * sz + col + 1] || { isBorder: true };
     }
-    if (col-1 >= 0){
-      board[ (row  )*sz + col-1] = board[ (row  )*sz + col-1] || { isBorder:true };
+    if (col - 1 >= 0) {
+      board[(row) * sz + col - 1] = board[(row) * sz + col - 1] || { isBorder: true };
     }
-    
+
     this.setState({ board });
   }
 
-  clickAvail = (row,col) => {
+  clickAvail = (row, col) => {
     this.addTileToBoard({ row, col, tile: this.state.playerTile });
   }
 
 
-  rotateTileInHand = () => {
+  rotateTileInHand = (index) => {
     const [N, E, S, W, special] = [...this.state.playerTile];
 
     const playerTile = [W, N, E, S, special];
@@ -182,7 +132,7 @@ class App extends Component {
     this.setState({
       playerTile
     });
-    
+
   }
 
   render() {
@@ -212,7 +162,7 @@ class App extends Component {
               col={col}
               colors={square}
             />
-          )
+          );
         }
 
         else {
@@ -236,64 +186,70 @@ class App extends Component {
 
 
         {/** Opponents **/}
-        <TopSidePane >
-          <TopOpponentPane>
-            <OpponentPane />
-          </TopOpponentPane>
-        </TopSidePane>
+        <TopPane>
+          <TopOppPanel>
+            <p>{`Points: 0`}</p>
+            {[...Array(7)].map((_,i) => (
+                <LanternCards color={App.colorMap[i]} number={i} />
+              ))}
+          </TopOppPanel>
 
-        <LeftSidePane childW='8.5vw' childH='60vh'>
-          <OpponentPane />
-        </LeftSidePane>
+          <TopName>{` Top Name `}</TopName>
+        </TopPane>
 
-        <RightSidePane childW='8.5vw' childH='60vh'>
-          <OpponentPane />
-        </RightSidePane>
+        <LeftPane>
+          <LeftOppPanel>
+            <p>{`Points: 0`}</p>
+            {[...Array(7)].map((_,i) => (
+                <LanternCards color={App.colorMap[i]} number={i} />
+              ))}
+          </LeftOppPanel>
+
+          <LeftName>{` Left Name `}</LeftName>
+        </LeftPane>
+
+        <RightPane>
+          <RightOppPanel>
+            <p>{`Points: 0`}</p>
+            {[...Array(7)].map((_,i) => (
+                <LanternCards color={App.colorMap[i]} number={i} />
+              ))}
+          </RightOppPanel>
+
+          <RightName>{` Right Name `}</RightName>
+        </RightPane>
 
 
         {/** Player **/}
-        <BottomSidePane childW='80vw' childH='8.5vw'>
+        <BottomPane>
 
-          <PlayerPane>
-            <div style={{
-              display: 'flex',
-              flexFlow: 'row nowrap',
-              justifyContent: 'space around'
-            }}>
+          <PlayerPanelTiles>
             <Square
               colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={this.rotateTileInHand} 
+              onClick={() => this.rotateTileInHand(0)}
             />
             <Square
               colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={this.rotateTileInHand} 
+              onClick={() => this.rotateTileInHand(1)}
             />
             <Square
               colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={this.rotateTileInHand} 
+              onClick={() => this.rotateTileInHand(2)}
             />
-            </div>
-            
-            <div style={{
-              display: 'flex',
-              flexFlow: 'row nowrap'
-            }}>
-              <LanternCards/>
-              <LanternCards/>
-              <LanternCards/>
-              <LanternCards/>
-              <LanternCards/>
-              <LanternCards/>
-              <LanternCards/>
-            </div>
+          </PlayerPanelTiles>
 
-          </PlayerPane>
+          <PlayerPanel>
+            <p>{`Points: 0`}</p>
+            {[...Array(7)].map((_, i) => (
+              <LanternCards color={App.colorMap[i]} number={i} />
+            ))}
+          </PlayerPanel>
 
-        </BottomSidePane>
+        </BottomPane>
 
 
         {/** Board **/}
-        <CenterPane childW='calc(70vh+12px)' childH='calc(70vh+12px)'>
+        <CenterPane>
           <BoardGrid>
             {squares}
           </BoardGrid>
@@ -306,9 +262,9 @@ class App extends Component {
 }
 
 
-App.boardSize=7;
+App.boardSize = 7;
 App.gameTiles = gameTiles;
-App.colorMap = ['red', 'orange', 'yellow', 'green', 'blue', 'violet', 'black'];
+App.colorMap = ['red', 'orange', 'darkkhaki', 'green', 'blue', 'violet', 'black'];
 
 
 export default App;
