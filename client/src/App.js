@@ -33,7 +33,6 @@ import {
 } from './AppStyles';
 
 
-
 const FullScreenView = styled.div`
   height: 100vh;
   width: 100vw;
@@ -53,14 +52,13 @@ const BoardGrid = styled.div`
   grid-template-rows: repeat(7, 1fr);
 `;
 
-
 // #endregion Styles
 
 
 class App extends Component {
   state = {
     test: null,
-    playerTile: null,
+    tilesInHand: [null, null, null],
     board: Array(App.boardSize * App.boardSize)
   }
 
@@ -76,7 +74,7 @@ class App extends Component {
     this.addTileToBoard({ row: 3, col: 3, tile: App.gameTiles.startTile });
 
     this.setState({
-      playerTile: App.gameTiles.lakeTiles[0]
+      tilesInHand: App.gameTiles.lakeTiles.slice(0,3)
     });
 
   }
@@ -110,17 +108,18 @@ class App extends Component {
   }
 
   clickAvail = (row, col) => {
-    this.addTileToBoard({ row, col, tile: this.state.playerTile });
+    this.addTileToBoard({ row, col, tile: this.state.tilesInHand[0] }); //! TODO: change this to SELECTED tile in hand
   }
 
 
   rotateTileInHand = (index) => {
-    const [N, E, S, W, special] = [...this.state.playerTile];
+    const tilesInHand = [...this.state.tilesInHand];
 
-    const playerTile = [W, N, E, S, special];
+    const [N, E, S, W, special] = tilesInHand[index];
+    tilesInHand[index] = [W, N, E, S, special];
 
     this.setState({
-      playerTile
+      tilesInHand
     });
 
   }
@@ -214,18 +213,12 @@ class App extends Component {
         <BottomPane>
 
           <PlayerPanelTiles>
-            <Square
-              colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={() => this.rotateTileInHand(0)}
+            {this.state.tilesInHand.map((tile,i) => (
+              <Square
+                colors={tile.map(v => App.colorMap[v])}
+                onClick={() => this.rotateTileInHand(i)}
             />
-            <Square
-              colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={() => this.rotateTileInHand(1)}
-            />
-            <Square
-              colors={this.state.playerTile.map(v => App.colorMap[v])}
-              onClick={() => this.rotateTileInHand(2)}
-            />
+            ))}
           </PlayerPanelTiles>
 
           <PlayerPanel>
@@ -238,12 +231,15 @@ class App extends Component {
         </BottomPane>
 
 
-        {/** Board **/}
+        {/** Board & Info **/}
         <CenterPane>
+
           <BoardGrid>
             {squares}
           </BoardGrid>
+
           <GameInfo />
+
         </CenterPane>
 
       </FullScreenView>
