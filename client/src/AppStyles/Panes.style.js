@@ -52,7 +52,7 @@ const CenterPane = styled.div`
   width: 80%;
   display: flex;
   
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 `;
 
