@@ -6,7 +6,7 @@ module.exports = (socket) => {
 
   socket.on('connection', client => {
 
-    console.log("\nconnection", /* Object.keys(client), */ client.id, playerConnMap.size)
+    // console.log("\nconnection", /* Object.keys(client), */ client.id, playerConnMap.size)
 
     const nextPlayerIdx = playerConnections.findIndex(conn => conn === null);
 
@@ -23,7 +23,7 @@ module.exports = (socket) => {
     playerConnections[nextPlayerIdx] = client;
     playerConnMap.set(client.id, nextPlayerIdx);
     client.emit('seat', nextPlayerIdx);
-
+    socket.emit('players', playerConnections.map(conn => !!conn))
 
     if (playerConnections.every(conn => conn !== null)) { // All Players Seated
       console.log("game is ready!")
@@ -48,6 +48,7 @@ module.exports = (socket) => {
         playerConnections[dcPlayerIdx] = null;
 
         socket.emit('ready', false); // wait for full game
+        socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
       }
 
       //? TODO: allow for reconnects

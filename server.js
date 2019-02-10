@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 
+// Sockets Config
 const server = require('http').Server(app); 
 const io = require('socket.io')(server);
 
@@ -31,6 +32,7 @@ app.get("*", (req, res) => {
 });
 
 
+//! not app.listen (need server. with >>sockets<<)
 server.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
