@@ -1,4 +1,5 @@
 import axios from 'axios';
+import openSocket from 'socket.io-client';
 
 import React, { Component } from "react";
 
@@ -59,7 +60,9 @@ class App extends Component {
   state = {
     test: null,
     tilesInHand: [null, null, null],
-    board: Array(App.boardSize * App.boardSize)
+    board: Array(App.boardSize * App.boardSize),
+
+    socket: openSocket('/'),
   }
 
   componentWillMount() {
@@ -70,6 +73,10 @@ class App extends Component {
           test: results.data.a
         })
       })
+    
+    this.state.socket.on('connect', () => {
+      this.setState({ connection: 'connected' })
+    });
 
     this.addTileToBoard({ row: 3, col: 3, tile: App.gameTiles.startTile });
 
@@ -171,7 +178,11 @@ class App extends Component {
           position: 'fixed',
           top: '1em',
           left: '1em'
-        }}>Server says: {this.state.test}</p>
+        }}>
+          Server says: {this.state.test}
+          <br/>
+          Socket says: {this.state.connection}
+        </p>
 
 
         {/** Opponents **/}
