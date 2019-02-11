@@ -1,6 +1,8 @@
 const playerConnections = Array(4).fill(null);
 const playerConnMap = new Map();
 
+const game = require('./../gamelogic');
+
 
 module.exports = (socket) => {
 
@@ -18,16 +20,21 @@ module.exports = (socket) => {
     }
 
 
-    // Add player connection
+    //* Add player connection
     console.log("\nseating", client.id, "at index", nextPlayerIdx);
     playerConnections[nextPlayerIdx] = client;
     playerConnMap.set(client.id, nextPlayerIdx);
     client.emit('seat', nextPlayerIdx);
     socket.emit('players', playerConnections.map(conn => !!conn))
 
-    if (playerConnections.every(conn => conn !== null)) { // All Players Seated
+    //* All Players Seated
+    if (playerConnections.every(conn => conn !== null)) { 
       console.log("game is ready!")
       socket.emit('ready', true);
+
+      //! TODO: don't always restart the game just due to having a 4th player
+      game.setup();
+      socket.emit('tile', [0,1,2,3], 3, 3);
     }
 
 
@@ -36,6 +43,7 @@ module.exports = (socket) => {
     })
 
 
+    //* Disconnect
     client.on('disconnect', () => {
       console.log("\ndisconn", client.id);
 
@@ -55,6 +63,7 @@ module.exports = (socket) => {
     });
 
 
+    //* Interactions from Client
     client.on('click', () => {
       if (playerConnMap.has(client.id)) {
         const playerNum = playerConnMap.get(client.id) + 1;
