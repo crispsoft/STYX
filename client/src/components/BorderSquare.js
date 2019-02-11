@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const StyledBorderSquare = styled.div`
   border: solid;
+  width: 10vh; height: 10vh;
 
   background: cyan;
   &:hover {
