@@ -3,8 +3,8 @@ const gameTiles = require('./gameTiles.json');
 
 module.exports = {
 
-  gameBoard: Array(49),
-  
+  board: Array(49),
+
   playerScores: [0, 0, 0, 0],
 
   playerHands: [
@@ -63,7 +63,7 @@ module.exports = {
 
 
     // place start tile
-    this.gameBoard[24] = startingTile;
+    this.board[24] = startingTile;
 
 
     // Distribute first color cards
