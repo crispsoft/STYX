@@ -5,15 +5,14 @@ const box = {
   width: '10vh', height: '10vh'
 }
 
-function Square({ row, col, colors, ...props }) {
+function Square({ row, col, colors, special,...props }) {
   const
     [borderTopColor,
       borderRightColor,
       borderBottomColor,
-      borderLeftColor,
-      special] = colors;
+      borderLeftColor ] = colors;
 
-  const borderWidth = special ? '3vh' : '5vh';
+  const borderWidth = special ? '3.7vh' : '5vh';
 
   return (
     <div
