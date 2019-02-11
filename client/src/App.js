@@ -56,7 +56,7 @@ class App extends Component {
       left: {
         status: '',
         colors: []
-    },
+      },
 
       top: {
         status: '',
@@ -90,16 +90,18 @@ class App extends Component {
     const { socket } = this.state;
     socket.on('connect'   ,       () => this.setState(handle.connect        ));
     socket.on('disconnect',       () => this.setState(handle.disconnect     ));
+
     socket.on('seat'      , ( index) => this.setState(handle.seat   ( index)));
     socket.on('board'     , ( board) => this.setState(handle.board  ( board)));
-    socket.on('ready'     , (status) => this.setState(handle.ready  (status)));
-    socket.on('players'   , ( names) => this.setState(handle.players( names)));
+    socket.on('tiles'     , ( tiles) => this.setState(handle.tiles  ( tiles)));
     
+    socket.on('colors'    , (  colors) => this.setState(handle.colors (  colors)));
+    socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
-
-    }
-
     
+  }
+
+
   clickAvail = (row, col) => {
     const { selectedTileIndex: idx } = this.state;
 
@@ -185,9 +187,9 @@ class App extends Component {
         <TopPane>
           <TopOppPanel>
             <p>{`Points: 0`}</p>
-            {[...Array(7)].map((_,i) => (
-                <LanternCards color={App.colorMap[i]} number={i} />
-              ))}
+            {this.state.opponents.top.colors.map((qty, i) => (
+              <LanternCards color={App.colorMap[i]} number={qty} />
+            ))}
           </TopOppPanel>
 
           <TopName>{this.state.opponents.top.status}</TopName>
@@ -196,9 +198,9 @@ class App extends Component {
         <LeftPane>
           <LeftOppPanel>
             <p>{`Points: 0`}</p>
-            {[...Array(7)].map((_,i) => (
-                <LanternCards color={App.colorMap[i]} number={i} />
-              ))}
+            {this.state.opponents.left.colors.map((qty, i) => (
+              <LanternCards color={App.colorMap[i]} number={qty} />
+            ))}
           </LeftOppPanel>
 
           <LeftName>{this.state.opponents.left.status}</LeftName>
@@ -207,9 +209,9 @@ class App extends Component {
         <RightPane>
           <RightOppPanel>
             <p>{`Points: 0`}</p>
-            {[...Array(7)].map((_,i) => (
-                <LanternCards color={App.colorMap[i]} number={i} />
-              ))}
+            {this.state.opponents.right.colors.map((qty, i) => (
+              <LanternCards color={App.colorMap[i]} number={qty} />
+            ))}
           </RightOppPanel>
 
           <RightName>{this.state.opponents.right.status}</RightName>
@@ -224,6 +226,7 @@ class App extends Component {
               tile &&
               <Square
                 colors={tile.map(v => App.colorMap[v])}
+                special={tile[4]}
                 onClick={() => this.rotateTileInHand(i)}
             />
             ))}
