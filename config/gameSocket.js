@@ -1,7 +1,5 @@
-const playerConnections = Array(4).fill(null);
-const playerConnMap = new Map();
-
 const game = require('./../gamelogic');
+
 
 const BOARD_ROT_MAPs = [
   //% Player 1 is basis of BOARD perspective
@@ -48,19 +46,26 @@ const TILE_ROT_MAPs = [
   [3, 0, 1, 2, 4],
 ]
 
+
+const playerConnections = Array(4).fill(null);
+const playerConnMap = new Map();
+
+
 function emitBoard() {
   //% Player 1 is basis of board perspective
   playerConnections[0].emit('board', game.board);
 
-
+  //% Players 2,3,4 have rotated board perspective
   playerConnections.slice(1).forEach((conn, connIdx) => {
     const theirTileMapper = TILE_ROT_MAPs[connIdx]; // stored to maintain throughout board mapping
 
     const theirBoard = BOARD_ROT_MAPs[connIdx].map(boardRot => {
 
       // see if there is any tile at that location, and if so rotate its colors
-      let theirTile = game.board[boardRot] && 
-        theirTileMapper.map(tileRot => game.board[boardRot][tileRot])
+      let theirTile = game.board[boardRot];
+      if (theirTile && !theirTile.isBorder) {
+        theirTile = theirTileMapper.map(tileRot => game.board[boardRot][tileRot]);
+      }
 
       return theirTile;
 
@@ -72,10 +77,28 @@ function emitBoard() {
 
 }
 
+function emitTiles() {
+  playerConnections.forEach((conn, connIdx) => {
+    const theirHandTiles = game.players[connIdx].hand;
+    // console.log(theirHandTiles);
+    conn.emit('tiles', theirHandTiles)
+  });
+}
+
+function emitColors(socket) {
+  let colors = game.players.map(player => player.colors);
+
+  console.log(colors);
+  socket.emit('colors', colors);
+}
+
 function startTheGame(socket) {
   game.setup();
   emitBoard();
+  emitTiles();
+  emitColors(socket);
 }
+
 
 
 module.exports = (socket) => {
