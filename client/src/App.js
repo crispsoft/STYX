@@ -52,10 +52,21 @@ class App extends Component {
     gameReady: false,
     test: null,
 
-    names: {
-       left: 'waiting..',
-        top: 'waiting..',
-      right: 'waiting..',
+    opponents: {
+      left: {
+        status: '',
+        colors: []
+    },
+
+      top: {
+        status: '',
+        colors: []
+      }
+      ,
+      right: {
+        status: '',
+        colors: []
+      }
     },
 
     tilesInHand: [null, null, null],
@@ -84,14 +95,7 @@ class App extends Component {
     socket.on('ready'     , (status) => this.setState(handle.ready  (status)));
     socket.on('players'   , ( names) => this.setState(handle.players( names)));
     
-  }
-
-
-  addTileToBoard({ row, col, tile }) {
-    const [N, E, S, W, special] = tile.slice(0, 4).map(v => App.colorMap[v]).concat(tile.slice(4));
-    const sz = App.boardSize;
-
-    let board = this.state.board.slice();
+    socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
 
     //* Player 1 board = as-is
     board[row * sz + col] = [N, E, S, W, special];
@@ -192,8 +196,6 @@ class App extends Component {
           <br/>
           I'm Player #{this.state.seatedAt}
           <br />
-          {/* Players joined: {this.state.names.map((bool, i) => bool ? i : '')} */}
-          <br />
           {this.state.gameReady ? "READY!" : "..waiting for players.."}
         </p>
 
@@ -207,7 +209,7 @@ class App extends Component {
               ))}
           </TopOppPanel>
 
-          <TopName>{this.state.names.top}</TopName>
+          <TopName>{this.state.opponents.top.status}</TopName>
         </TopPane>
 
         <LeftPane>
@@ -218,7 +220,7 @@ class App extends Component {
               ))}
           </LeftOppPanel>
 
-          <LeftName>{this.state.names.left}</LeftName>
+          <LeftName>{this.state.opponents.left.status}</LeftName>
         </LeftPane>
 
         <RightPane>
@@ -229,7 +231,7 @@ class App extends Component {
               ))}
           </RightOppPanel>
 
-          <RightName>{this.state.names.right}</RightName>
+          <RightName>{this.state.opponents.right.status}</RightName>
         </RightPane>
 
 

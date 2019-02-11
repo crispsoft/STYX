@@ -9,15 +9,21 @@ export default {
   //* Group emits
   ready: (status) => ({ gameReady: status }),
 
-  players: (names) => (state) => {
-    const [left, top, right] = [0, 1, 2].map(n => (
-      names[(state.seatedAt + n) % 4]
+  players: (statuses) => (state) => {
+    const { left, top, right } = state.opponents;
+
+    const [lStatus, tStatus, rStatus] = [0, 1, 2].map(n => (
+      statuses[(state.seatedAt + n) % 4]
         ? `Player ${(state.seatedAt + n) % 4 + 1}`
         : `waiting..`
     ));
     
     return {
-      names: { left, top, right }
+      opponents: {
+         left: {...left , status: lStatus },
+          top: {...top  , status: tStatus },
+        right: {...right, status: rStatus }
+      }
     }
   },
 
