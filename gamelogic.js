@@ -1,22 +1,19 @@
 
 const gameTiles = require('./gameTiles.json');
 
+
+const BOARD_SIZE = 7;
+
 module.exports = {
 
-  board: Array(49),
+  board: Array(BOARD_SIZE * BOARD_SIZE), //% square board
 
-  playerScores: [0, 0, 0, 0],
+  players: [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
+    score: 0,
+    hand: [],
+    colors: Array(7).fill(0),
+  })),
 
-  playerHands: [
-    [], [], [], []
-  ],
-
-  playerColors: [
-    Array(7).fill(0),
-    Array(7).fill(0),
-    Array(7).fill(0),
-    Array(7).fill(0),
-  ],
 
   pointCards: [
     [10, 9, 8, 8, 7, 7, 7, 6, 5],
@@ -25,19 +22,16 @@ module.exports = {
     [4, 4, 4]
   ],
 
-  cardsRemaining: Array(24),
+  tileStack: null,
 
   deckProgress: 0,
 
 
-
   turnZero() {
-
     this.playerColors[0][0]++;
     this.playerColors[1][2]++;
     this.playerColors[2][6]++;
     this.playerColors[3][4]++;
-
   },
 
 
@@ -51,39 +45,74 @@ module.exports = {
 
   },
 
+  distributeColors([N, E, S, W, special]) {
+    const { players } = this;
+
+    // TODO: find & distrib match bonuses to player placing tile
+    // TODO: including 'special' tiles
+    // TODO: check color supplies
+    
+
+    // TODO: distribute colors in clockwise order starting with player who placed tile (can affect supply constraints)
+    ++players[0].colors[S];
+    ++players[1].colors[W];
+    ++players[2].colors[N];
+    ++players[3].colors[E];
+  },
+
+  addTileToBoard({ row, col, tile }) {
+    const sz = BOARD_SIZE;
+    const { board }  = this;
+
+    board[row * sz + col] = tile;
+
+    // Extend borders if not a tile or already a border
+    // include check for edge of board
+    //? another configuration to signify border tile
+    //? should the gamelogic be concerned with bordertiles -- probably, needs to check anyway
+    if ((row + 1) < sz) {
+      board[(row + 1) * sz + col] = 
+      board[(row + 1) * sz + col] || { isBorder: true };
+    }
+    if (row - 1 >= 0) {
+      board[(row - 1) * sz + col] = 
+      board[(row - 1) * sz + col] || { isBorder: true };
+    }
+    if ((col + 1) < sz) {
+      board[(row) * sz + col + 1] = 
+      board[(row) * sz + col + 1] || { isBorder: true };
+    }
+    if (col - 1 >= 0) {
+      board[(row) * sz + col - 1] = 
+      board[(row) * sz + col - 1] || { isBorder: true };
+    }
+
+    this.distributeColors(tile);
+  },
 
   setup() {
-
-    const startingTile = gameTiles.startTile;
-    const tiles = gameTiles.lakeTiles;
-
-    const randIndex = Math.floor(Math.random() * tiles.length)
-
-    // shuffle tiles
-
-
-    // place start tile
-    this.board[24] = startingTile;
-
-
-    // Distribute first color cards
+    // Reset state
+    this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
+      score: 0,
+      hand: [],
+      colors: Array(7).fill(0),
+    })),
+    this.tileStack = [...gameTiles.lakeTiles];
 
 
     // Shuffle stack of tiles
-    this.shuffle(tiles);
-
+    this.shuffle(this.tileStack);
 
     // Deal three tiles per player
-    function dealCard(playerID) {
-      playerID.push(tiles[0]);
-      tiles.shift();
-    }
+    this.players.forEach(player => {
+      player.hand = this.tileStack.splice(0,3);
+    });
+    
+    
+    // place start tile (center at (3,3), with 0-indexed based row/col)
+    this.addTileToBoard({ row: 3, col: 3, tile: gameTiles.startTile });
 
-    for (i = 0; i < 3; i++) {
-      dealCard(this.playerHands[0]);
-      dealCard(this.playerHands[1]);
-      dealCard(this.playerHands[2]);
-      dealCard(this.playerHands[3]);
-    }
+    // Distribute first color cards
+    
   }
 };
