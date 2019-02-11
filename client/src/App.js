@@ -143,7 +143,7 @@ class App extends Component {
           )
         }
 
-        else if (Array.isArray(square)) {
+        else if (Array.isArray(square)) { // a regular tile, with an array of border colors
           const colors = square.map(n => App.colorMap[n]);
           return (
             <Square

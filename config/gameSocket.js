@@ -87,8 +87,7 @@ function emitTiles() {
 
 function emitColors(socket) {
   let colors = game.players.map(player => player.colors);
-
-  console.log(colors);
+  // console.log(colors);
   socket.emit('colors', colors);
 }
 
