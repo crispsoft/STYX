@@ -8,10 +8,8 @@ import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
 
-import gameTiles from './gameTiles.json'
-
-
 import styled from 'styled-components';
+
 
 // #region Styles
 import {
@@ -53,7 +51,11 @@ class App extends Component {
     gameReady: false,
     test: null,
 
-    names: Array(3).fill(null),
+    names: {
+       left: 'waiting..',
+        top: 'waiting..',
+      right: 'waiting..',
+    },
 
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
@@ -88,15 +90,31 @@ class App extends Component {
     });
 
     this.state.socket.on('players', names => {
-      this.setState({ names });
+      const [left, top, right] = [0,1,2].map((n, idx) => (
+        names[(this.state.seatedAt+n)%4]
+         ? `Player ${(this.state.seatedAt+n)%4+1}`
+         : `waiting..`
+      ));
+
+      this.setState({
+        names: { left, top, right }
+      });
     });
 
+    this.state.socket.on('tile', (tile, row, col) => {
+      console.log('server tile', tile, row, col);
+      this.addTileToBoard({ row, col, tile });
+    })
 
-    this.addTileToBoard({ row: 3, col: 3, tile: App.gameTiles.startTile });
+
+    const board = this.state.board.slice();
+    board[3 * 7 + 3] = { isBorder: true };
 
     this.setState({
-      tilesInHand: App.gameTiles.lakeTiles.slice(0,3)
+      board,
+      tilesInHand: [[0,0,0,0],[1,1,1,1],[2,2,2,2]]
     });
+
 
   }
 
@@ -152,8 +170,6 @@ class App extends Component {
 
   render() {
 
-    const [leftName, topName, rightName] = [0,1,2].map(n => `Player ${(this.state.seatedAt + n) %4 + 1}`);
-
     const squares =
       this.state.board.map((square, squareIdx) => {
 
@@ -206,9 +222,9 @@ class App extends Component {
           <br/>
           I'm Player #{this.state.seatedAt}
           <br />
-          Players joined: {this.state.names.map((bool, i) => bool ? i : '')}
+          {/* Players joined: {this.state.names.map((bool, i) => bool ? i : '')} */}
           <br />
-          <p>{this.state.gameReady ? "READY!" : "..waiting for players.."}</p>
+          {this.state.gameReady ? "READY!" : "..waiting for players.."}
         </p>
 
 
@@ -221,7 +237,7 @@ class App extends Component {
               ))}
           </TopOppPanel>
 
-          <TopName>{topName}</TopName>
+          <TopName>{this.state.names.top}</TopName>
         </TopPane>
 
         <LeftPane>
@@ -232,7 +248,7 @@ class App extends Component {
               ))}
           </LeftOppPanel>
 
-          <LeftName>{leftName}</LeftName>
+          <LeftName>{this.state.names.left}</LeftName>
         </LeftPane>
 
         <RightPane>
@@ -243,7 +259,7 @@ class App extends Component {
               ))}
           </RightOppPanel>
 
-          <RightName>{rightName}</RightName>
+          <RightName>{this.state.names.right}</RightName>
         </RightPane>
 
 
@@ -287,7 +303,6 @@ class App extends Component {
 
 
 App.boardSize = 7;
-App.gameTiles = gameTiles;
 App.colorMap = ['red', 'orange', 'darkkhaki', 'green', 'blue', 'violet', 'black'];
 
 
