@@ -8,8 +8,9 @@ import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
 
-import styled from 'styled-components';
+import handle from './clientHandlers';
 
+import styled from 'styled-components';
 
 // #region Styles
 import {
@@ -39,8 +40,8 @@ const BoardGrid = styled.div`
   display: grid;
   grid-gap: 2px;
   padding: 2px;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 10vmin);
+  grid-template-rows: repeat(7, 10vmin);
 `;
 // #endregion Styles
 
@@ -71,51 +72,18 @@ class App extends Component {
           test: results.data.a
         })
       })
+    ;
+      
+
+    // Socket Handling
+    const { socket } = this.state;
+    socket.on('connect'   ,       () => this.setState(handle.connect        ));
+    socket.on('disconnect',       () => this.setState(handle.disconnect     ));
+    socket.on('seat'      , ( index) => this.setState(handle.seat   ( index)));
+    socket.on('board'     , ( board) => this.setState(handle.board  ( board)));
+    socket.on('ready'     , (status) => this.setState(handle.ready  (status)));
+    socket.on('players'   , ( names) => this.setState(handle.players( names)));
     
-
-    this.state.socket.on('connect', () => {
-      this.setState({ connection: 'connected' });
-    });
-
-    this.state.socket.on('seat', index => {
-      this.setState({ seatedAt: index+1 });
-    });
-
-    this.state.socket.on('disconnect', () => {
-      this.setState({ connection: 'not connected' });
-    });
-
-    this.state.socket.on('ready', readyStatus => {
-      this.setState({ gameReady: readyStatus });
-    });
-
-    this.state.socket.on('players', names => {
-      const [left, top, right] = [0,1,2].map((n, idx) => (
-        names[(this.state.seatedAt+n)%4]
-         ? `Player ${(this.state.seatedAt+n)%4+1}`
-         : `waiting..`
-      ));
-
-      this.setState({
-        names: { left, top, right }
-      });
-    });
-
-    this.state.socket.on('tile', (tile, row, col) => {
-      console.log('server tile', tile, row, col);
-      this.addTileToBoard({ row, col, tile });
-    })
-
-
-    const board = this.state.board.slice();
-    board[3 * 7 + 3] = { isBorder: true };
-
-    this.setState({
-      board,
-      tilesInHand: [[0,0,0,0],[1,1,1,1],[2,2,2,2]]
-    });
-
-
   }
 
 
@@ -144,6 +112,7 @@ class App extends Component {
     }
 
     this.setState({ board });
+    
   }
 
   clickAvail = (row, col) => {
@@ -176,7 +145,7 @@ class App extends Component {
         const row = Math.floor(squareIdx / App.boardSize) + 1;
         const col = squareIdx % App.boardSize + 1;
 
-        if (square.isBorder) {
+        if (square && square.isBorder) {
           return (
             <BorderSquare
               key={`square-${squareIdx}`}
@@ -188,12 +157,13 @@ class App extends Component {
         }
 
         else if (Array.isArray(square)) {
+          const colors = square.map(n => App.colorMap[n]);
           return (
             <Square
               key={`square-${squareIdx}`}
               row={row}
               col={col}
-              colors={square}
+              colors={colors}
             />
           );
         }
@@ -268,6 +238,7 @@ class App extends Component {
 
           <PlayerPanelTiles>
             {this.state.tilesInHand.map((tile,i) => (
+              tile &&
               <Square
                 colors={tile.map(v => App.colorMap[v])}
                 onClick={() => this.rotateTileInHand(i)}
