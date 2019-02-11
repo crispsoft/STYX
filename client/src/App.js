@@ -55,17 +55,17 @@ class App extends Component {
     opponents: {
       left: {
         status: '',
-        colors: []
+        colors: Array(7).fill(0)
       },
 
       top: {
         status: '',
-        colors: []
+        colors: Array(7).fill(0)
       }
       ,
       right: {
         status: '',
-        colors: []
+        colors: Array(7).fill(0)
       }
     },
 
