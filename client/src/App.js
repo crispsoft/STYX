@@ -151,6 +151,7 @@ class App extends Component {
               row={row}
               col={col}
               colors={colors}
+              special={square[4]}
             />
           );
         }
@@ -228,7 +229,7 @@ class App extends Component {
                 colors={tile.map(v => App.colorMap[v])}
                 special={tile[4]}
                 onClick={() => this.rotateTileInHand(i)}
-            />
+              />
             ))}
           </PlayerPanelTiles>
 
