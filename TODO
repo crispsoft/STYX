@@ -1,3 +1,6 @@
 ☐ indicators of player's turn or not 
-  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
-☐ 
+  incld:  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
+  
+☐ make a general square component, always render 49 (all) of them, 'inherit' from to make particular components - one for with colors & one for of border
+
+☐ have client handle the emit of being seated to include linking what player index are their top, left, right opponents
