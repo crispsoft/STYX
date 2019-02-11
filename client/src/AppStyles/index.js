@@ -7,6 +7,7 @@ const FullScreenView = styled.div`
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  user-select: none;
 `;
 
 export {
