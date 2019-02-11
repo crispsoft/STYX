@@ -97,34 +97,15 @@ class App extends Component {
     
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
 
-    //* Player 1 board = as-is
-    board[row * sz + col] = [N, E, S, W, special];
-
-    // Extend borders if not a tile or already a border
-    // include check for edge of board
-    if ((row + 1) < sz) {
-      board[(row + 1) * sz + col] = board[(row + 1) * sz + col] || { isBorder: true };
-    }
-    if (row - 1 >= 0) {
-      board[(row - 1) * sz + col] = board[(row - 1) * sz + col] || { isBorder: true };
-    }
-    if ((col + 1) < sz) {
-      board[(row) * sz + col + 1] = board[(row) * sz + col + 1] || { isBorder: true };
-    }
-    if (col - 1 >= 0) {
-      board[(row) * sz + col - 1] = board[(row) * sz + col - 1] || { isBorder: true };
     }
 
-    this.setState({ board });
     
-  }
-
   clickAvail = (row, col) => {
     const { selectedTileIndex: idx } = this.state;
 
     if (!Number.isInteger(idx)) return;
     
-    this.addTileToBoard({ row, col, tile: this.state.tilesInHand[idx] }); //! TODO: change this to SELECTED tile in hand
+    //! TODO: send to server this.addTileToBoard({ row, col, tile: this.state.tilesInHand[idx] }); 
   }
 
 
