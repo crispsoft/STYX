@@ -55,19 +55,19 @@ class App extends Component {
     opponents: {
       left: {
         points: 0,
-        status: '',
+        status: '..waiting..',
         colors: Array(7).fill(0)
       },
 
       top: {
         points: 0,
-        status: '',
+        status: '..waiting..',
         colors: Array(7).fill(0)
       },
 
       right: {
         points: 0,
-        status: '',
+        status: '..waiting..',
         colors: Array(7).fill(0)
       }
     },
@@ -93,12 +93,12 @@ class App extends Component {
 
     // Socket Handling
     const { socket } = this.state;
-    socket.on('connect'   ,       () => this.setState(handle.connect        ));
-    socket.on('disconnect',       () => this.setState(handle.disconnect     ));
+    socket.on('connect'   , () => this.setState(handle.connect   ));
+    socket.on('disconnect', () => this.setState(handle.disconnect));
 
-    socket.on('seat'      , ( index) => this.setState(handle.seat   ( index)));
-    socket.on('board'     , ( board) => this.setState(handle.board  ( board)));
-    socket.on('tiles'     , ( tiles) => this.setState(handle.tiles  ( tiles)));
+    socket.on('seat'      , (index) => this.setState(handle.seat (index)));
+    socket.on('board'     , (board) => this.setState(handle.board(board)));
+    socket.on('tiles'     , (tiles) => this.setState(handle.tiles(tiles)));
     
     socket.on('colors'    , (  colors) => this.setState(handle.colors (  colors)));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
