@@ -8,6 +8,7 @@ const FullScreenView = styled.div`
   justify-content: center;
   align-items: center;
   user-select: none;
+  background-color: #375170;
 `;
 
 export {

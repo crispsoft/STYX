@@ -3,6 +3,7 @@ import "./style.css";
 import Card from "@material-ui/core/Card";
 import DedicationCards from "../DedicationCards";
 import LanternCards from "../LanternCards";
+import App from "../../App";
 
 function GameInfo(props) {
   return (
@@ -15,17 +16,17 @@ function GameInfo(props) {
         </div>
         <div>
           <div className="lanternCardsContainer">
-            <LanternCards />
+            <LanternCards color={App.colorMap[0]}/>
           </div>
           <div className="lanternCardsContainer">
-            <LanternCards />
-            <LanternCards />
-            <LanternCards />
-            <LanternCards />
+            <LanternCards color={App.colorMap[1]}/>
+            <LanternCards color={App.colorMap[2]}/>
+            <LanternCards color={App.colorMap[3]}/>
+            <LanternCards color={App.colorMap[4]}/>
           </div>
           <div className="lanternCardsContainer">
-            <LanternCards />
-            <LanternCards />
+            <LanternCards color={App.colorMap[5]}/>
+            <LanternCards color={App.colorMap[6]}/>
           </div>
         </div>
       </Card>

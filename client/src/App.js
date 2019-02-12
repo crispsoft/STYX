@@ -36,12 +36,13 @@ import {
 const BoardGrid = styled.div`
   width : calc(70vh+12px);
   height: calc(70vh+12px);
-  outline-style: solid;
+  outline: solid #E2E2E8;
   display: grid;
   grid-gap: 2px;
   padding: 2px;
   grid-template-columns: repeat(7, 10vmin);
   grid-template-rows: repeat(7, 10vmin);
+ 
 `;
 // #endregion Styles
 
