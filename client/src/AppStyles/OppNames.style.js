@@ -9,6 +9,10 @@ const OppNameBase = styled.div`
   position: absolute;
   align-self: center;
 
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+
   ${props => props.nameAnchor}: -1em;
 `;
 
@@ -17,12 +21,19 @@ const TopName = styled(OppNameBase)`
   padding: 0.2rem 0.5rem;
   bottom: -1em;
   border-top: none;
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
 `
 
 const SideName = styled(OppNameBase)`
   writing-mode: vertical-lr;
   text-orientation: upright;
   padding: 0.5rem 0.2rem;
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+
 
   /* Chrome (72.0.3626.96) would not vertically center name without this */
   /* FireFox (65.0) would, but possibly not per spec due to position: absolute?
