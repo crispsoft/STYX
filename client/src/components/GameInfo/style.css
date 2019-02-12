@@ -1,7 +1,7 @@
 #gameInfo {
   /* border: 3px solid #E2E2E8; */
   border: 10px solid transparent;
-  border-image: url("/assets/greek_wave.png") 30 round;
+  border-image: url("/assets/greek_wave.png") 32 round;
   height: 50vh;
   width: 20vw;
   /* background: red; */
