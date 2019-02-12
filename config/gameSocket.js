@@ -1,4 +1,5 @@
 const game = require('./../gamelogic');
+const gameDB = require('./../api/gameDB');
 
 
 const BOARD_ROT_MAPs = [
@@ -92,11 +93,16 @@ function emitColors(socket) {
 }
 
 function startTheGame(socket) {
+  gameDB.new(); //? is a promise, but should be no need to await resolution ?
+
   game.setup();
   emitBoard();
   emitTiles();
   emitColors(socket);
+
+  gameDB.new();
 }
+
 
 function handlePlaceTile({row, col, tile}) {
 
