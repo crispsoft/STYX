@@ -54,16 +54,19 @@ class App extends Component {
 
     opponents: {
       left: {
+        points: 0,
         status: '',
         colors: Array(7).fill(0)
       },
 
       top: {
+        points: 0,
         status: '',
         colors: Array(7).fill(0)
-      }
-      ,
+      },
+
       right: {
+        points: 0,
         status: '',
         colors: Array(7).fill(0)
       }
@@ -71,7 +74,9 @@ class App extends Component {
 
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
+
     colorQtys: Array(7).fill(0),
+
     board: Array(App.boardSize * App.boardSize),
   }
 
@@ -163,6 +168,8 @@ class App extends Component {
 
       });
 
+    const { top, left, right } = this.state.opponents;
+
 
     return (
       <FullScreenView>
@@ -187,35 +194,35 @@ class App extends Component {
         {/** Opponents **/}
         <TopPane>
           <TopOppPanel>
-            <p>{`Points: 0`}</p>
-            {this.state.opponents.top.colors.map((qty, i) => (
+            <p>{`Points: ${top.points}`}</p>
+            {top.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
           </TopOppPanel>
 
-          <TopName>{this.state.opponents.top.status}</TopName>
+          <TopName>{top.status}</TopName>
         </TopPane>
 
         <LeftPane>
           <LeftOppPanel>
-            <p>{`Points: 0`}</p>
-            {this.state.opponents.left.colors.map((qty, i) => (
+            <p>{`Points: ${left.points}`}</p>
+            {left.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
           </LeftOppPanel>
 
-          <LeftName>{this.state.opponents.left.status}</LeftName>
+          <LeftName>{left.status}</LeftName>
         </LeftPane>
 
         <RightPane>
           <RightOppPanel>
-            <p>{`Points: 0`}</p>
-            {this.state.opponents.right.colors.map((qty, i) => (
+            <p>{`Points: ${right.points}`}</p>
+            {right.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
           </RightOppPanel>
 
-          <RightName>{this.state.opponents.right.status}</RightName>
+          <RightName>{right.status}</RightName>
         </RightPane>
 
 
