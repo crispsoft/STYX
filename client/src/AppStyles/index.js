@@ -11,8 +11,14 @@ const FullScreenView = styled.div`
   background-color: #375170;
 `;
 
+const Points = styled.p`
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+`;
+
 export {
-  FullScreenView
+  FullScreenView, Points
 };
 
 export * from './Panes.style';

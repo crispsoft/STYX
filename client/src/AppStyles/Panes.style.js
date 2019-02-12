@@ -10,9 +10,10 @@ const BasePane = styled.div`
 
   border-style: solid;
   border-width: ${props => props.selected ? '3px' : '1px' };
-  border-color: ${props => props.selected ? 'red' : 'black' };
+  border-color: ${props => props.selected ? '#E2E2E8' : 'black' };
   background-color: #91A2BB;
   padding: 0.7rem;
+  border-radius: 3px;
 `;
 
 

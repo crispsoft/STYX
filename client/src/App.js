@@ -15,6 +15,7 @@ import styled from 'styled-components';
 // #region Styles
 import {
   FullScreenView,
+  Points,
   
      TopPane,
    RightPane,
@@ -195,7 +196,7 @@ class App extends Component {
         {/** Opponents **/}
         <TopPane>
           <TopOppPanel>
-            <p>{`Points: ${top.points}`}</p>
+            <Points>{`Points: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -206,7 +207,7 @@ class App extends Component {
 
         <LeftPane>
           <LeftOppPanel>
-            <p>{`Points: ${left.points}`}</p>
+            <Points>{`Points: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -217,7 +218,7 @@ class App extends Component {
 
         <RightPane>
           <RightOppPanel>
-            <p>{`Points: ${right.points}`}</p>
+            <Points>{`Points: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -242,7 +243,7 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <p>{`Points: 0`}</p>
+            <Points >{`Points: 0`}</Points>
             {this.state.colorQtys.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}

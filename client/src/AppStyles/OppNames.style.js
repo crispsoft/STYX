@@ -13,8 +13,6 @@ const OppNameBase = styled.div`
   font-weight: 700;
   font-style: normal;
 
-  border-radius: 3px;
-
   ${props => props.nameAnchor}: -1em;
 `;
 
