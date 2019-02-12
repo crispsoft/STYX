@@ -206,7 +206,7 @@ class App extends Component {
 
 
         {/** Opponents **/}
-        <TopPane>
+        <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
           <TopOppPanel>
             <p>{`Points: ${top.points}`}</p>
             {top.colors.map((qty, i) => (
@@ -217,7 +217,7 @@ class App extends Component {
           <TopName>{top.status}</TopName>
         </TopPane>
 
-        <LeftPane>
+        <LeftPane selected={this.state.oppMap[this.state.whoseTurn] === 'left'}>
           <LeftOppPanel>
             <p>{`Points: ${left.points}`}</p>
             {left.colors.map((qty, i) => (
@@ -228,7 +228,7 @@ class App extends Component {
           <LeftName>{left.status}</LeftName>
         </LeftPane>
 
-        <RightPane>
+        <RightPane selected={this.state.oppMap[this.state.whoseTurn] === 'right'}>
           <RightOppPanel>
             <p>{`Points: ${right.points}`}</p>
             {right.colors.map((qty, i) => (
@@ -241,7 +241,7 @@ class App extends Component {
 
 
         {/** Player **/}
-        <BottomPane>
+        <BottomPane selected={this.state.whoseTurn === this.state.seatIndex}>
 
           <PlayerPanelTiles>
             {this.state.tilesInHand.map((tile,i) => (
