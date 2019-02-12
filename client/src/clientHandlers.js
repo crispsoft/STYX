@@ -17,7 +17,7 @@ export default {
     const [lStatus, tStatus, rStatus] = [0, 1, 2].map(n => (
       statuses[(state.seatedAt + n) % 4]
         ? `Player ${(state.seatedAt + n) % 4 + 1}`
-        : `waiting..`
+        : `..waiting..`
     ));
     
     return {
@@ -30,14 +30,15 @@ export default {
   },
 
   colors: (colors) => (state) => {
-    const { left, top, right } = state.opponents;
+    const { opponents } = state;
+    const { left, top, right } = opponents;
 
     const [lColors, tColors, rColors] = [0, 1, 2].map(n => (
       colors[(state.seatedAt + n) % 4]
     ));
      
     return {
-      opponents: {
+      opponents: {...opponents,
          left: {...left , colors: lColors },
           top: {...top  , colors: tColors },
         right: {...right, colors: rColors },
