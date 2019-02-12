@@ -8,7 +8,9 @@ const BasePane = styled.div`
   justify-content: center;
   align-items: center;
 
-  border: 1px solid black;
+  border-style: solid;
+  border-width: ${props => props.selected ? '3px' : '1px' };
+  border-color: ${props => props.selected ? 'red' : 'black' };
   background: aliceblue;
   padding: 0.7rem;
 `;
