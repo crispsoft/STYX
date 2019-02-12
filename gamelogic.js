@@ -6,6 +6,8 @@ const BOARD_SIZE = 7;
 
 module.exports = {
 
+  whoseTurn: NaN,
+
   board: Array(BOARD_SIZE * BOARD_SIZE), //% square board
 
   players: [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
@@ -112,7 +114,8 @@ module.exports = {
     // place start tile (center at (3,3), with 0-indexed based row/col)
     this.addTileToBoard({ row: 3, col: 3, tile: gameTiles.startTile });
 
-    // Distribute first color cards
-    
+    // signify that first player is whose turn it is
+    this.whoseTurn = 0;
   }
+
 };

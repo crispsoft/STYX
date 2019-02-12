@@ -87,24 +87,31 @@ function emitTiles() {
 }
 
 function emitColors(socket) {
-  let colors = game.players.map(player => player.colors);
+  const colors = game.players.map(player => player.colors);
   // console.log(colors);
   socket.emit('colors', colors);
+}
+
+function emitTurn(socket){
+  const playerIndex = game.whoseTurn;
+  console.log('emit turn', playerIndex);
+  socket.emit('turn', playerIndex);
 }
 
 function startTheGame(socket) {
   gameDB.new(); //? is a promise, but should be no need to await resolution ?
 
   game.setup();
+
   emitBoard();
   emitTiles();
   emitColors(socket);
+  emitTurn(socket);
 
-  gameDB.new();
 }
 
 
-function handlePlaceTile({row, col, tile}) {
+function handlePlaceTile({ row, col, tile }) {
 
 }
 
