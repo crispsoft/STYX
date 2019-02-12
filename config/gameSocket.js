@@ -98,6 +98,10 @@ function startTheGame(socket) {
   emitColors(socket);
 }
 
+function handlePlaceTile({row, col, tile}) {
+
+}
+
 
 
 module.exports = (socket) => {
@@ -159,6 +163,8 @@ module.exports = (socket) => {
 
 
     //* Interactions from Client
+    client.on('place', ({ row, col, tile }) => handlePlaceTile(client.id, { row, col, tile }));
+
     client.on('click', () => {
       if (playerConnMap.has(client.id)) {
         const playerNum = playerConnMap.get(client.id) + 1;
