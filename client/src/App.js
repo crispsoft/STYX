@@ -48,10 +48,20 @@ const BoardGrid = styled.div`
 
 class App extends Component {
   state = {
+    test: null, //TODO: remove. this is a state holder for api/test route
+
+
+    //* State from server connection
     socket: openSocket('/'),
     gameReady: false,
-    test: null,
 
+
+    //* Public Game Info
+    board: Array(App.boardSize * App.boardSize),
+    whoseTurn: NaN,
+
+
+    //* Opponent's (public) Game Info
     opponents: {
       left: {
         points: 0,
@@ -72,12 +82,15 @@ class App extends Component {
       }
     },
 
+    
+    //* Personal Game Info
+    seatIndex: NaN,
+    oppMap: [], // maps seat indices from server to 'left', 'top', 'right', 'me'
+
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
-
     colorQtys: Array(7).fill(0),
-
-    board: Array(App.boardSize * App.boardSize),
+   
   }
 
   componentWillMount() {
@@ -91,7 +104,7 @@ class App extends Component {
     ;
       
 
-    // Socket Handling
+    //* Socket Handling
     const { socket } = this.state;
     socket.on('connect'   , () => this.setState(handle.connect   ));
     socket.on('disconnect', () => this.setState(handle.disconnect));
@@ -100,7 +113,8 @@ class App extends Component {
     socket.on('board'     , (board) => this.setState(handle.board(board)));
     socket.on('tiles'     , (tiles) => this.setState(handle.tiles(tiles)));
     
-    socket.on('colors'    , (  colors) => this.setState(handle.colors (  colors)));
+    socket.on('colors'    , (colors  ) => this.setState(handle.colors (colors  )));
+    socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
     
@@ -185,7 +199,7 @@ class App extends Component {
           <br/>
           Socket says: {this.state.connection}
           <br/>
-          I'm Player #{this.state.seatedAt}
+          I'm Player #{this.state.seatIndex+1}
           <br />
           {this.state.gameReady ? "READY!" : "..waiting for players.."}
         </p>
