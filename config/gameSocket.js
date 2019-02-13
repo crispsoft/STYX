@@ -161,7 +161,10 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
     tile = [e, s, w, n, special];
   }
 
-  game.checkAndPlace(playerIdx, { row, col, tile, indexInHand });
+  if (game.checkAndPlace(playerIdx, { row, col, tile, indexInHand })) {
+    // successfully placed
+    gameDB.addTurn(gameDB_id, { row, col, tile });
+  }
 
   emitBoard();
   emitTiles(clientID);
