@@ -125,7 +125,7 @@ class App extends Component {
   clickAvail = (row, col) => {
     const { selectedTileIndex: idx } = this.state;
 
-    if (!Number.isInteger(idx)) return;
+    if (!Number.isInteger(idx) || !this.state.tilesInHand[idx]) return;
     
     this.state.socket.emit('place', { row, col, tile: this.state.tilesInHand[idx], indexInHand: idx });
   }
