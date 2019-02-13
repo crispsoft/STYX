@@ -61,7 +61,8 @@ class App extends Component {
     //* Public Game Info
     board: Array(App.boardSize * App.boardSize),
     whoseTurn: NaN,
-
+    tradesValues: Array(3).fill(0),
+    tradesActive: Array(3).fill(false),
 
     //* Opponent's (public) Game Info
     opponents: {
@@ -120,6 +121,7 @@ class App extends Component {
     socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
+    socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
   }
 
 
@@ -141,20 +143,18 @@ class App extends Component {
     const colorsSelected = [...this.state.colorsSelected];
     colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
 
-    if (colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>= 4), 0) === 1) {
-      console.log('can do 4-of-kind trade');
-    }
+    const can4Kind =
+      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=4), 0);
+   
+    const can1All =
+      colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0);
 
-    if (colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0)) {
-      console.log('can do all-in trade');
-    }
-
-    if (colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=2), 0) === 3) {
-      console.log('can do 3 pair trade in');
-    }
+    const can3pair = 
+      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=2), 0);
 
     this.setState({
-      colorsSelected
+      colorsSelected,
+      tradesActive: [can1All, can3pair, can4Kind]
     });
   }
 
@@ -311,7 +311,7 @@ class App extends Component {
             {squares}
           </BoardGrid>
 
-          <GameInfo />
+          <GameInfo values={this.state.tradesValues} actives={this.state.tradesActive} />
 
         </CenterPane>
 

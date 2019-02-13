@@ -65,4 +65,7 @@ export default {
       colorQtys: newColors.me
     }
   },
+
+  trades: (tradesValues) => ({ tradesValues }),
+
 };
