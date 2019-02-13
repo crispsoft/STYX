@@ -13,29 +13,6 @@ const BOARD_SIZE = 7;
 
 module.exports = {
 
-  whoseTurn: NaN,
-
-  board: Array(BOARD_SIZE * BOARD_SIZE), //% square board
-
-  players: [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
-    score: 0,
-    hand: [],
-    favor: 0,
-    colors: Array(7).fill(0),
-  })),
-
-
-  pointCards: [
-    [10, 9, 8, 8, 7, 7, 7, 6, 5],
-    [9, 9, 8, 7, 7, 7, 6, 6, 5],
-    [9, 9, 8, 7, 7, 7, 6, 6, 5],
-    [4, 4, 4]
-  ],
-
-  tileStack: null,
-
-  deckProgress: 0,
-
   distributeColors(plyrIdx, {row, col, tile}) {
 
     // TODO: check color supplies
@@ -203,24 +180,38 @@ module.exports = {
   },
 
   setup() {
+
     // Reset state
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
       score: 0,
       hand: [],
-      colors: Array(7).fill(0),
+      // colors: Array(7).fill(0),
+      colors: [1,2,3,4,5,6,7],  //! testing
+      favor: 0
     })),
-    this.tileStack = [...gameTiles.lakeTiles];
-    this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
 
+    this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
-    // Shuffle stack of tiles
-    this.tileStack = _.shuffle(this.tileStack);
+    this.tileStack = _.shuffle([...gameTiles.lakeTiles]); // Shuffle stack of tiles
+
+    // TODO: generators?
+    this.tradeSequences = [
+      [10, 9, 9, 8, 8, 7, 7, 6, 5], // one each trade
+      [ 9, 8, 8, 7, 7, 6, 6, 5, 5], // three pairs
+      [ 8, 7, 7, 6, 6, 6, 6, 6, 4], // 4 of kind
+    ],
+  
+    this.tradeValues = [
+      this.tradeSequences[0].shift(),
+      this.tradeSequences[1].shift(),
+      this.tradeSequences[2].shift()
+    ],
+
 
     // Deal three tiles per player
     this.players.forEach(player => {
       player.hand = this.tileStack.splice(0,3);
-    });
-    
+    });    
     
     // place start tile (center at (3,3), with 0-indexed based row/col)
     this.addTileToBoard(NaN, { row: 3, col: 3, tile: gameTiles.startTile });
