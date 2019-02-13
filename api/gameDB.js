@@ -29,7 +29,6 @@ module.exports = {
   addTurn: async (_id, tilePlace ) => {
 
     const turnDoc = new Turn({ tilePlace });
-    console.log(turnDoc);
 
     return Game.findByIdAndUpdate(_id, 
       { $push: { turns: turnDoc } }
