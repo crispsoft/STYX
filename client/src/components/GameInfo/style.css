@@ -18,6 +18,12 @@
   justify-content: space-evenly;
 }
 
+.favorTokensContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+}
+
 .lanternCardsContainer {
     display: flex;
     flex-wrap: wrap;

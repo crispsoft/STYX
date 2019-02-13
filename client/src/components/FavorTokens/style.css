@@ -1,0 +1,11 @@
+.token {
+    border: 3px groove #91A2BB;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #E2E2E8;
+}
+
+img {
+    height: 6vh;
+    width: 6vh;
+}

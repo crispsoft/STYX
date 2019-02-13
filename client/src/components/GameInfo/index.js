@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import DedicationCards from "../DedicationCards";
 import LanternCards from "../LanternCards";
 import App from "../../App";
+import FavorTokens from "../FavorTokens";
 
 function GameInfo(props) {
   return (
@@ -13,6 +14,9 @@ function GameInfo(props) {
           <DedicationCards />
           <DedicationCards />
           <DedicationCards />
+        </div>
+        <div className="favorTokensContainer">
+          <FavorTokens />
         </div>
         <div>
           <div className="lanternCardsContainer">
