@@ -88,6 +88,7 @@ class App extends Component {
 
     
     //* Personal Game Info
+    points: 0,
     seatIndex: NaN,
     oppMap: [], // maps seat indices from server to 'left', 'top', 'right', 'me'
 
@@ -123,6 +124,7 @@ class App extends Component {
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
     socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
+    socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
   }
 
 
@@ -137,25 +139,37 @@ class App extends Component {
   }
 
   handleTrade = (type) => {
+    if (this.state.whoseTurn !== this.state.seatIndex) return; // don't trade out of turn
+
+    let atLeast = Infinity;
 
     switch (type) {
 
-      case '1-all':
-        console.log('clicked 1-all');
+      case '1-all': // good as is (all selected)
+        atLeast = 1;
         break;
 
       case '3-pair':
-        console.log('3pair');
+        atLeast = 2;
         break;
 
       case '4-kind':
-        console.log('4kind');
+        atLeast = 4;
         break;
 
       default:
         return;
     }
 
+    
+    const emitColors = this.state.colorsSelected.map((selected,i) => (selected && this.state.colorQtys[i] >= atLeast));
+
+    this.state.socket.emit('trade', emitColors);
+
+    this.setState({
+      colorsSelected: Array(7).fill(false),
+      tradesActive: Array(3).fill(false)
+    });
   }
 
   toggleColor = (colorIdx) => {
@@ -167,13 +181,13 @@ class App extends Component {
     colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
 
     const can4Kind =
-      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=4), 0);
+      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=4), 0);
    
     const can1All =
       colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0);
 
     const can3pair = 
-      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=2), 0);
+      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=2), 0);
 
     this.setState({
       colorsSelected,
@@ -316,9 +330,11 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <Points >{`Points: 0`}</Points>
+            <Points >{`Points: ${this.state.points}`}</Points>
             {this.state.colorQtys.map((qty, i) => (
-              <LanternCards key={`my-colors-${i}`} enabled selected={this.state.colorsSelected[i]}
+              <LanternCards key={`my-colors-${i}`}
+                enabled  /*//? ={isMyTurn}*/
+                selected={this.state.colorsSelected[i]}
                 color={App.colorMap[i]} number={qty}
                 onClick={() => this.toggleColor(i)} />
             ))}
@@ -335,19 +351,12 @@ class App extends Component {
           </BoardGrid>
 
           <GameInfo values={this.state.tradesValues}>
-
-            <DedicationCards type={'1-all'}
-              active={this.state.tradesActive[0]} value=   {this.state.tradesValues[0]} 
-              onClick={() => this.handleTrade('1-all')} />
-
-            <DedicationCards type={'3-pair'}
-              active={this.state.tradesActive[1]} value={this.state.tradesValues[1]}
-              onClick={() => this.handleTrade('3-pair')} />
-
-            <DedicationCards type={'4-kind'}
-              active={this.state.tradesActive[2]} value={this.state.tradesValues[2]}
-              onClick={() => this.handleTrade('4-kind')} />
-
+            {['1-all', '3-pair', '4-kind'].map((type, idx) => (
+              <DedicationCards key={type}
+                type={type}
+                active={this.state.tradesActive[idx]} value={this.state.tradesValues[idx]}
+                onClick={() => this.handleTrade(type)} />
+            ))}
           </GameInfo>
 
         </CenterPane>

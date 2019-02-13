@@ -66,6 +66,27 @@ export default {
     }
   },
 
+  points: (points) => (state) => {
+    const { opponents } = state;
+    const { left, top, right } = opponents;
+
+    const newPoints = {};
+    points.forEach( (point, idx) => {
+      newPoints[state.oppMap[idx]] = point
+    });
+     
+    return {
+      opponents: {...opponents,
+         left: {...left , points: newPoints.left  },
+          top: {...top  , points: newPoints.top   },
+        right: {...right, points: newPoints.right },
+      },
+
+      // Player's points
+      points: newPoints.me
+    }
+  },
+
   trades: (tradesValues) => ({ tradesValues }),
 
 };
