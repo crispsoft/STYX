@@ -108,10 +108,14 @@ function emitColors(socket) {
 
 function emitTurn(socket) {
   const playerIndex = game.whoseTurn;
-  console.log('emit turn', playerIndex);
   socket.emit('turn', playerIndex);
 }
 
+function emitTrades(socket) {
+  const trades = game.tradeValues;
+  // console.log('emit trade', trades);
+  socket.emit('trades', trades);
+}
 
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
@@ -123,7 +127,7 @@ function startTheGame(socket) {
   emitTiles();
   emitColors(socket);
   emitTurn(socket);
-
+  emitTrades(socket);
 }
 
 
@@ -170,6 +174,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitTiles(clientID);
   emitColors(socket);
   emitTurn(socket);
+  emitTrades(socket);
 }
 
 
