@@ -9,12 +9,17 @@
   font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 700;
   font-style: normal;
+  position: relative;
 }
 
 #condition {
   background: purple;
   border: 3px solid black;
-  width: 10vh;
+  position: absolute;
   height: 5vh;
-  margin-top: 1vh;
+  width: 10vh;
+
+  bottom: -2.5vh;
+  left: 0; right: 0;
+  margin: auto;
 }
