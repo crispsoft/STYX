@@ -206,6 +206,8 @@ module.exports = {
 
     //% Advance whose turn it is
     this.whoseTurn = (this.whoseTurn + 1) % 4;
+    
+    return true;
   },
 
   setup() {
