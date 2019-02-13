@@ -214,10 +214,11 @@ module.exports = (socket) => {
 
       if (playerConnMap.has(client.id)) { // Player was seated
         console.log("\tremoving from array & map");
-        playerConnMap.delete(client.id);
 
-        const dcPlayerIdx = playerConnections.findIndex(conn => conn === client);
-        playerConnections[dcPlayerIdx] = null;
+        const idx = playerConnMap.get(client.id);
+        playerConnections[idx] = null;
+
+        playerConnMap.delete(client.id);
 
         socket.emit('ready', false); // wait for full game
         socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
