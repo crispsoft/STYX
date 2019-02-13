@@ -1,4 +1,5 @@
 const areArraysEqual = require('lodash/isEqual');
+const shuffle = require('lodash/shuffle');
 
 const gameTiles = require('./gameTiles.json');
 
@@ -32,17 +33,6 @@ module.exports = {
   tileStack: null,
 
   deckProgress: 0,
-
-
-  shuffle(a) {
-
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-
-  },
 
   distributeColors(plyrIdx, {row, col, tile}) {
 
@@ -222,7 +212,7 @@ module.exports = {
 
 
     // Shuffle stack of tiles
-    this.shuffle(this.tileStack);
+    this.tileStack = this.shuffle(this.tileStack);
 
     // Deal three tiles per player
     this.players.forEach(player => {
