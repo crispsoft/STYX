@@ -51,6 +51,7 @@ const TILE_ROT_MAPs = [
 
 const playerConnections = Array(4).fill(null);
 const playerConnMap = new Map();
+let gameDB_id = null;
 
 
 function emitBoard() {
@@ -113,7 +114,8 @@ function emitTurn(socket) {
 
 
 function startTheGame(socket) {
-  gameDB.new(); //? is a promise, but should be no need to await resolution ?
+  //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
+  gameDB.new().then(({ _id }) => gameDB_id = _id).catch(); // TODO: error handling
 
   game.setup();
 
