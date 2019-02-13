@@ -132,13 +132,23 @@ class App extends Component {
   }
 
   toggleColor = (colorIdx) => {
-    if (!this.state.colorQtys[colorIdx]) return; // don't toggle 0 qty
+    const qtys = this.state.colorQtys;
     
+    if (!qtys[colorIdx]) return; // don't toggle 0 qty
+
     const colorsSelected = [...this.state.colorsSelected];
     colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
 
-    if (colorsSelected.every(c => c) && this.state.colorQtys.every(c => c > 0)) {
+    if (colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>= 4), 0) === 1) {
+      console.log('can do 4-of-kind trade');
+    }
+
+    if (colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0)) {
       console.log('can do all-in trade');
+    }
+
+    if (colorsSelected.reduce((sum, currIsSelect, i) => sum += (currIsSelect && qtys[i]>=2), 0) === 3) {
+      console.log('can do 3 pair trade in');
     }
 
     this.setState({
