@@ -3,7 +3,6 @@ import openSocket from 'socket.io-client';
 
 import React, { Component } from "react";
 
-import Square       from './components/Square';
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
@@ -16,6 +15,7 @@ import styled from 'styled-components';
 import {
   FullScreenView,
   Points,
+  Square,
   
      TopPane,
    RightPane,
@@ -129,11 +129,13 @@ class App extends Component {
     if (!Number.isInteger(idx) || !this.state.tilesInHand[idx]) return;
     
     this.state.socket.emit('place', { row, col, tile: this.state.tilesInHand[idx], indexInHand: idx });
+
+    this.setState({ selectedTileIndex: NaN });
   }
 
   toggleColor = (colorIdx) => {
     const qtys = this.state.colorQtys;
-    
+
     if (!qtys[colorIdx]) return; // don't toggle 0 qty
 
     const colorsSelected = [...this.state.colorsSelected];
@@ -157,6 +159,12 @@ class App extends Component {
   }
 
   rotateTileInHand = (index) => {
+
+    if (this.state.selectedTileIndex !== index){
+      // first time clicking this tile = don't immediately rotate
+      return this.setState({ selectedTileIndex: index });
+    }
+
     const tilesInHand = [...this.state.tilesInHand];
 
     const [N, E, S, W, special] = tilesInHand[index];
@@ -195,8 +203,8 @@ class App extends Component {
           return (
             <Square
               key={`square-${squareIdx}`}
-              row={row}
-              col={col}
+              gridRow={row}
+              gridColumn={col}
               colors={colors}
               special={square[4]}
             />
@@ -275,6 +283,8 @@ class App extends Component {
             {this.state.tilesInHand.map((tile,i) => (
               tile &&
               <Square
+                enabled
+                selected={this.state.selectedTileIndex === i}
                 colors={tile.map(v => App.colorMap[v])}
                 special={tile[4]}
                 onClick={() => this.rotateTileInHand(i)}
