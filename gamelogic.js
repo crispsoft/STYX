@@ -1,5 +1,7 @@
-const areArraysEqual = require('lodash/isEqual');
-const shuffle = require('lodash/shuffle');
+const _ = {
+  shuffle: require('lodash/shuffle'),
+  areArraysEqual: require('lodash/isEqual')
+}
 
 const gameTiles = require('./gameTiles.json');
 
@@ -171,10 +173,10 @@ module.exports = {
     //* Check if the (possibly rotated) tile that is being placed agrees with server
     const [N, E, S, W, special] = serversTile;
     const [n, e, s, w, spec] = tile;
-    if ( !areArraysEqual([n,e,s,w], [N,E,S,W])
-      && !areArraysEqual([e,s,w,n], [N,E,S,W])
-      && !areArraysEqual([s,w,n,e], [N,E,S,W])
-      && !areArraysEqual([w,n,e,s], [N,E,S,W])
+    if ( !_.areArraysEqual([n,e,s,w], [N,E,S,W])
+      && !_.areArraysEqual([e,s,w,n], [N,E,S,W])
+      && !_.areArraysEqual([s,w,n,e], [N,E,S,W])
+      && !_.areArraysEqual([w,n,e,s], [N,E,S,W])
       ) { return false; }
     if (!!special !== !!spec) { return false; }
 
@@ -212,7 +214,7 @@ module.exports = {
 
 
     // Shuffle stack of tiles
-    this.tileStack = this.shuffle(this.tileStack);
+    this.tileStack = _.shuffle(this.tileStack);
 
     // Deal three tiles per player
     this.players.forEach(player => {
