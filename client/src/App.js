@@ -6,6 +6,7 @@ import React, { Component } from "react";
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
+import DedicationCards from './components/DedicationCards';
 
 import handle from './clientHandlers';
 
@@ -135,6 +136,28 @@ class App extends Component {
     this.setState({ selectedTileIndex: NaN });
   }
 
+  handleTrade = (type) => {
+
+    switch (type) {
+
+      case '1-all':
+        console.log('clicked 1-all');
+        break;
+
+      case '3-pair':
+        console.log('3pair');
+        break;
+
+      case '4-kind':
+        console.log('4kind');
+        break;
+
+      default:
+        return;
+    }
+
+  }
+
   toggleColor = (colorIdx) => {
     const qtys = this.state.colorQtys;
 
@@ -246,7 +269,7 @@ class App extends Component {
           <TopOppPanel>
             <Points>{`Points: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`top-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
           </TopOppPanel>
 
@@ -257,7 +280,7 @@ class App extends Component {
           <LeftOppPanel>
             <Points>{`Points: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`left-colors-${i}`}color={App.colorMap[i]} number={qty} />
             ))}
           </LeftOppPanel>
 
@@ -268,7 +291,7 @@ class App extends Component {
           <RightOppPanel>
             <Points>{`Points: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`right-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
           </RightOppPanel>
 
@@ -282,7 +305,7 @@ class App extends Component {
           <PlayerPanelTiles>
             {this.state.tilesInHand.map((tile,i) => (
               tile &&
-              <Square
+              <Square /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
                 enabled
                 selected={this.state.selectedTileIndex === i}
                 colors={tile.map(v => App.colorMap[v])}
@@ -295,7 +318,7 @@ class App extends Component {
           <PlayerPanel>
             <Points >{`Points: 0`}</Points>
             {this.state.colorQtys.map((qty, i) => (
-              <LanternCards enabled selected={this.state.colorsSelected[i]}
+              <LanternCards key={`my-colors-${i}`} enabled selected={this.state.colorsSelected[i]}
                 color={App.colorMap[i]} number={qty}
                 onClick={() => this.toggleColor(i)} />
             ))}
@@ -311,7 +334,21 @@ class App extends Component {
             {squares}
           </BoardGrid>
 
-          <GameInfo values={this.state.tradesValues} actives={this.state.tradesActive} />
+          <GameInfo values={this.state.tradesValues}>
+
+            <DedicationCards type={'1-all'}
+              active={this.state.tradesActive[0]} value=   {this.state.tradesValues[0]} 
+              onClick={() => this.handleTrade('1-all')} />
+
+            <DedicationCards type={'3-pair'}
+              active={this.state.tradesActive[1]} value={this.state.tradesValues[1]}
+              onClick={() => this.handleTrade('3-pair')} />
+
+            <DedicationCards type={'4-kind'}
+              active={this.state.tradesActive[2]} value={this.state.tradesValues[2]}
+              onClick={() => this.handleTrade('4-kind')} />
+
+          </GameInfo>
 
         </CenterPane>
 
