@@ -1,5 +1,7 @@
 #gameInfo {
-  border: 3px solid grey;
+  /* border: 3px solid #E2E2E8; */
+  border: 10px solid transparent;
+  border-image: url("/assets/greek_wave.png") 32 round;
   height: 50vh;
   width: 20vw;
   /* background: red; */
@@ -7,6 +9,7 @@
    flex-direction: column;
    justify-content: space-between;
   padding: 3vh 0vh;
+  background-color: #CED3E3;
 }
 
 .dedicationCardsContainer {

@@ -15,6 +15,7 @@ import styled from 'styled-components';
 // #region Styles
 import {
   FullScreenView,
+  Points,
   
      TopPane,
    RightPane,
@@ -36,12 +37,13 @@ import {
 const BoardGrid = styled.div`
   width : calc(70vh+12px);
   height: calc(70vh+12px);
-  outline-style: solid;
+  outline: solid #E2E2E8;
   display: grid;
   grid-gap: 2px;
   padding: 2px;
   grid-template-columns: repeat(7, 10vmin);
   grid-template-rows: repeat(7, 10vmin);
+ 
 `;
 // #endregion Styles
 
@@ -208,7 +210,7 @@ class App extends Component {
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
           <TopOppPanel>
-            <p>{`Points: ${top.points}`}</p>
+            <Points>{`Points: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -219,7 +221,7 @@ class App extends Component {
 
         <LeftPane selected={this.state.oppMap[this.state.whoseTurn] === 'left'}>
           <LeftOppPanel>
-            <p>{`Points: ${left.points}`}</p>
+            <Points>{`Points: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -230,7 +232,7 @@ class App extends Component {
 
         <RightPane selected={this.state.oppMap[this.state.whoseTurn] === 'right'}>
           <RightOppPanel>
-            <p>{`Points: ${right.points}`}</p>
+            <Points>{`Points: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -255,7 +257,7 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <p>{`Points: 0`}</p>
+            <Points >{`Points: 0`}</Points>
             {this.state.colorQtys.map((qty, i) => (
               <LanternCards color={App.colorMap[i]} number={qty} />
             ))}
@@ -282,7 +284,7 @@ class App extends Component {
 
 
 App.boardSize = 7;
-App.colorMap = ['red', 'orange', 'darkkhaki', 'green', 'blue', 'violet', 'black'];
+App.colorMap = ['#6600ff', '#419B7F', '#FA6835', '#900C3F', '#CC2127', '#DD9933', '#2D83AC'];
 
 
 export default App;
