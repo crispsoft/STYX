@@ -106,7 +106,7 @@ class App extends Component {
     ;
       
 
-    //* Socket Handling
+    //* Socket -> State Handling
     const { socket } = this.state;
     socket.on('connect'   , () => this.setState(handle.connect   ));
     socket.on('disconnect', () => this.setState(handle.disconnect));
@@ -119,7 +119,6 @@ class App extends Component {
     socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
-    
   }
 
 
@@ -128,7 +127,7 @@ class App extends Component {
 
     if (!Number.isInteger(idx)) return;
     
-    //! TODO: send to server this.addTileToBoard({ row, col, tile: this.state.tilesInHand[idx] }); 
+    this.state.socket.emit('place', { row, col, tile: this.state.tilesInHand[idx], indexInHand: idx });
   }
 
 
@@ -147,13 +146,15 @@ class App extends Component {
 
   render() {
 
+    const isMyTurn = this.state.whoseTurn === this.state.seatIndex;
+
     const squares =
       this.state.board.map((square, squareIdx) => {
 
         const row = Math.floor(squareIdx / App.boardSize) + 1;
         const col = squareIdx % App.boardSize + 1;
 
-        if (square && square.isBorder) {
+        if (isMyTurn && square && square.isBorder) { // only show border squares when it's player's turn
           return (
             <BorderSquare
               key={`square-${squareIdx}`}
@@ -243,7 +244,7 @@ class App extends Component {
 
 
         {/** Player **/}
-        <BottomPane selected={this.state.whoseTurn === this.state.seatIndex}>
+        <BottomPane selected={isMyTurn}>
 
           <PlayerPanelTiles>
             {this.state.tilesInHand.map((tile,i) => (
