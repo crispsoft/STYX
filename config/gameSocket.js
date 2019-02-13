@@ -6,13 +6,13 @@ const BOARD_ROT_MAPs = [
   //% Player 1 is basis of BOARD perspective
 
   //* Player 2 perspective
-  [ 42, 35, 28, 21, 14,  7,  0,
-    43, 36, 29, 22, 15,  8,  1,
-    44, 37, 30, 23, 16,  9,  2,
-    45, 38, 31, 24, 17, 10,  3,
-    46, 39, 32, 25, 18, 11,  4,
-    47, 40, 33, 26, 19, 12,  5,
-    48, 41, 34, 27, 20, 13,  6, ],
+  [ 6, 13, 20, 27, 34, 41, 48,
+    5, 12, 19, 26, 33, 40, 47,
+    4, 11, 18, 25, 32, 39, 46,
+    3, 10, 17, 24, 31, 38, 45,
+    2,  9, 16, 23, 30, 37, 44,
+    1,  8, 15, 22, 29, 36, 43,
+    0,  7, 14, 21, 28, 35, 42, ],
 
   //* Player 3 perspective
   [ 48, 47, 46, 45, 44, 43, 42,
@@ -24,13 +24,14 @@ const BOARD_ROT_MAPs = [
      6,  5,  4,  3,  2,  1,  0, ],
 
   //* Player 4 perspective
-  [ 6, 13, 20, 27, 34, 41, 48,
-    5, 12, 19, 26, 33, 40, 47,
-    4, 11, 18, 25, 32, 39, 46,
-    3, 10, 17, 24, 31, 38, 45,
-    2,  9, 16, 23, 30, 37, 44,
-    1,  8, 15, 22, 29, 36, 43,
-    0,  7, 14, 21, 28, 35, 42, ],
+  [ 42, 35, 28, 21, 14,  7,  0,
+    43, 36, 29, 22, 15,  8,  1,
+    44, 37, 30, 23, 16,  9,  2,
+    45, 38, 31, 24, 17, 10,  3,
+    46, 39, 32, 25, 18, 11,  4,
+    47, 40, 33, 26, 19, 12,  5,
+    48, 41, 34, 27, 20, 13,  6, ],
+  
 ];
 
 const TILE_ROT_MAPs = [
@@ -78,12 +79,24 @@ function emitBoard() {
 
 }
 
-function emitTiles() {
-  playerConnections.forEach((conn, connIdx) => {
-    const theirHandTiles = game.players[connIdx].hand;
-    // console.log(theirHandTiles);
-    conn.emit('tiles', theirHandTiles)
-  });
+function emitTiles(...clientIDs) {
+
+  if (clientIDs.length) {
+    clientIDs.forEach(id => {
+      const index = playerConnMap.get(id);
+      playerConnections[index].emit('tiles', game.players[index].hand);
+    });
+  }
+
+  // otherwise if empty parameters, emit tiles to ALL connections
+  else {
+    playerConnections.forEach((conn, connIdx) => {
+      const theirHandTiles = game.players[connIdx].hand;
+      // console.log(theirHandTiles);
+      conn.emit('tiles', theirHandTiles);
+    })
+  }
+
 }
 
 function emitColors(socket) {
@@ -92,11 +105,12 @@ function emitColors(socket) {
   socket.emit('colors', colors);
 }
 
-function emitTurn(socket){
+function emitTurn(socket) {
   const playerIndex = game.whoseTurn;
   console.log('emit turn', playerIndex);
   socket.emit('turn', playerIndex);
 }
+
 
 function startTheGame(socket) {
   gameDB.new(); //? is a promise, but should be no need to await resolution ?
@@ -111,8 +125,46 @@ function startTheGame(socket) {
 }
 
 
-function handlePlaceTile({ row, col, tile }) {
+function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) {
 
+  if (!playerConnMap.has(clientID)) {
+    return console.log("\n\t\t'@ handle Place, from unknown client!?\n\t", clientID);
+  }
+  
+  if (!Array.isArray(tile)) {
+    return console.log("\n\t\t@ handle Place, but tile not array\n\t", tile);
+  }
+
+  const playerIdx = playerConnMap.get(clientID);
+  // console.log(playerIdx, { row, col, tile, indexInHand });
+
+  // transform row/col & tile BACK to Player 1 - perspective
+  const row1 = row; 
+  const col1 = col;
+  
+  const [n,e,s,w,special] = tile;
+  if (playerIdx === 1) {
+    row = col1;
+    col = 6 - row1;
+    tile = [w, n, e, s, special];
+  }
+  else if (playerIdx === 2) {
+    row = 6 - row1;
+    col = 6 - col1;
+    tile = [s, w, n, e, special];
+  }
+  else if (playerIdx === 3) {
+    row = 6 - col1;
+    col = row1;
+    tile = [e, s, w, n, special];
+  }
+
+  game.checkAndPlace(playerIdx, { row, col, tile, indexInHand });
+
+  emitBoard();
+  emitTiles(clientID);
+  emitColors(socket);
+  emitTurn(socket);
 }
 
 
@@ -176,19 +228,10 @@ module.exports = (socket) => {
 
 
     //* Interactions from Client
-    client.on('place', ({ row, col, tile }) => handlePlaceTile(client.id, { row, col, tile }));
-
-    client.on('click', () => {
-      if (playerConnMap.has(client.id)) {
-        const playerNum = playerConnMap.get(client.id) + 1;
-        console.log(playerNum, "clicked!");
-        socket.emit('message', playerNum);
-        return;
-      }
-      else {
-        console.log("'click' from unknown client!?", client.id);
-      }
-    })
+    client.on('place', ({ row, col, tile, indexInHand } = {}) => {
+      // console.log(row, col, tile, indexInHand);
+      handlePlaceTile({ socket, clientID: client.id }, { row, col, tile, indexInHand })
+    });
 
   });
 }
