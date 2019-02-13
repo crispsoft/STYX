@@ -6,7 +6,7 @@ export default {
   seat : (index) => {
     //! the values ('left','right', ) are important as they relate to other object property keys
     const oppMap = Array(4);
-    oppMap[(index+0)%4] = 'me'; //? unnecessary / not used (yet?)
+    oppMap[(index+0)%4] = 'me'; //? unnecessary
     oppMap[(index+1)%4] = 'left';
     oppMap[(index+2)%4] = 'top';
     oppMap[(index+3)%4] = 'right';
@@ -65,7 +65,4 @@ export default {
       colorQtys: newColors.me
     }
   },
-
-  
-
 };
