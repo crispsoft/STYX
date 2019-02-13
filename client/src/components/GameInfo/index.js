@@ -1,22 +1,20 @@
 import React from "react";
 import "./style.css";
-import Card from "@material-ui/core/Card";
-import DedicationCards from "../DedicationCards";
 import LanternCards from "../LanternCards";
 import App from "../../App";
 
-function GameInfo({ values, actives }) {
+import styled from 'styled-components';
+
+const StyledGameInfo = styled.div`
+  overflow: hidden;
+  border-radius: 4px;
+`;
+
+function GameInfo({ children, ...props }) {
   return (
-    <Card id="gameInfo">
+    <StyledGameInfo id="gameInfo" {...props} >
       <div className="dedicationCardsContainer">
-        <DedicationCards type={'1-all' }
-          active={actives && actives[0]} value={values && values[0]} />
-
-        <DedicationCards type={'3-pair'}
-          active={actives && actives[1]} value={values && values[1]} />
-
-        <DedicationCards type={'4-kind'}
-          active={actives && actives[2]} value={values && values[2]} />
+        {children}
       </div>
       <div>
         <div className="lanternCardsContainer">
@@ -33,7 +31,7 @@ function GameInfo({ values, actives }) {
           <LanternCards color={App.colorMap[6]} />
         </div>
       </div>
-    </Card>
+    </StyledGameInfo>
   );
 }
 
