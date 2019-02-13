@@ -1,6 +1,6 @@
 // require('./config/mongoose') //? assume mongoose connection has been initiated already?
 
-const { Game } = require('./../models');
+const { Game, Turn } = require('./../models');
 
 
 const errorLog = (title, error) => {
@@ -26,4 +26,17 @@ module.exports = {
       })
   ),
 
+  addTurn: async (_id, tilePlace ) => {
+
+    const turnDoc = new Turn({ tilePlace });
+    console.log(turnDoc);
+
+    return Game.findByIdAndUpdate(_id, 
+      { $push: { turns: turnDoc } }
+    ).catch(error => {
+      errorLog("Game Add Turn", error)
+      throw error;
+    })
+  },
+    
 }
