@@ -179,7 +179,7 @@ class App extends Component {
         const row = Math.floor(squareIdx / App.boardSize) + 1;
         const col = squareIdx % App.boardSize + 1;
 
-        if (isMyTurn && square && square.isBorder) { // only show border squares when it's player's turn
+        if (square && square.isBorder && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
           return (
             <BorderSquare
               key={`square-${squareIdx}`}
