@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const TurnSchema = require('./TurnSchema');
+
 
 const GameSchema = new Schema({
 
@@ -11,11 +13,8 @@ const GameSchema = new Schema({
     default: false,
   },
 
-  /* //* `turns` is array of Turn (models)
-  turns: [{
-    type: Schema.Types.ObjectId,
-    ref: "Turn"
-  }] */
+  //* `turns` is array of Turn (models)
+  turns: [TurnSchema]
 
   /*//? TODO:
     state: (player - points, colors, tiles; next point trade in avail, board?) 
