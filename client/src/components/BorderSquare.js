@@ -6,9 +6,9 @@ const StyledBorderSquare = styled.div`
   border: solid;
   width: 10vh; height: 10vh;
 
-  background: cyan;
+  background: transparent;
   &:hover {
-    background: red;
+    border-color: white;
   }
 `;
 
