@@ -92,6 +92,7 @@ class App extends Component {
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
     colorQtys: Array(7).fill(0),
+    colorsSelected: Array(7).fill(false),
    
   }
 
@@ -130,6 +131,20 @@ class App extends Component {
     this.state.socket.emit('place', { row, col, tile: this.state.tilesInHand[idx], indexInHand: idx });
   }
 
+  toggleColor = (colorIdx) => {
+    if (!this.state.colorQtys[colorIdx]) return; // don't toggle 0 qty
+    
+    const colorsSelected = [...this.state.colorsSelected];
+    colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
+
+    if (colorsSelected.every(c => c) && this.state.colorQtys.every(c => c > 0)) {
+      console.log('can do all-in trade');
+    }
+
+    this.setState({
+      colorsSelected
+    });
+  }
 
   rotateTileInHand = (index) => {
     const tilesInHand = [...this.state.tilesInHand];
@@ -260,7 +275,9 @@ class App extends Component {
           <PlayerPanel>
             <Points >{`Points: 0`}</Points>
             {this.state.colorQtys.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards enabled selected={this.state.colorsSelected[i]}
+                color={App.colorMap[i]} number={qty}
+                onClick={() => this.toggleColor(i)} />
             ))}
           </PlayerPanel>
 
