@@ -113,7 +113,7 @@ module.exports = {
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
 
-    console.log(plyrIdx, row, col, tile, indexInHand);
+    // console.log(plyrIdx, row, col, tile, indexInHand);
 
     //% check conditions that would prevent this placement from happening (illegal move)
 
@@ -124,7 +124,7 @@ module.exports = {
       || !Number.isInteger(plyrIdx)) { return false; }
 
 
-    if (!Array.isArray(tile) && tile.length !== 5) { return false; }
+    if (!Array.isArray(tile) || tile.length !== 5) { return false; }
 
       
     //* Bad Ranges
@@ -179,14 +179,82 @@ module.exports = {
     return true;
   },
 
+  checkAndTrade(plyrIdx, colors) {
+
+    //* Bad Types
+    if (!Number.isInteger(plyrIdx)) { return false; }
+    if (!Array.isArray(colors) || colors.length !== 7) { return false; }
+    
+    //* wasn't this player's turn 
+    if (plyrIdx !== this.whoseTurn) { return false; }
+
+
+    const serversColors = this.players[plyrIdx].colors; // player's colors as server knows it
+
+    let sum = colors.reduce((sum, curr) => sum + curr, 0);
+    
+    let newColors = [...serversColors];
+    let tradeIndex = -1;
+
+    switch (sum) {
+
+      case 1: // four of 1 kind
+        const idx = colors.findIndex(c => c);
+        if (serversColors[idx] < 4) { return false; }
+
+        tradeIndex = 2;        
+        newColors[idx] -= 4;
+        
+        break;
+
+      case 3: // 3 pairs
+        if (!colors.every((c, i) => !c || serversColors[i] >= 2)) { return false; }
+
+        tradeIndex = 1;
+        newColors = serversColors.map((v, i) => colors[i] ? v - 2 : v);
+
+        break;
+
+      case 7: // one of each of 7
+        if (!serversColors.every(c => c > 0)) { return false; }
+
+        newColors = serversColors.map(v => v - 1);
+        tradeIndex = 0
+
+        break;
+
+      default:
+        return false; // not a valid sum/combination for trade in
+    }
+
+    //? TODO: probably more checks?
+
+    //* PASSED ALL CHECKS
+
+
+    const points = this.tradeValues[tradeIndex];
+    this.players[plyrIdx].points += points;
+
+    this.players[plyrIdx].colors = newColors;
+
+    if (this.tradeSequences[tradeIndex].length) {
+      this.tradeValues[tradeIndex] = this.tradeSequences[tradeIndex].shift()
+    }
+    else {
+      this.tradeValues[tradeIndex] = 4;
+    }
+
+  },
+  
+
   setup() {
 
     // Reset state
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
-      score: 0,
+      points: 0,
       hand: [],
       // colors: Array(7).fill(0),
-      colors: [1,2,3,4,5,6,7],  //! testing
+      colors: [4,2,1,2,1,1,1],  //! testing
       favor: 0
     })),
 
