@@ -1,18 +1,22 @@
 #gameInfo {
-  /* border: 3px solid #E2E2E8; */
   border: 10px solid transparent;
   border-left-width: 0;
   border-right-width: 0;
   border-image: url("/assets/greek_wave.png") 32 round;
+  box-shadow: .25em 1em 5em 1em black;
+
   height: 50vh;
   width: 20vw;
-  /* background: red; */
    display: flex;
    flex-direction: column;
    justify-content: space-between;
   padding: 3vh 0vh;
+
   background-color: #CED3E3;
+
+  animation: bob 4s ease-in-out alternate-reverse infinite;
 }
+
 
 .dedicationCardsContainer {
   display: flex;
@@ -33,3 +37,12 @@
     margin-top: 1vh;
 
 }
+
+@keyframes bob{
+  0% {
+    transform: translateY(-3%);
+  }
+  100% {
+    transform: translateY(3%);
+  }
+};
