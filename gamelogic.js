@@ -1,3 +1,4 @@
+//% lodash object
 const _ = {
   shuffle: require('lodash/shuffle'),
   areArraysEqual: require('lodash/isEqual')
@@ -8,7 +9,7 @@ const gameTiles = require('./gameTiles.json');
 
 const BOARD_SIZE = 7;
 
-//TODO ? enum for North, East, South, West (0,1,2,3)
+//? TODO ? enum for North, East, South, West (0,1,2,3)
 
 
 module.exports = {
@@ -111,11 +112,52 @@ module.exports = {
     this.distributeColors(plyrIdx, { row, col, tile });
   },
 
+
+  canTrade1All: (colors) => {
+    console.log("117", colors);
+  return colors.every(c => c > 0)
+  },
+
+  canTrade3Pair: (colors) => {
+    console.log("122", colors);
+    return (3 <= colors.reduce((pairs, c) => pairs + (c >= 2), 0)
+  )},
+
+  canTrade4Kind: (colors) => colors.some(c => c >= 4),
+
+  canTradeIn: (colors) => {
+    console.log("125", colors)
+    return (
+       canTrade1All(colors)
+    || canTrade3Pair(colors)
+    || canTrade4Kind(colors)
+  )},
+
+  advanceTurnIfCantTrade() {
+    //% We are in the final round - trade-in's only.
+    //% If the current player can't do a trade in, auto advance to next player
+    let tryPlayer = this.whoseTurn;
+    while(!canTradeIn(this.players[tryPlayer].colors) && tryPlayer < 4) {
+      console.log("135: ", tryPlayer)
+      ++tryPlayer;
+    }
+
+    if (tryPlayer >= 4) {
+      this.over = true;
+      console.log("GAMEOVER");
+      this.whoseTurn = -1; //TODO: problems?
+    }
+    else{
+      this.whoseTurn = tryPlayer;
+    }
+
+  },
+
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
 
     // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
 
-    //% check conditions that would prevent this placement from happening (illegal move)
+    //% Check conditions that would prevent this placement from happening (illegal move)
 
     //* Bad Types
     if ( !Number.isInteger(row)
@@ -134,15 +176,16 @@ module.exports = {
 
     //* Board & 'whose-turn' server states do not agree
     const boardIdx = row * BOARD_SIZE + col;
-    if (// wasn't a border tile 
-         !this.board[boardIdx] 
-      || !this.board[boardIdx].isBorder 
-        // wasn't this player's turn 
-      || plyrIdx !== this.whoseTurn 
+    if ( !this.board
+      || !this.board[boardIdx]          // no tile here (null/undefined)
+      || !this.board[boardIdx].isBorder // tile here isn't a border
+      || plyrIdx !== this.whoseTurn     // wasn't this player's turn  
     ) { return false; }
 
 
-    const serversTile = this.players[plyrIdx].hand[indexInHand]; // tile in player's hand as server knows it
+    //% reference for the tile inthis  player's hand as server knows it
+    const serversTile = this.players[plyrIdx].hand[indexInHand]; 
+
 
     //* There is no tile in the player's hand at that index 
     if (!serversTile) { return false; }
@@ -171,11 +214,13 @@ module.exports = {
     //* Add tile to board (also distributes colors)
     this.addTileToBoard(plyrIdx, { row, col, tile });
 
-
-    //! TODO: if game not over check,
-
     //% Advance whose turn it is
     this.whoseTurn = (this.whoseTurn + 1) % 4;
+
+    if (this.whoseTurn === 0 && this.players[0].hand.length === 0) {
+      console.log("214: advancing");
+      this.advanceTurnIfCantTrade();
+    }
     
     return true;
   },
@@ -217,7 +262,7 @@ module.exports = {
         break;
 
       case 7: // one of each of 7
-        if (!serversColors.every(c => c > 0)) { return false; }
+        if (!this.canTrade1All(serversColors)) { return false; }
 
         newColors = serversColors.map(v => v - 1);
         tradeIndex = 0
@@ -245,11 +290,15 @@ module.exports = {
       this.tradeValues[tradeIndex] = 4;
     }
 
-    return true;
-    //! TODO: if player has no tiles, in hand, this is a last round trade-in, and should advance players
-    //! also check if the next player CAN do trade in
-    //! TODO: check if no more players can trade in for game end
+    console.log(this.players[plyrIdx].hand)
+    console.log(this.players[plyrIdx].hand.length)
+    if (!this.players[plyrIdx].hand.length) {
+      // this is a last round trade-in, and should advance player turn
+      ++this.whoseTurn;
+      this.advanceTurnIfCantTrade();
+    }
 
+    return true;
   },
   
 
@@ -266,8 +315,9 @@ module.exports = {
 
     this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
+    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(0,4); //!testing (advances to last 3+1 rounds game)
     // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3,15); //!testing (advances to last 3+1 rounds game)
-    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
+    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
     
 
     // TODO: generators?
@@ -286,7 +336,8 @@ module.exports = {
 
     // Deal three tiles per player
     this.players.forEach(player => {
-      player.hand = this.tileStack.splice(0,3);
+      player.hand = this.tileStack.splice(0,1);
+      // player.hand = this.tileStack.splice(0,3);
     });    
     
     // place start tile (center at (3,3), with 0-indexed based row/col)
