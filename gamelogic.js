@@ -147,7 +147,7 @@ module.exports = {
     //* There is no tile in the player's hand at that index 
     if (!serversTile) { return false; }
 
-    
+
     //* Check if the (possibly rotated) tile that is being placed agrees with server
     const [N, E, S, W, special] = serversTile;
     const [n, e, s, w, spec] = tile;
@@ -245,6 +245,7 @@ module.exports = {
       this.tradeValues[tradeIndex] = 4;
     }
 
+    return true;
     //! TODO: if player has no tiles, in hand, this is a last round trade-in, and should advance players
     //! also check if the next player CAN do trade in
     //! TODO: check if no more players can trade in for game end
