@@ -113,7 +113,7 @@ module.exports = {
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
 
-    // console.log(plyrIdx, row, col, tile, indexInHand);
+    // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
 
     //% check conditions that would prevent this placement from happening (illegal move)
 
@@ -123,8 +123,8 @@ module.exports = {
       || !Number.isInteger(indexInHand)
       || !Number.isInteger(plyrIdx)) { return false; }
 
-
-    if (!Array.isArray(tile) || tile.length !== 5) { return false; }
+    if (!Array.isArray(tile) || tile.length > 5 || tile.length < 4) { return false; }
+    //! TODO: refactor tile config for special to be prop (not part of array)
 
       
     //* Bad Ranges
@@ -147,6 +147,7 @@ module.exports = {
     //* There is no tile in the player's hand at that index 
     if (!serversTile) { return false; }
 
+    
     //* Check if the (possibly rotated) tile that is being placed agrees with server
     const [N, E, S, W, special] = serversTile;
     const [n, e, s, w, spec] = tile;
@@ -170,8 +171,6 @@ module.exports = {
     //* Add tile to board (also distributes colors)
     this.addTileToBoard(plyrIdx, { row, col, tile });
 
-
-    //! TODO: add a new tile from the stack to player's hand, check remaining stack
 
     //! TODO: if game not over check,
 
@@ -246,6 +245,10 @@ module.exports = {
       this.tradeValues[tradeIndex] = 4;
     }
 
+    //! TODO: if player has no tiles, in hand, this is a last round trade-in, and should advance players
+    //! also check if the next player CAN do trade in
+    //! TODO: check if no more players can trade in for game end
+
   },
   
 
@@ -262,6 +265,7 @@ module.exports = {
 
     this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
+    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3,15); //!testing (advances to last 3+1 rounds game)
     this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
     
 
