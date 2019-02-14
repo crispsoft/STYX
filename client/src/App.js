@@ -3,10 +3,10 @@ import openSocket from 'socket.io-client';
 
 import React, { Component } from "react";
 
-import Square       from './components/Square';
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
+import DedicationCards from './components/DedicationCards';
 
 import handle from './clientHandlers';
 
@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import {
   FullScreenView,
   Points,
+  Square,
   
      TopPane,
    RightPane,
@@ -61,7 +62,8 @@ class App extends Component {
     //* Public Game Info
     board: Array(App.boardSize * App.boardSize),
     whoseTurn: NaN,
-
+    tradesValues: Array(3).fill(0),
+    tradesActive: Array(3).fill(false),
 
     //* Opponent's (public) Game Info
     opponents: {
@@ -86,12 +88,14 @@ class App extends Component {
 
     
     //* Personal Game Info
+    points: 0,
     seatIndex: NaN,
     oppMap: [], // maps seat indices from server to 'left', 'top', 'right', 'me'
 
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
     colorQtys: Array(7).fill(0),
+    colorsSelected: Array(7).fill(false),
    
   }
 
@@ -119,6 +123,8 @@ class App extends Component {
     socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
+    socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
+    socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
   }
 
 
@@ -128,10 +134,74 @@ class App extends Component {
     if (!Number.isInteger(idx) || !this.state.tilesInHand[idx]) return;
     
     this.state.socket.emit('place', { row, col, tile: this.state.tilesInHand[idx], indexInHand: idx });
+
+    this.setState({ selectedTileIndex: NaN });
   }
 
+  handleTrade = (type) => {
+    if (this.state.whoseTurn !== this.state.seatIndex) return; // don't trade out of turn
+
+    let atLeast = Infinity;
+
+    switch (type) {
+
+      case '1-all': // good as is (all selected)
+        atLeast = 1;
+        break;
+
+      case '3-pair':
+        atLeast = 2;
+        break;
+
+      case '4-kind':
+        atLeast = 4;
+        break;
+
+      default:
+        return;
+    }
+
+    
+    const emitColors = this.state.colorsSelected.map((selected,i) => (selected && this.state.colorQtys[i] >= atLeast));
+
+    this.state.socket.emit('trade', emitColors);
+
+    this.setState({
+      colorsSelected: Array(7).fill(false),
+      tradesActive: Array(3).fill(false)
+    });
+  }
+
+  toggleColor = (colorIdx) => {
+    const qtys = this.state.colorQtys;
+
+    if (!qtys[colorIdx]) return; // don't toggle 0 qty
+
+    const colorsSelected = [...this.state.colorsSelected];
+    colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
+
+    const can4Kind =
+      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=4), 0);
+   
+    const can1All =
+      colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0);
+
+    const can3pair = 
+      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=2), 0);
+
+    this.setState({
+      colorsSelected,
+      tradesActive: [can1All, can3pair, can4Kind]
+    });
+  }
 
   rotateTileInHand = (index) => {
+
+    if (this.state.selectedTileIndex !== index){
+      // first time clicking this tile = don't immediately rotate
+      return this.setState({ selectedTileIndex: index });
+    }
+
     const tilesInHand = [...this.state.tilesInHand];
 
     const [N, E, S, W, special] = tilesInHand[index];
@@ -154,7 +224,7 @@ class App extends Component {
         const row = Math.floor(squareIdx / App.boardSize) + 1;
         const col = squareIdx % App.boardSize + 1;
 
-        if (isMyTurn && square && square.isBorder) { // only show border squares when it's player's turn
+        if (square && square.isBorder && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
           return (
             <BorderSquare
               key={`square-${squareIdx}`}
@@ -170,8 +240,8 @@ class App extends Component {
           return (
             <Square
               key={`square-${squareIdx}`}
-              row={row}
-              col={col}
+              gridRow={row}
+              gridColumn={col}
               colors={colors}
               special={square[4]}
             />
@@ -213,7 +283,7 @@ class App extends Component {
           <TopOppPanel>
             <Points>{`Points: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`top-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
           </TopOppPanel>
 
@@ -224,7 +294,7 @@ class App extends Component {
           <LeftOppPanel>
             <Points>{`Points: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`left-colors-${i}`}color={App.colorMap[i]} number={qty} />
             ))}
           </LeftOppPanel>
 
@@ -235,7 +305,7 @@ class App extends Component {
           <RightOppPanel>
             <Points>{`Points: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`right-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
           </RightOppPanel>
 
@@ -249,7 +319,9 @@ class App extends Component {
           <PlayerPanelTiles>
             {this.state.tilesInHand.map((tile,i) => (
               tile &&
-              <Square
+              <Square /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
+                enabled
+                selected={this.state.selectedTileIndex === i}
                 colors={tile.map(v => App.colorMap[v])}
                 special={tile[4]}
                 onClick={() => this.rotateTileInHand(i)}
@@ -258,9 +330,13 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <Points >{`Points: 0`}</Points>
+            <Points >{`Points: ${this.state.points}`}</Points>
             {this.state.colorQtys.map((qty, i) => (
-              <LanternCards color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`my-colors-${i}`}
+                enabled  /*//? ={isMyTurn}*/
+                selected={this.state.colorsSelected[i]}
+                color={App.colorMap[i]} number={qty}
+                onClick={() => this.toggleColor(i)} />
             ))}
           </PlayerPanel>
 
@@ -274,7 +350,14 @@ class App extends Component {
             {squares}
           </BoardGrid>
 
-          <GameInfo />
+          <GameInfo values={this.state.tradesValues}>
+            {['1-all', '3-pair', '4-kind'].map((type, idx) => (
+              <DedicationCards key={type}
+                type={type}
+                active={this.state.tradesActive[idx]} value={this.state.tradesValues[idx]}
+                onClick={() => this.handleTrade(type)} />
+            ))}
+          </GameInfo>
 
         </CenterPane>
 

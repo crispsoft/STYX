@@ -108,10 +108,19 @@ function emitColors(socket) {
 
 function emitTurn(socket) {
   const playerIndex = game.whoseTurn;
-  console.log('emit turn', playerIndex);
   socket.emit('turn', playerIndex);
 }
 
+function emitTrades(socket) {
+  const trades = game.tradeValues;
+  // console.log('emit trade', trades);
+  socket.emit('trades', trades);
+}
+
+function emitPoints(socket) {
+  const points = game.players.map(p => p.points);
+  socket.emit('points', points);
+}
 
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
@@ -123,7 +132,7 @@ function startTheGame(socket) {
   emitTiles();
   emitColors(socket);
   emitTurn(socket);
-
+  emitTrades(socket);
 }
 
 
@@ -170,6 +179,30 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitTiles(clientID);
   emitColors(socket);
   emitTurn(socket);
+  emitTrades(socket);
+}
+
+
+function handleTrade({ socket, clientID }, colors) {
+
+  if (!playerConnMap.has(clientID)) {
+    return console.log("\n\t\t'@ handle Trade, from unknown client!?\n\t", clientID);
+  }
+  
+  if (!Array.isArray(colors)) {
+    return console.log("\n\t\t@ handle Trade, but colors not array\n\t", colors);
+  }
+
+  const playerIdx = playerConnMap.get(clientID);
+
+  if (game.checkAndTrade(playerIdx, colors)) {
+    // successfully placed
+    //TODO: gameDB add info to turn
+  }
+
+  emitColors(socket);
+  emitTrades(socket);
+  emitPoints(socket);
 }
 
 
@@ -237,6 +270,10 @@ module.exports = (socket) => {
     client.on('place', ({ row, col, tile, indexInHand } = {}) => {
       // console.log(row, col, tile, indexInHand);
       handlePlaceTile({ socket, clientID: client.id }, { row, col, tile, indexInHand })
+    });
+
+    client.on('trade', (colors) => {
+      handleTrade({ socket, clientID: client.id }, colors);
     });
 
   });

@@ -13,29 +13,6 @@ const BOARD_SIZE = 7;
 
 module.exports = {
 
-  whoseTurn: NaN,
-
-  board: Array(BOARD_SIZE * BOARD_SIZE), //% square board
-
-  players: [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
-    score: 0,
-    hand: [],
-    favor: 0,
-    colors: Array(7).fill(0),
-  })),
-
-
-  pointCards: [
-    [10, 9, 8, 8, 7, 7, 7, 6, 5],
-    [9, 9, 8, 7, 7, 7, 6, 6, 5],
-    [9, 9, 8, 7, 7, 7, 6, 6, 5],
-    [4, 4, 4]
-  ],
-
-  tileStack: null,
-
-  deckProgress: 0,
-
   distributeColors(plyrIdx, {row, col, tile}) {
 
     // TODO: check color supplies
@@ -136,7 +113,7 @@ module.exports = {
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
 
-    console.log(plyrIdx, row, col, tile, indexInHand);
+    // console.log(plyrIdx, row, col, tile, indexInHand);
 
     //% check conditions that would prevent this placement from happening (illegal move)
 
@@ -147,7 +124,7 @@ module.exports = {
       || !Number.isInteger(plyrIdx)) { return false; }
 
 
-    if (!Array.isArray(tile) && tile.length !== 5) { return false; }
+    if (!Array.isArray(tile) || tile.length !== 5) { return false; }
 
       
     //* Bad Ranges
@@ -184,8 +161,10 @@ module.exports = {
     //? TODO: probably more checks?
 
 
-    //* Remove tile from player's hand
-    this.players[plyrIdx].hand.splice(indexInHand,1); 
+    //* Remove tile from player's hand, insert one from top of shuffled stack
+    const replacementTile = this.tileStack.length ? this.tileStack.shift() : undefined;
+    console.log(replacementTile, this.tileStack.length);
+    this.players[plyrIdx].hand.splice(indexInHand, 1, replacementTile);
 
 
     //* Add tile to board (also distributes colors)
@@ -202,25 +181,108 @@ module.exports = {
     return true;
   },
 
+  checkAndTrade(plyrIdx, colors) {
+
+    //* Bad Types
+    if (!Number.isInteger(plyrIdx)) { return false; }
+    if (!Array.isArray(colors) || colors.length !== 7) { return false; }
+    
+    //* wasn't this player's turn 
+    if (plyrIdx !== this.whoseTurn) { return false; }
+
+
+    const serversColors = this.players[plyrIdx].colors; // player's colors as server knows it
+
+    let sum = colors.reduce((sum, curr) => sum + curr, 0);
+    
+    let newColors = [...serversColors];
+    let tradeIndex = -1;
+
+    switch (sum) {
+
+      case 1: // four of 1 kind
+        const idx = colors.findIndex(c => c);
+        if (serversColors[idx] < 4) { return false; }
+
+        tradeIndex = 2;        
+        newColors[idx] -= 4;
+        
+        break;
+
+      case 3: // 3 pairs
+        if (!colors.every((c, i) => !c || serversColors[i] >= 2)) { return false; }
+
+        tradeIndex = 1;
+        newColors = serversColors.map((v, i) => colors[i] ? v - 2 : v);
+
+        break;
+
+      case 7: // one of each of 7
+        if (!serversColors.every(c => c > 0)) { return false; }
+
+        newColors = serversColors.map(v => v - 1);
+        tradeIndex = 0
+
+        break;
+
+      default:
+        return false; // not a valid sum/combination for trade in
+    }
+
+    //? TODO: probably more checks?
+
+    //* PASSED ALL CHECKS
+
+
+    const points = this.tradeValues[tradeIndex];
+    this.players[plyrIdx].points += points;
+
+    this.players[plyrIdx].colors = newColors;
+
+    if (this.tradeSequences[tradeIndex].length) {
+      this.tradeValues[tradeIndex] = this.tradeSequences[tradeIndex].shift()
+    }
+    else {
+      this.tradeValues[tradeIndex] = 4;
+    }
+
+  },
+  
+
   setup() {
+
     // Reset state
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
-      score: 0,
+      points: 0,
       hand: [],
       colors: Array(7).fill(0),
+      // colors: [4,2,1,2,1,1,1],  //! for testing
+      favor: 0
     })),
-    this.tileStack = [...gameTiles.lakeTiles];
-    this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null);
 
+    this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
-    // Shuffle stack of tiles
-    this.tileStack = _.shuffle(this.tileStack);
+    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
+    
+
+    // TODO: generators?
+    this.tradeSequences = [
+      [10, 9, 9, 8, 8, 7, 7, 6, 5], // one each trade
+      [ 9, 8, 8, 7, 7, 6, 6, 5, 5], // three pairs
+      [ 8, 7, 7, 6, 6, 6, 6, 6, 4], // 4 of kind
+    ],
+  
+    this.tradeValues = [
+      this.tradeSequences[0].shift(),
+      this.tradeSequences[1].shift(),
+      this.tradeSequences[2].shift()
+    ],
+
 
     // Deal three tiles per player
     this.players.forEach(player => {
       player.hand = this.tileStack.splice(0,3);
-    });
-    
+    });    
     
     // place start tile (center at (3,3), with 0-indexed based row/col)
     this.addTileToBoard(NaN, { row: 3, col: 3, tile: gameTiles.startTile });
