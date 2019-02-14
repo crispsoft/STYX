@@ -52,6 +52,13 @@ export const Square = styled.div`
   ${props =>
     props.selected && css`
       animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
+
+      cursor: crosshair
+      /* &::after {
+        width: 10px;
+        height: 10px;
+        background: red;
+      } */
     `
   }
 
