@@ -3,6 +3,12 @@
     border-radius: 50%;
     overflow: hidden;
     background-color: #E2E2E8;
+    transition: transform .2s;
+}
+
+.token:hover {
+    transform: scale(2);
+    box-shadow: 2px #91A2BB;
 }
 
 img {
