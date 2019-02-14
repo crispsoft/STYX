@@ -3,7 +3,9 @@
     top: 1em;
     right: 6em;
     animation: sway 8s ease-in-out alternate-reverse infinite;
+   
 }
+
 .titleCardText {
     font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 700;

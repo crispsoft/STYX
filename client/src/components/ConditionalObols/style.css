@@ -1,0 +1,12 @@
+.one-allContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.one-all {
+    border-radius: 50%;
+    border: 1px solid black;
+    height: 10px;
+    width: 10px;
+}
