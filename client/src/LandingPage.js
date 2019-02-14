@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import App from './App';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
+import Hero from "./components/Hero";
 
 
 
@@ -14,7 +15,6 @@ const LandingPage = () => (
       <Route path="/game" component={App} /> {/*only game will show up*/}
       <Route component={IncludeNav} />
     </Switch>
-
   </Router>
 );
 
@@ -33,8 +33,9 @@ const IncludeNav = () => (
     </ul>
 
     <hr />
-
+    
     <Route path="/about" component={About} />
+    <Route path="/" component={Home} />
   </div>
 );
 
