@@ -15,15 +15,21 @@ function ConditionalObols (props) {
     // need to use map to do colors??
     switch (type) {
         case "1-all":
-           return( <div className="one-allContainer">
-                <div className="one-all" color={App.colorMap[0]}/>
-                <div className="one-all" color={App.colorMap[1]}/>
-                <div className="one-all" color={App.colorMap[2]}/>
-                <div className="one-all" color={App.colorMap[3]}/>
-                <div className="one-all" color={App.colorMap[4]}/>
-                <div className="one-all" color={App.colorMap[5]}/>
-                <div className="one-all" color={App.colorMap[6]}/>
+           return( 
+           <div>
+                <div className="one-allContainer">
+                    <div className="one-all" color={App.colorMap[1]}/>
+                    <div className="one-all" color={App.colorMap[2]}/>
+                    <div className="one-all" color={App.colorMap[0]}/>
+                    <div className="one-all" color={App.colorMap[3]}/>
+                </div>
+                <div className="one-allContainer">
+                    <div className="one-all" color={App.colorMap[4]}/>
+                    <div className="one-all" color={App.colorMap[5]}/>
+                    <div className="one-all" color={App.colorMap[6]}/>
+                </div>
             </div>
+            
            );
         break;
 

@@ -1,10 +1,5 @@
-.one-allContainer, .three-pairContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-}
-
-.four-kindContainer {
+/* if no differentiation needed, make one class  */
+.one-allContainer, .three-pairContainer, .four-kindContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -15,4 +10,5 @@
     border: 1px solid black;
     height: 10px;
     width: 10px;
+    margin: 2px;
 }
