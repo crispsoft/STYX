@@ -161,8 +161,10 @@ module.exports = {
     //? TODO: probably more checks?
 
 
-    //* Remove tile from player's hand
-    this.players[plyrIdx].hand.splice(indexInHand,1); 
+    //* Remove tile from player's hand, insert one from top of shuffled stack
+    const replacementTile = this.tileStack.length ? this.tileStack.shift() : undefined;
+    console.log(replacementTile, this.tileStack.length);
+    this.players[plyrIdx].hand.splice(indexInHand, 1, replacementTile);
 
 
     //* Add tile to board (also distributes colors)
@@ -253,14 +255,15 @@ module.exports = {
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
       points: 0,
       hand: [],
-      // colors: Array(7).fill(0),
-      colors: [4,2,1,2,1,1,1],  //! testing
+      colors: Array(7).fill(0),
+      // colors: [4,2,1,2,1,1,1],  //! for testing
       favor: 0
     })),
 
     this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
-    this.tileStack = _.shuffle([...gameTiles.lakeTiles]); // Shuffle stack of tiles
+    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
+    
 
     // TODO: generators?
     this.tradeSequences = [
