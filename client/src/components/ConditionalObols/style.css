@@ -1,10 +1,16 @@
-.one-allContainer {
+.one-allContainer, .three-pairContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.one-all {
+.four-kindContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.one-all, .three-pair, .four-kind {
     border-radius: 50%;
     border: 1px solid black;
     height: 10px;
