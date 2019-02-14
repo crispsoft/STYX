@@ -16,6 +16,10 @@ const StyleCard = styled.div`
   font-size: 2.5em;
   text-align: center;
 
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+
   pointer-events: ${props => props.enabled ? 'auto' : 'none'};
 
   /* Show point/click & hover if number > 0  */

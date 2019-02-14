@@ -3,6 +3,7 @@ import openSocket from 'socket.io-client';
 
 import React, { Component } from "react";
 
+import TitleCard from './components/TitleCard';
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
@@ -47,7 +48,6 @@ const BoardGrid = styled.div`
  
 `;
 // #endregion Styles
-
 
 class App extends Component {
   state = {
@@ -276,6 +276,8 @@ class App extends Component {
           <br />
           {this.state.gameReady ? "READY!" : "..waiting for players.."}
         </p>
+
+        <TitleCard />
 
 
         {/** Opponents **/}

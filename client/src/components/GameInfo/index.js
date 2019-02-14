@@ -21,17 +21,19 @@ function GameInfo({ children, ...props }) {
           <FavorTokens />
         </div>
       <div>
+        {/* <div className="lanternCardsContainer">
+          <LanternCards color={App.colorMap[0]} />
+        </div> */}
         <div className="lanternCardsContainer">
           <LanternCards color={App.colorMap[0]} />
-        </div>
-        <div className="lanternCardsContainer">
           <LanternCards color={App.colorMap[1]} />
           <LanternCards color={App.colorMap[2]} />
           <LanternCards color={App.colorMap[3]} />
-          <LanternCards color={App.colorMap[4]} />
+         
         </div>
 
         <div className="lanternCardsContainer">
+          <LanternCards color={App.colorMap[4]} />
           <LanternCards color={App.colorMap[5]} />
           <LanternCards color={App.colorMap[6]} />
         </div>
