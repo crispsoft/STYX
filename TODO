@@ -10,3 +10,5 @@
 ☐ consider reconfiguring to give lake tiles a unique ID, and have that be included wherever tiles are sent
 
 ☐ reconfigure Squares component on client to have ID of first person perspective board index
+
+☐ make gamelogic into 'class'
