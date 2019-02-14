@@ -13,8 +13,9 @@
 }
 
 #condition {
-  background: purple;
+  background: #526D78;
   border: 3px solid black;
+  border-radius: 3px;
   position: absolute;
   height: 5vh;
   width: 10vh;
