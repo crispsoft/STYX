@@ -196,7 +196,7 @@ function handleTrade({ socket, clientID }, colors) {
   const playerIdx = playerConnMap.get(clientID);
 
   if (game.checkAndTrade(playerIdx, colors)) {
-    // successfully placed
+    // successfully traded
     //TODO: gameDB add info to turn
   }
 
