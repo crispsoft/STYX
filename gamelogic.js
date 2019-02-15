@@ -113,41 +113,34 @@ module.exports = {
   },
 
 
-  canTrade1All: (colors) => {
-    console.log("117", colors);
-  return colors.every(c => c > 0)
-  },
+  canTrade1All: (colors) => colors.every(c => c > 0),
 
-  canTrade3Pair: (colors) => {
-    console.log("122", colors);
-    return (3 <= colors.reduce((pairs, c) => pairs + (c >= 2), 0)
-  )},
+  canTrade3Pair: (colors) => 3 <= colors.reduce((pairs, c) => pairs + (c >= 2), 0),
 
   canTrade4Kind: (colors) => colors.some(c => c >= 4),
 
-  canTradeIn: (colors) => {
-    console.log("125", colors)
+  canTradeIn(colors) {
     return (
-       canTrade1All(colors)
-    || canTrade3Pair(colors)
-    || canTrade4Kind(colors)
+       this.canTrade1All(colors)
+    || this.canTrade3Pair(colors)
+    || this.canTrade4Kind(colors)
   )},
 
   advanceTurnIfCantTrade() {
     //% We are in the final round - trade-in's only.
     //% If the current player can't do a trade in, auto advance to next player
+
     let tryPlayer = this.whoseTurn;
-    while(!canTradeIn(this.players[tryPlayer].colors) && tryPlayer < 4) {
-      console.log("135: ", tryPlayer)
+    while(tryPlayer < 4 && !this.canTradeIn(this.players[tryPlayer].colors)) {
       ++tryPlayer;
     }
 
     if (tryPlayer >= 4) {
       this.over = true;
       console.log("GAMEOVER");
-      this.whoseTurn = -1; //TODO: problems?
+      this.whoseTurn = -1; //TODO: problems with this?
     }
-    else{
+    else {
       this.whoseTurn = tryPlayer;
     }
 
@@ -206,9 +199,12 @@ module.exports = {
 
 
     //* Remove tile from player's hand, insert one from top of shuffled stack
-    const replacementTile = this.tileStack.length ? this.tileStack.shift() : undefined;
-    console.log(replacementTile, this.tileStack.length);
-    this.players[plyrIdx].hand.splice(indexInHand, 1, replacementTile);
+    if (this.tileStack.length){
+      this.players[plyrIdx].hand.splice(indexInHand, 1, this.tileStack.shift());
+    }
+    else {
+      this.players[plyrIdx].hand.splice(indexInHand, 1);
+    }
 
 
     //* Add tile to board (also distributes colors)
@@ -217,8 +213,8 @@ module.exports = {
     //% Advance whose turn it is
     this.whoseTurn = (this.whoseTurn + 1) % 4;
 
+    // first player's turn and they have no hands in tile
     if (this.whoseTurn === 0 && this.players[0].hand.length === 0) {
-      console.log("214: advancing");
       this.advanceTurnIfCantTrade();
     }
     
@@ -290,8 +286,6 @@ module.exports = {
       this.tradeValues[tradeIndex] = 4;
     }
 
-    console.log(this.players[plyrIdx].hand)
-    console.log(this.players[plyrIdx].hand.length)
     if (!this.players[plyrIdx].hand.length) {
       // this is a last round trade-in, and should advance player turn
       ++this.whoseTurn;
@@ -308,8 +302,8 @@ module.exports = {
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
       points: 0,
       hand: [],
-      colors: Array(7).fill(0),
-      // colors: [4,2,1,2,1,1,1],  //! for testing
+      // colors: Array(7).fill(0),
+      colors: [4,2,1,2,1,1,1],  //! for testing
       favor: 0
     })),
 
