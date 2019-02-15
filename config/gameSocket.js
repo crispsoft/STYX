@@ -203,6 +203,7 @@ function handleTrade({ socket, clientID }, colors) {
   emitColors(socket);
   emitTrades(socket);
   emitPoints(socket);
+  emitTurn(socket);
 }
 
 
