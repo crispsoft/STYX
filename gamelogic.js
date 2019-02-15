@@ -332,8 +332,8 @@ module.exports = {
 
     // Deal three tiles per player
     this.players.forEach(player => {
-      player.hand = this.tileStack.splice(0,1);
-      // player.hand = this.tileStack.splice(0,3);
+      // player.hand = this.tileStack.splice(0,1); //!testing
+      player.hand = this.tileStack.splice(0,3);
     });    
     
     // place start tile (center at (3,3), with 0-indexed based row/col)
