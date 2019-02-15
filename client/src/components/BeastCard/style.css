@@ -1,0 +1,18 @@
+.beast-card {
+  height: 50vh;
+  width: 40vh;
+  background-color: grey;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+}
+
+.beast {
+  border-radius: 50%;
+  height: 30vh;
+  width: 30vh;
+
+  background-color: white;
+}

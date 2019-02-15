@@ -18,15 +18,6 @@
   transform: translate(-50%, -50%);
 }
 
-
-
-/* .center-con {
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-} */
-
 .round {
   position: absolute;
   border: 2px solid #fff;
@@ -94,68 +85,7 @@ span:nth-child(4) {
   transform: rotate(-225deg);
 }
 
-.game-login-container {
-  height: 75vh;
-  width: 75vw;
-  margin: auto;
-  background-color: #91a2bb;
-  border-radius: 5px;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.join-game,
-.start-game {
-  height: 60vh;
-  width: 30vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background-color: #e2e2e8;
-  padding-top: 20vh;
-  border-radius: 10px;
-  box-shadow: 1px 1px 100px 1px #101b2a;
-}
-
-.join-game h2,
-.start-game h2 {
-  font-family: "Imprima", sans-serif;
-  font-size: 3em;
-}
-
-.start-game button {
-  border-radius: 10px;
-  font-family: "Imprima", sans-serif;
-  width: 5em;
-  height: 3em;
-  background-color: #dd9933;
-}
-
 .beasts-row {
-    display: flex;
-    justify-content: center;
-
-}
-
-.beast-card {
-    height: 50vh;
-    width: 40vh;
-    background-color: grey;
-    display: flex;
-    justify-content: space-around;
-  align-items: center;
-  flex-direction: column;
-  margin: auto;
-  
-}
-
-.beast {
-    border-radius: 50%;
-    height: 30vh;
-    width: 30vh;
-
-    background-color: white;
+  display: flex;
+  justify-content: center;
 }
