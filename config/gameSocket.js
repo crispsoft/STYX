@@ -141,10 +141,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   if (!playerConnMap.has(clientID)) {
     return console.log("\n\t\t'@ handle Place, from unknown client!?\n\t", clientID);
   }
-  
-  if (!Array.isArray(tile)) {
-    return console.log("\n\t\t@ handle Place, but tile not array\n\t", tile);
-  }
+
 
   const playerIdx = playerConnMap.get(clientID);
   // console.log(playerIdx, { row, col, tile, indexInHand });
@@ -189,9 +186,6 @@ function handleTrade({ socket, clientID }, colors) {
     return console.log("\n\t\t'@ handle Trade, from unknown client!?\n\t", clientID);
   }
   
-  if (!Array.isArray(colors)) {
-    return console.log("\n\t\t@ handle Trade, but colors not array\n\t", colors);
-  }
 
   const playerIdx = playerConnMap.get(clientID);
 
