@@ -24,8 +24,8 @@ const Home = () => (
               </form>
             </div>
             <div className="start-game">
-            <h2>Start Game</h2>
-            <button id="start-game-btn">Go</button>
+              <h2>Start Game</h2>
+              <button id="start-game-btn">Go</button>
             </div>
         </div>
       </div>

@@ -97,9 +97,26 @@ span:nth-child(4) {
 .game-login-container {
     height: 75vh;
     width: 75vw;
+    margin: auto;
     background-color: white;
     border-radius: 5px;
     
-    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.join-game h2, .start-game h2 {
+    font-family: 'Imprima', sans-serif;
+    font-size: 3em;
+}
+
+.start-game button {
+    border-radius: 10px;
+    font-family: 'Imprima', sans-serif;
+    width: 5em;
+    height: 3em;
+    background-color: #DD9933;
 
 }
+
