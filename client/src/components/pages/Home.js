@@ -11,17 +11,19 @@ const Home = () => (
 
     <div className="hero-img">
       <div className="beasts-row">
-        <BeastCard />
-        <BeastCard />
-        <BeastCard />
-        <BeastCard />
+        <BeastCard name="Cerberus" img="" description="lorem ipsum sdflsdfj;asldkfjasd;lkfjadsfkjsdlfkjsldkfjsdlakfjsadlkfjasdlkfjasldkfjalskdfj"/>
+        <BeastCard name="Pegasus"/>
+        <BeastCard name="Griffin"/>
+        <BeastCard name="Charybdis"/>
       </div>
       <div className="beasts-row">
-        <BeastCard />
-        <BeastCard />
-        <BeastCard />
+        <BeastCard name="Sirens"/>
+        <BeastCard name="Hydra"/>
+        <BeastCard name="Sphynx"/>
       </div>
     </div>
+
+    <div className="hero-img"></div>
   </div>
 );
 

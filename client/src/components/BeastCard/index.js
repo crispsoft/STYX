@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./style.css";
 
-function BeastCard() {
+function BeastCard(props) {
     return(
         <div className="beast-card">
-            <div className="beast" />
-            <div className="beast-title">Cerberus</div>
-            <div className="beast-description">lorem ipsum</div>
+            <img className="beast" src={props.img}/>
+            <h3 className="beast-title">{props.name}</h3>
+            <p className="beast-description">{props.description}</p>
         </div>
     ) 
 }
