@@ -33,7 +33,7 @@
     height: 100px;
     border-radius: 100%;
     top: 90vh;
-    left: 47vw;
+    left: 46vw;
 }
 
 span {
@@ -91,4 +91,15 @@ span:nth-child(4) {
 
 .round:hover span:nth-child(4) {
     transform: rotate(-225deg);
+}
+
+
+.game-login-container {
+    height: 75vh;
+    width: 75vw;
+    background-color: white;
+    border-radius: 5px;
+    
+    margin: auto;
+
 }
