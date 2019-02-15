@@ -136,8 +136,8 @@ module.exports = {
     }
 
     if (tryPlayer >= 4) {
-      this.over = true;
-      console.log("GAMEOVER");
+      this.isOver = true;
+      // console.log("GAMEOVER");
       this.whoseTurn = -1; //TODO: problems with this?
     }
     else {
@@ -299,19 +299,21 @@ module.exports = {
   setup() {
 
     // Reset state
+    this.isOver = false;
+
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
       points: 0,
       hand: [],
-      // colors: Array(7).fill(0),
-      colors: [4,2,1,2,1,1,1],  //! for testing
+      colors: Array(7).fill(0),
+      // colors: [4,2,1,2,1,1,1],  //! for testing
       favor: 0
     })),
 
     this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
-    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(0,4); //!testing (advances to last 3+1 rounds game)
+    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(0,4); //!testing (advances to last 1+1 round game)
     // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3,15); //!testing (advances to last 3+1 rounds game)
-    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
+    this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
     
 
     // TODO: generators?
