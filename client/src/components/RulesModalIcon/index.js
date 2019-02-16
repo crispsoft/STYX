@@ -39,9 +39,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
+import RulesCard from "../RulesCard"
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -87,23 +87,15 @@ class SimpleModal extends React.Component {
 
     return (
       <div>
-        <Typography gutterBottom>Click to get the full Modal experience!</Typography>
-        <Button onClick={this.handleOpen}><img className="info-icon" src="/assets/info-icon.png"/></Button>
+        <img className="info-icon" src="/assets/info-icon.png" onClick={this.handleOpen}/>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <div style={getModalStyle()} className={classes.paper}>
-            <Typography variant="h6" id="modal-title">
-              Text in a modal
-            </Typography>
-            <Typography variant="subtitle1" id="simple-modal-description">
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-            <RulesModalIcon />
-          </div>
+        <RulesCard />
+        
         </Modal>
       </div>
     );
