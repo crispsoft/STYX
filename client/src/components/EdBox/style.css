@@ -13,29 +13,35 @@
   font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 10em;
+  font-size: 5em;
   color: #e2e2e8;
 
   position: absolute;
-  top: 50vh;
+  top: 28vh;
   left: 50vw;
   transform: translate(-50%, -50%);
 }
 
 
-.game-lore {
+.ed-guide {
 
   position: absolute;
-  top: 55vh;
+  top: 40vh;
+  text-align: justify;
 
-  margin-left: 30%;
-  margin-right: 30%;
+  margin-left: 15%;
+  margin-right: 15%;
 
   font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 70;
+  font-size: 1.3em;
   color: #e2e2e8;
 
 
+}
+
+.text-break {
+  border-bottom: dotted #e2e2e8;
 }
 
 .intro-tag {
