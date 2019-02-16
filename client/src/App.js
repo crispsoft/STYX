@@ -4,11 +4,14 @@ import openSocket from 'socket.io-client';
 import React, { Component } from "react";
 
 import TitleCard from './components/TitleCard';
-import RulesCard from './components/RulesCard';
+import RulesModalIcon from './components/RulesModalIcon';
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
 import DedicationCards from './components/DedicationCards';
+
+
+
 
 import handle from './clientHandlers';
 
@@ -279,7 +282,7 @@ class App extends Component {
         </p>
 
         <TitleCard />
-        <RulesCard />
+        <RulesModalIcon />
 
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
