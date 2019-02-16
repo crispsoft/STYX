@@ -1,3 +1,4 @@
+//% lodash object
 const _ = {
   shuffle: require('lodash/shuffle'),
   areArraysEqual: require('lodash/isEqual')
@@ -8,7 +9,7 @@ const gameTiles = require('./gameTiles.json');
 
 const BOARD_SIZE = 7;
 
-//TODO ? enum for North, East, South, West (0,1,2,3)
+//? TODO ? enum for North, East, South, West (0,1,2,3)
 
 
 module.exports = {
@@ -111,11 +112,46 @@ module.exports = {
     this.distributeColors(plyrIdx, { row, col, tile });
   },
 
+
+  canTrade1All: (colors) => colors.every(c => c > 0),
+
+  canTrade3Pair: (colors) => 3 <= colors.reduce((pairs, c) => pairs + (c >= 2), 0),
+
+  canTrade4Kind: (colors) => colors.some(c => c >= 4),
+
+  canTradeIn(colors) {
+    return (
+       this.canTrade1All(colors)
+    || this.canTrade3Pair(colors)
+    || this.canTrade4Kind(colors)
+  )},
+
+  advanceTurnIfCantTrade() {
+    //% We are in the final round - trade-in's only.
+    //% If the current player can't do a trade in, auto advance to next player
+
+    let tryPlayer = this.whoseTurn;
+    while(tryPlayer < 4 && !this.canTradeIn(this.players[tryPlayer].colors)) {
+      ++tryPlayer;
+    }
+
+    if (tryPlayer >= 4) {
+      this.isOver = true;
+      // console.log("GAMEOVER");
+      this.whoseTurn = -1; //TODO: problems with this?
+    }
+    else {
+      this.whoseTurn = tryPlayer;
+    }
+
+  },
+
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
+    // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
+    
+    //% Check conditions that would prevent this placement from happening (illegal move)
 
-    // console.log(plyrIdx, row, col, tile, indexInHand);
-
-    //% check conditions that would prevent this placement from happening (illegal move)
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if ( !Number.isInteger(row)
@@ -123,8 +159,8 @@ module.exports = {
       || !Number.isInteger(indexInHand)
       || !Number.isInteger(plyrIdx)) { return false; }
 
-
-    if (!Array.isArray(tile) || tile.length !== 5) { return false; }
+    if (!Array.isArray(tile) || tile.length > 5 || tile.length < 4) { return false; }
+    //! TODO: refactor tile config for special to be prop (not part of array)
 
       
     //* Bad Ranges
@@ -134,18 +170,20 @@ module.exports = {
 
     //* Board & 'whose-turn' server states do not agree
     const boardIdx = row * BOARD_SIZE + col;
-    if (// wasn't a border tile 
-         !this.board[boardIdx] 
-      || !this.board[boardIdx].isBorder 
-        // wasn't this player's turn 
-      || plyrIdx !== this.whoseTurn 
+    if ( !this.board
+      || !this.board[boardIdx]          // no tile here (null/undefined)
+      || !this.board[boardIdx].isBorder // tile here isn't a border
+      || plyrIdx !== this.whoseTurn     // wasn't this player's turn  
     ) { return false; }
 
 
-    const serversTile = this.players[plyrIdx].hand[indexInHand]; // tile in player's hand as server knows it
+    //% reference for the tile inthis  player's hand as server knows it
+    const serversTile = this.players[plyrIdx].hand[indexInHand]; 
+
 
     //* There is no tile in the player's hand at that index 
     if (!serversTile) { return false; }
+
 
     //* Check if the (possibly rotated) tile that is being placed agrees with server
     const [N, E, S, W, special] = serversTile;
@@ -162,26 +200,31 @@ module.exports = {
 
 
     //* Remove tile from player's hand, insert one from top of shuffled stack
-    const replacementTile = this.tileStack.length ? this.tileStack.shift() : undefined;
-    console.log(replacementTile, this.tileStack.length);
-    this.players[plyrIdx].hand.splice(indexInHand, 1, replacementTile);
+    if (this.tileStack.length){
+      this.players[plyrIdx].hand.splice(indexInHand, 1, this.tileStack.shift());
+    }
+    else {
+      this.players[plyrIdx].hand.splice(indexInHand, 1);
+    }
 
 
     //* Add tile to board (also distributes colors)
     this.addTileToBoard(plyrIdx, { row, col, tile });
 
-
-    //! TODO: add a new tile from the stack to player's hand, check remaining stack
-
-    //! TODO: if game not over check,
-
     //% Advance whose turn it is
     this.whoseTurn = (this.whoseTurn + 1) % 4;
+
+    // first player's turn and they have no hands in tile
+    if (this.whoseTurn === 0 && this.players[0].hand.length === 0) {
+      this.advanceTurnIfCantTrade();
+    }
     
     return true;
   },
 
   checkAndTrade(plyrIdx, colors) {
+
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if (!Number.isInteger(plyrIdx)) { return false; }
@@ -218,7 +261,7 @@ module.exports = {
         break;
 
       case 7: // one of each of 7
-        if (!serversColors.every(c => c > 0)) { return false; }
+        if (!this.canTrade1All(serversColors)) { return false; }
 
         newColors = serversColors.map(v => v - 1);
         tradeIndex = 0
@@ -246,12 +289,21 @@ module.exports = {
       this.tradeValues[tradeIndex] = 4;
     }
 
+    if (!this.players[plyrIdx].hand.length) {
+      // this is a last round trade-in, and should advance player turn
+      ++this.whoseTurn;
+      this.advanceTurnIfCantTrade();
+    }
+
+    return true;
   },
   
 
   setup() {
 
     // Reset state
+    this.isOver = false;
+
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
       points: 0,
       hand: [],
@@ -262,6 +314,8 @@ module.exports = {
 
     this.board = Array(BOARD_SIZE * BOARD_SIZE).fill(null); //% square board
 
+    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(0,4); //!testing (advances to last 1+1 round game)
+    // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3,15); //!testing (advances to last 3+1 rounds game)
     this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
     
 
@@ -281,6 +335,7 @@ module.exports = {
 
     // Deal three tiles per player
     this.players.forEach(player => {
+      // player.hand = this.tileStack.splice(0,1); //!testing
       player.hand = this.tileStack.splice(0,3);
     });    
     

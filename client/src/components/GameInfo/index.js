@@ -4,6 +4,7 @@ import LanternCards from "../LanternCards";
 import App from "../../App";
 import FavorTokens from "../FavorTokens";
 
+
 import styled from 'styled-components';
 
 const StyledGameInfo = styled.div`

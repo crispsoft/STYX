@@ -26,7 +26,7 @@ module.exports = {
       })
   ),
 
-  addTurn: async (_id, tilePlace ) => {
+  addTurn: (_id, tilePlace ) => {
 
     const turnDoc = new Turn({ tilePlace });
 
@@ -36,6 +36,7 @@ module.exports = {
       errorLog("Game Add Turn", error)
       throw error;
     })
+    
   },
     
 }

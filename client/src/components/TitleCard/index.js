@@ -6,7 +6,7 @@ function TitleCard () {
     <div className="titleCard">
         <h1 className="titleCardText">STYX</h1>
     </div>
-    )
+  );
 }
 
 export default TitleCard;
