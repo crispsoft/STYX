@@ -147,10 +147,11 @@ module.exports = {
   },
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
-
     // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
-
+    
     //% Check conditions that would prevent this placement from happening (illegal move)
+
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if ( !Number.isInteger(row)
@@ -222,6 +223,8 @@ module.exports = {
   },
 
   checkAndTrade(plyrIdx, colors) {
+
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if (!Number.isInteger(plyrIdx)) { return false; }
