@@ -14,6 +14,11 @@ const BasePane = styled.div`
   background-color: #91A2BB;
   padding: 0.7rem;
   border-radius: 3px;
+  
+  border: 10px solid transparent;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-image: url("/assets/greek_wave.png") 32 round;
 `;
 
 

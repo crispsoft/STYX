@@ -8,7 +8,8 @@ export const FullScreenView = styled.div`
   justify-content: center;
   align-items: center;
   user-select: none;
-  background-color: #375170;
+  
+  background-image: url("/assets/wave.gif");
 `;
 
 export const Points = styled.p`

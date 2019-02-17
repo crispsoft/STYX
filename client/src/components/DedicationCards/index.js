@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.css";
+import ConditionalObols from "../ConditionalObols";
 
 import styled, { css, keyframes } from 'styled-components';
 
@@ -37,7 +38,9 @@ function DedicationCards({ value, type, ...props }) {
         fontSize: '1.5rem',
         wordWrap: 'nowrap',
         borderColor: 'inherit'
-      }}>{type}</div>
+      }}>
+      <ConditionalObols type={type} />
+      </div>
     </StyledTrade>
   );
 }
