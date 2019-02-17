@@ -67,7 +67,7 @@ module.exports = {
       ++player.colors[W];
 
       // Checks for special component of Adjacent Matching Tile
-      if (sTile[4]) { ++player.favor }
+      if (wTile[4]) { ++player.favor }
     }
 
     // If there was one adjacent match, and the newly placed tile was special, gain one favor for the new tile

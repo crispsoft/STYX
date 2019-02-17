@@ -144,26 +144,26 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
 
 
   const playerIdx = playerConnMap.get(clientID);
-  // console.log(playerIdx, { row, col, tile, indexInHand });
+  // console.log("\n\t\t@ handle Place\n", playerIdx, { row, col, tile, indexInHand });
 
   // transform row/col & tile BACK to Player 1 - perspective
-  const row1 = row; 
-  const col1 = col;
+  const rowOrig = row; 
+  const colOrig = col;
   
   const [n,e,s,w,special] = tile;
   if (playerIdx === 1) {
-    row = col1;
-    col = 6 - row1;
+    row = colOrig;
+    col = 6 - rowOrig;
     tile = [w, n, e, s, special];
   }
   else if (playerIdx === 2) {
-    row = 6 - row1;
-    col = 6 - col1;
+    row = 6 - rowOrig;
+    col = 6 - colOrig;
     tile = [s, w, n, e, special];
   }
   else if (playerIdx === 3) {
-    row = 6 - col1;
-    col = row1;
+    row = 6 - colOrig;
+    col = rowOrig;
     tile = [e, s, w, n, special];
   }
 
