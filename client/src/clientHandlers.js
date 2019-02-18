@@ -1,7 +1,7 @@
 export default {
   //* Individual emits
-     connect: () => ({ connection: 'connected'     }),
-  disconnect: () => ({ connection: 'not connected',}),
+     connect: () => ({ connected: true  }),
+  disconnect: () => ({ connected: false }),
 
   seat : (index) => {
     //! the values ('left','right', ) are important as they relate to other object property keys
@@ -22,6 +22,7 @@ export default {
   
   //* Group emits
   ready: (status) => ({ gameReady: status }),
+  over : (status) => ({ gameOver : status }),
 
   turn: (index) => ({ whoseTurn: index }),
   
@@ -70,11 +71,27 @@ export default {
     const { opponents } = state;
     const { left, top, right } = opponents;
 
+
+    let leaderIndices = []; // below forEach will push 0 (index) as first element
+    let leadingPoints = points[0];
+
     const newPoints = {};
     points.forEach( (point, idx) => {
+
       newPoints[state.oppMap[idx]] = point
+
+      // update array of indices of players leading in points
+      if (point > leadingPoints){
+        leaderIndices = [idx]; // array of one element
+        leadingPoints = point;
+      }
+      else if (point === leadingPoints){
+        leaderIndices.push(idx);
+      }
+
     });
      
+
     return {
       opponents: {...opponents,
          left: {...left , points: newPoints.left  },
@@ -83,7 +100,9 @@ export default {
       },
 
       // Player's points
-      points: newPoints.me
+      points: newPoints.me,
+
+      leaderIndices
     }
   },
 
