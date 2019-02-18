@@ -1,5 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import colors from './../constants/colors';
+
 export const FullScreenView = styled.div`
   height: 100vh;
   width: 100vw;
@@ -41,7 +43,7 @@ export const Square = styled.div`
   grid-column: ${props => props.gridColumn};
 
 
-  ${props => 
+  ${props =>
     props.enabled && css`
       &:hover {
         transform: scale(1.2);
@@ -66,6 +68,15 @@ export const Square = styled.div`
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 `;
 
+export const StatusSummary = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 17vw;
+  height: 15vh;
+  padding: 0.3rem;
+  background: ${colors.lightWhite};
+`;
 
 export * from './Panes.style';
 export * from './Panels.style';
