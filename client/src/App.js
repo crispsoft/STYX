@@ -19,6 +19,7 @@ import {
   FullScreenView,
   Points,
   Square,
+  StatusSummary,
   
      TopPane,
    RightPane,
@@ -57,7 +58,11 @@ class App extends Component {
 
     //* State from server connection
     socket: openSocket('/'),
+    connected: false,
+
+    //* Game states
     gameReady: false,
+    gameOver : false,
 
 
     //* Public Game Info
@@ -65,6 +70,7 @@ class App extends Component {
     whoseTurn: NaN,
     tradesValues: Array(3).fill(0),
     tradesActive: Array(3).fill(false),
+    leaderIndices: [],
 
     //* Opponent's (public) Game Info
     opponents: {
@@ -123,6 +129,7 @@ class App extends Component {
     socket.on('colors'    , (colors  ) => this.setState(handle.colors (colors  )));
     socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
     socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
+    socket.on('over'      , (status  ) => this.setState(handle.over   (status  )));
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
     socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
     socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
@@ -146,7 +153,7 @@ class App extends Component {
 
     switch (type) {
 
-      case '1-all': // good as is (all selected)
+      case '1-all': 
         atLeast = 1;
         break;
 
@@ -219,6 +226,34 @@ class App extends Component {
 
     const isMyTurn = this.state.whoseTurn === this.state.seatIndex;
 
+    const { top, left, right } = this.state.opponents;
+
+    let winnerText = '';
+    if (this.state.gameOver) {
+      //TODO tie breakers
+      switch(this.state.leaderIndices.length){
+
+        case 1:
+          winnerText = `Player ${this.state.leaderIndices[0]+1} is the winner!`;
+          break;
+
+        case 2:
+          winnerText = `Players ${this.state.leaderIndices[0]+1} and ${this.state.leaderIndices[1]+1} both tied to win!`;
+          break;
+
+        case 3:
+          winnerText = `Players ${this.state.leaderIndices[0]+1}, ${this.state.leaderIndices[1]+1}, and ${this.state.leaderIndices[2]+1} all tied to win!`;
+          break;
+
+        case 4:
+          winnerText = "Everybody tied to win!";
+          break;
+
+        default:
+          winnerText = '';
+      }
+    }
+
     const squares =
       this.state.board.map((square, squareIdx) => {
 
@@ -256,8 +291,21 @@ class App extends Component {
 
       });
 
-    const { top, left, right } = this.state.opponents;
 
+    const statusTextEl =
+      !this.state.connected
+      ? <p>You are not in the game.</p>
+      : !this.state.gameReady
+        ? <p>Waiting for 4 Players to play.</p>
+        : this.state.gameOver
+          ? <p>Game Over<br/>
+            {winnerText}</p>
+          : !isMyTurn
+            ? <p>{`It is Player ${this.state.whoseTurn+1}'s turn.`}</p>
+            : <p>It is YOUR turn.<br/>
+              You may trade in [Sins] for [Obols].<br/>
+              You must place a [River Tile] to end turn.</p>
+      
 
     return (
       <FullScreenView>
@@ -271,7 +319,7 @@ class App extends Component {
         }}>
           Server says: {this.state.test}
           <br/>
-          Socket says: {this.state.connection}
+          Socket says: {this.state.connected}
           <br/>
           I'm Player #{this.state.seatIndex+1}
           <br />
@@ -363,6 +411,12 @@ class App extends Component {
           </GameInfo>
 
         </CenterPane>
+
+
+        <StatusSummary>
+          {statusTextEl}
+        </StatusSummary>
+
 
       </FullScreenView>
     )
