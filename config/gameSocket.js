@@ -122,6 +122,12 @@ function emitPoints(socket) {
   socket.emit('points', points);
 }
 
+function emitOver(socket) {
+  const isOver = game.isOver;
+  socket.emit('over', isOver);
+}
+
+
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
   gameDB.new().then(({ _id }) => gameDB_id = _id).catch(); // TODO: error handling
@@ -177,6 +183,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitColors(socket);
   emitTurn(socket);
   emitTrades(socket);
+  emitOver(socket);
 }
 
 
@@ -198,6 +205,7 @@ function handleTrade({ socket, clientID }, colors) {
   emitTrades(socket);
   emitPoints(socket);
   emitTurn(socket);
+  emitOver(socket);
 }
 
 
