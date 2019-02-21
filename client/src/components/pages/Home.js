@@ -1,6 +1,5 @@
 import React from "react";
 import Hero from "../Hero";
-import GameLogin from "../GameLogin";
 import BeastCard from "../BeastCard";
 
 const Home = () => (

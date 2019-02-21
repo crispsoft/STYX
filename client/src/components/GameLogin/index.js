@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./style.css";
+import "./style.css";
 
 function GameLogin() {
   return (
