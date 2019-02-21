@@ -45,6 +45,10 @@ class RulesCard extends React.Component {
             <Typography variant="h6" id="rules-title">
               Turn Sequence
             </Typography>
+            <Typography variant="body1" id="rules-text">
+                <p>Exchange: Turn in your Beast Favors for Obols (points).</p>
+                <p>Place Tile: End your turn by placing a River Tile.</p>
+            </Typography>
           </div>
           <div className="rules-column">
             <Typography variant="h6" id="rules-title">

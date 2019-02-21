@@ -1,44 +1,43 @@
 .rulescard {
-    color: red;
-    height: 50vh;
-    width: 40vw;
-    background-color:#CED3E3;
-    /* position: absolute;
+  color: red;
+  height: 50vh;
+  width: 40vw;
+  background-color: #ced3e3;
+  /* position: absolute;
     top: 45vh;
     left: 45vw; */
-    margin: 30vh auto;
-    border-radius: 10px;
-
-   
-
+  margin: 30vh auto;
+  border-radius: 10px;
 }
 
 .rules-column-container {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
+}
+
+.rules-column {
+    width: 40%;
+    margin-top: 5%;
 }
 
 .modal-title {
-    text-align: center;
-    border: 10px solid transparent;
-    border-image: url("/assets/greek_wave.png") 32 round;
-
+  text-align: center;
+  border: 10px solid transparent;
+  border-image: url("/assets/greek_wave.png") 32 round;
 }
 
-
-
-#modal-title-text, #rules-title {
-    font-family: ff-providence-sans-web-pro, sans-serif;
-    font-weight: 700;
-    font-style: normal;
-
+#modal-title-text,
+#rules-title {
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 #rules-title {
-    border-bottom: 3px solid black;
-    border-radius: 5px;
-
+  border-bottom: 3px solid black;
+  border-radius: 5px;
+  margin-bottom: 3vh;
 }
 
 #rules-text {
-    font-family: "Imprima", sans-serif;
+  font-family: "Imprima", sans-serif;
 }
