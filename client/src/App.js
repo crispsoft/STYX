@@ -371,7 +371,7 @@ class App extends Component {
 
 
 App.boardSize = 7;
-App.colorMap = ['#6600ff', '#419B7F', '#FA6835', '#900C3F', '#CC2127', '#DD9933', '#2D83AC'];
+App.colorMap = ['#6600ff', '#3a6342', '#bf4c24', '#68062c', '#CC2127', '#DD9933', '#2D83AC'];
 
 
 export default App;
