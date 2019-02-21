@@ -18,7 +18,8 @@ import styled from 'styled-components';
 import {
   FullScreenView,
   Points,
-  Square,
+  // Square,
+  LakeTile,
   StatusSummary,
   
      TopPane,
@@ -170,7 +171,7 @@ class App extends Component {
     }
 
     
-    const emitColors = this.state.colorsSelected.map((selected,i) => (selected && this.state.colorQtys[i] >= atLeast));
+    const emitColors = this.state.colorsSelected.map((selected, i) => (selected && this.state.colorQtys[i] >= atLeast));
 
     this.state.socket.emit('trade', emitColors);
 
@@ -189,13 +190,13 @@ class App extends Component {
     colorsSelected[colorIdx] = !colorsSelected[colorIdx]; // toggle
 
     const can4Kind =
-      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=4), 0);
+      1 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i] >= 4), 0);
    
     const can1All =
       colorsSelected.every((isSelect, i) => isSelect && qtys[i] > 0);
 
     const can3pair = 
-      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i]>=2), 0);
+      3 === colorsSelected.reduce((sum, currIsSelect, i) => sum + (currIsSelect && qtys[i] >= 2), 0);
 
     this.setState({
       colorsSelected,
@@ -205,7 +206,7 @@ class App extends Component {
 
   rotateTileInHand = (index) => {
 
-    if (this.state.selectedTileIndex !== index){
+    if (this.state.selectedTileIndex !== index) {
       // first time clicking this tile = don't immediately rotate
       return this.setState({ selectedTileIndex: index });
     }
@@ -231,7 +232,7 @@ class App extends Component {
     let winnerText = '';
     if (this.state.gameOver) {
       //TODO tie breakers
-      switch(this.state.leaderIndices.length){
+      switch (this.state.leaderIndices.length) {
 
         case 1:
           winnerText = `Player ${this.state.leaderIndices[0]+1} is the winner!`;
@@ -254,40 +255,49 @@ class App extends Component {
       }
     }
 
+    const mockBoard = Array(49).fill(null);
+    mockBoard[2 * 7 + 3] = [3, 4, 1, 2];
+    mockBoard[3 * 7 + 2] = [3, 4, 1, 2];
+    mockBoard[3 * 7 + 3] = [1, 2, 3, 4];
+    mockBoard[3 * 7 + 4] = [3, 4, 1, 2];
+    mockBoard[4 * 7 + 3] = [3, 4, 1, 2];
+
     const squares =
-      this.state.board.map((square, squareIdx) => {
+      // this.state.board.map((square, squareIdx) => {
+      mockBoard.map((square, squareIdx) => {
 
         const row = Math.floor(squareIdx / App.boardSize) + 1;
         const col = squareIdx % App.boardSize + 1;
 
+        let childEl = null;
         if (square && square.isBorder && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
-          return (
+          childEl =
             <BorderSquare
-              key={`square-${squareIdx}`}
-              gridRow={row}
-              gridColumn={col}
               onClick={() => this.clickAvail(row - 1, col - 1)} //! -1's because css grid is first index=1 based
             />
-          )
         }
 
         else if (Array.isArray(square)) { // a regular tile, with an array of border colors
           const colors = square.map(n => App.colorMap[n]);
-          return (
-            <Square
-              key={`square-${squareIdx}`}
-              gridRow={row}
-              gridColumn={col}
-              colors={colors}
-              special={square[4]}
-            />
+          childEl = (
+            <>
+              <LakeTile colors={colors} />
+              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
+              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
+              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
+              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
+            </>
           );
         }
 
-        else {
-          //? TODO: empty square
-          return null;
-        }
+        return (
+          <div key={`square-${squareIdx}`} style={{
+            gridRow: {row},
+            gridColumn: {col}
+          }}>
+            {childEl}
+          </div>
+        );
 
       });
 
@@ -298,7 +308,7 @@ class App extends Component {
       : !this.state.gameReady
         ? <p>Waiting for 4 Players to play.</p>
         : this.state.gameOver
-          ? <p>Game Over<br/>
+            ? <p>Game Over<br />
             {winnerText}</p>
           : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn+1}'s turn.`}</p>
@@ -318,10 +328,10 @@ class App extends Component {
           left: '1em'
         }}>
           Server says: {this.state.test}
-          <br/>
+          <br />
           Socket says: {this.state.connected}
-          <br/>
-          I'm Player #{this.state.seatIndex+1}
+          <br />
+          I'm Player #{this.state.seatIndex + 1}
           <br />
           {this.state.gameReady ? "READY!" : "..waiting for players.."}
         </p>
@@ -345,7 +355,7 @@ class App extends Component {
           <LeftOppPanel>
             <Points>{`Points: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
-              <LanternCards key={`left-colors-${i}`}color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`left-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
           </LeftOppPanel>
 
@@ -368,13 +378,12 @@ class App extends Component {
         <BottomPane selected={isMyTurn}>
 
           <PlayerPanelTiles>
-            {this.state.tilesInHand.map((tile,i) => (
+            {this.state.tilesInHand.map((tile, i) => (
               tile &&
-              <Square /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
+              <LakeTile /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
                 enabled
                 selected={this.state.selectedTileIndex === i}
                 colors={tile.map(v => App.colorMap[v])}
-                special={tile[4]}
                 onClick={() => this.rotateTileInHand(i)}
               />
             ))}

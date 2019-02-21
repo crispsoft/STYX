@@ -30,14 +30,15 @@ const squareBounce = keyframes`
   }
 `;
 
-export const Square = styled.div`
+export const LakeTile = styled.div`
+  border-width: 3.7vh;
   border-style: solid;
-  width: 10vh;
-  height: 10vh;
 
   border-color: ${props => props.colors};
-
-  border-width: ${props => props.special ? '3.7vh' : '5vh'};
+  /* width: 10vh; */
+  width: 100%;
+  /* height: 10vh; */
+  height: 100%;
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
