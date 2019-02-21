@@ -31,9 +31,9 @@ const Home = () => (
         <BeastCard name="Sirens"
           img="/assets/sins_images/Lust_Sirens.png"
           description="Syrens are beautiful and alluring crosses between women and birds. They lure brave adventurers into their clutches with pleasing sight and song. Beware, though -- their enticing visages and enchanting voices have drawn many a sailor to an early, watery grave." />
-        <BeastCard name="Hydra"
+        <BeastCard name="The Furies"
           img="/assets/sins_images/Greed_Furies.png"
-          description="The Lernean Hydra is a fearsome lake-dwelling serpent with many vicious heads. The Gods, ever fickle, have been known to send heroes and demigods to clash with the serpentine monster in order to prove their strength. The Hydra's favor, while difficult to earn, will surely benefit you on your journey through Hades." />
+          description="The Furies are the daughters of Night itself and the goddesses of vengeance incarnate. Guardians of the Underworld's laws and punishers of the wicked, the Furies are not to be trifled with. Nevertheless, if your heart is pure and your cause is just, they may well grant you their collective favor." />
         <BeastCard name="Sphynx"
           img="/assets/sins_images/Sloth_Sphinx.png"
           description="A proud being of staggering intelligence, the legendary Sphynx bestows its blessing upon those who can solve the riddles that it tells. Beware, though -- those who answer incorrectly may find themselves on the receiving end of the creature's legendary anger instead!" />
