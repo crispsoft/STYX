@@ -1,17 +1,12 @@
 import React from "react";
 import "./style.css";
+
 import App from "../../App";
 
-// class ConditionalObols extends Component () {
-//    render() {
+
 function ConditionalObols (props) {
     const type = props.type;
 
-    const obolColor = {
-
-    }
-   
-    
     // need to use map to do colors??
     switch (type) {
         case "1-all":
@@ -31,7 +26,6 @@ function ConditionalObols (props) {
             </div>
             
            );
-        break;
 
         case "3-pair":
            return( 
@@ -49,7 +43,6 @@ function ConditionalObols (props) {
 
             </div>
            );
-        break;
 
         case "4-kind":
            return (
@@ -66,13 +59,11 @@ function ConditionalObols (props) {
             
             </div>
            );
-        break;
 
         default: 
        
     }
 
 }
-// }
 
 export default ConditionalObols;

@@ -5,10 +5,6 @@ import App from './App';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import EdGuide from './components/pages/edGuide';
-import Hero from "./components/Hero";
-import edGuide from "./components/pages/edGuide";
-
-
 
 
 const LandingPage = () => (
@@ -19,6 +15,7 @@ const LandingPage = () => (
     </Switch>
   </Router>
 );
+
 
 const IncludeNav = () => (
   <div>
