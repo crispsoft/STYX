@@ -6,8 +6,6 @@ import GameLogin from "../GameLogin";
 const EdGuide = () => (
   <div>
     <EdBox />
-    
-    {/* <div className="hero-img" /> */}
     <GameLogin />
   </div>
 );
