@@ -1,5 +1,5 @@
   import React from "react";
-  import styles from "./style.css";
+  import "./style.css";
   // import GameLogin from "../GameLogin";
 
   function EdBox() {

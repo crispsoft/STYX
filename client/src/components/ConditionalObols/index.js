@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./style.css";
+import "./style.css";
 import App from "../../App";
 
 // class ConditionalObols extends Component () {
