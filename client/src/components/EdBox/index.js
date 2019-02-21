@@ -1,5 +1,6 @@
   import React from "react";
   import styles from "./style.css";
+  // import GameLogin from "../GameLogin";
 
   function EdBox() {
     return (
@@ -18,10 +19,12 @@
           <br /><br />
           <div className="text-break" />
           <br />
+          
           To Be Written
           </div>
-          
+         
         </div>
+        {/* <GameLogin /> */}
       </div>
     );
   }

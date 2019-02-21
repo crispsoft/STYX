@@ -3,6 +3,7 @@
   width: 100vw;
   background-image: url("/assets/wave.gif");
   text-align: center;
+  background-repeat: repeat;
 }
 
 #halfimg {
