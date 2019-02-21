@@ -7,7 +7,6 @@ const Home = () => (
   <div>
     <Hero />
 
-    <GameLogin />
 
     <div className="hero-img">
       <div className="beasts-row">
