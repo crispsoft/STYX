@@ -122,6 +122,12 @@ function emitPoints(socket) {
   socket.emit('points', points);
 }
 
+function emitOver(socket) {
+  const isOver = game.isOver;
+  socket.emit('over', isOver);
+}
+
+
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
   gameDB.new().then(({ _id }) => gameDB_id = _id).catch(); // TODO: error handling
@@ -141,32 +147,29 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   if (!playerConnMap.has(clientID)) {
     return console.log("\n\t\t'@ handle Place, from unknown client!?\n\t", clientID);
   }
-  
-  if (!Array.isArray(tile)) {
-    return console.log("\n\t\t@ handle Place, but tile not array\n\t", tile);
-  }
+
 
   const playerIdx = playerConnMap.get(clientID);
-  // console.log(playerIdx, { row, col, tile, indexInHand });
+  // console.log("\n\t\t@ handle Place\n", playerIdx, { row, col, tile, indexInHand });
 
   // transform row/col & tile BACK to Player 1 - perspective
-  const row1 = row; 
-  const col1 = col;
+  const rowOrig = row; 
+  const colOrig = col;
   
   const [n,e,s,w,special] = tile;
   if (playerIdx === 1) {
-    row = col1;
-    col = 6 - row1;
+    row = colOrig;
+    col = 6 - rowOrig;
     tile = [w, n, e, s, special];
   }
   else if (playerIdx === 2) {
-    row = 6 - row1;
-    col = 6 - col1;
+    row = 6 - rowOrig;
+    col = 6 - colOrig;
     tile = [s, w, n, e, special];
   }
   else if (playerIdx === 3) {
-    row = 6 - col1;
-    col = row1;
+    row = 6 - colOrig;
+    col = rowOrig;
     tile = [e, s, w, n, special];
   }
 
@@ -180,6 +183,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitColors(socket);
   emitTurn(socket);
   emitTrades(socket);
+  emitOver(socket);
 }
 
 
@@ -189,20 +193,19 @@ function handleTrade({ socket, clientID }, colors) {
     return console.log("\n\t\t'@ handle Trade, from unknown client!?\n\t", clientID);
   }
   
-  if (!Array.isArray(colors)) {
-    return console.log("\n\t\t@ handle Trade, but colors not array\n\t", colors);
-  }
 
   const playerIdx = playerConnMap.get(clientID);
 
   if (game.checkAndTrade(playerIdx, colors)) {
-    // successfully placed
+    // successfully traded
     //TODO: gameDB add info to turn
   }
 
   emitColors(socket);
   emitTrades(socket);
   emitPoints(socket);
+  emitTurn(socket);
+  emitOver(socket);
 }
 
 
