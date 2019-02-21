@@ -5,7 +5,7 @@
   border-image: url("/assets/greek_wave.png") 32 round;
   box-shadow: .25em 1em 5em 1em black;
 
-  height: 50vh;
+  height: 20vh;
   width: 20vw;
    display: flex;
    flex-direction: column;
