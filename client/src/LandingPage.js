@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import App from './App';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
+import EdGuide from './components/pages/edGuide';
 import Hero from "./components/Hero";
+import edGuide from "./components/pages/edGuide";
 
 
 
@@ -30,12 +32,16 @@ const IncludeNav = () => (
       <li>
         <Link to="/game">Play!</Link>
       </li>
+      <li>
+        <Link to="/ed">Teaching Guide</Link>
+      </li>
     </ul>
 
     <hr />
     
     <Route path="/about" component={About} />
     <Route exact path="/" component={Home} />
+    <Route path="/ed" component={EdGuide} />
   </div>
 );
 

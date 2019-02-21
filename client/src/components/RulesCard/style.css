@@ -1,3 +1,12 @@
 .rulescard {
     color: red;
+    height: 40vh;
+    width: 30vw;
+    background-color:white;
+    /* position: absolute;
+    top: 45vh;
+    left: 45vw; */
+    margin: 30vh auto;
+    border-radius: 10px;
+
 }

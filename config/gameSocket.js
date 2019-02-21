@@ -122,6 +122,12 @@ function emitPoints(socket) {
   socket.emit('points', points);
 }
 
+function emitOver(socket) {
+  const isOver = game.isOver;
+  socket.emit('over', isOver);
+}
+
+
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
   gameDB.new().then(({ _id }) => gameDB_id = _id).catch(); // TODO: error handling
@@ -144,26 +150,26 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
 
 
   const playerIdx = playerConnMap.get(clientID);
-  // console.log(playerIdx, { row, col, tile, indexInHand });
+  // console.log("\n\t\t@ handle Place\n", playerIdx, { row, col, tile, indexInHand });
 
   // transform row/col & tile BACK to Player 1 - perspective
-  const row1 = row; 
-  const col1 = col;
+  const rowOrig = row; 
+  const colOrig = col;
   
   const [n,e,s,w,special] = tile;
   if (playerIdx === 1) {
-    row = col1;
-    col = 6 - row1;
+    row = colOrig;
+    col = 6 - rowOrig;
     tile = [w, n, e, s, special];
   }
   else if (playerIdx === 2) {
-    row = 6 - row1;
-    col = 6 - col1;
+    row = 6 - rowOrig;
+    col = 6 - colOrig;
     tile = [s, w, n, e, special];
   }
   else if (playerIdx === 3) {
-    row = 6 - col1;
-    col = row1;
+    row = 6 - colOrig;
+    col = rowOrig;
     tile = [e, s, w, n, special];
   }
 
@@ -177,6 +183,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitColors(socket);
   emitTurn(socket);
   emitTrades(socket);
+  emitOver(socket);
 }
 
 
@@ -198,6 +205,7 @@ function handleTrade({ socket, clientID }, colors) {
   emitTrades(socket);
   emitPoints(socket);
   emitTurn(socket);
+  emitOver(socket);
 }
 
 
@@ -225,13 +233,26 @@ module.exports = (socket) => {
     client.emit('seat', nextPlayerIdx);
     socket.emit('players', playerConnections.map(conn => !!conn))
 
+
+   
+
     //* All Players Seated
     if (playerConnections.every(conn => conn !== null)) {
       console.log("game is ready!")
       socket.emit('ready', true);
 
+
+
+      if (gameDB_id === null) {
+
       //! TODO: don't always restart the game just due to having a 4th player
       startTheGame(socket, playerConnections);
+
+      }else {
+        return
+      };
+
+
     }
 
 
@@ -255,6 +276,12 @@ module.exports = (socket) => {
 
         socket.emit('ready', false); // wait for full game
         socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
+      }
+
+      if (playerConnections.every(conn => conn === null)) {
+
+        gameDB_id = null;
+
       }
 
       //? TODO: allow for reconnects

@@ -1,8 +1,5 @@
 import React from "react";
 import "./style.css";
-import LanternCards from "../LanternCards";
-import App from "../../App";
-import FavorTokens from "../FavorTokens";
 
 
 import styled from 'styled-components';
@@ -19,25 +16,6 @@ function GameInfo({ children, ...props }) {
         {children}
       </div>
       <div className="favorTokensContainer">
-          <FavorTokens />
-        </div>
-      <div>
-        {/* <div className="lanternCardsContainer">
-          <LanternCards color={App.colorMap[0]} />
-        </div> */}
-        <div className="lanternCardsContainer">
-          <LanternCards color={App.colorMap[0]} />
-          <LanternCards color={App.colorMap[1]} />
-          <LanternCards color={App.colorMap[2]} />
-          <LanternCards color={App.colorMap[3]} />
-         
-        </div>
-
-        <div className="lanternCardsContainer">
-          <LanternCards color={App.colorMap[4]} />
-          <LanternCards color={App.colorMap[5]} />
-          <LanternCards color={App.colorMap[6]} />
-        </div>
       </div>
     </StyledGameInfo>
   );

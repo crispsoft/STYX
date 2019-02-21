@@ -67,7 +67,7 @@ module.exports = {
       ++player.colors[W];
 
       // Checks for special component of Adjacent Matching Tile
-      if (sTile[4]) { ++player.favor }
+      if (wTile[4]) { ++player.favor }
     }
 
     // If there was one adjacent match, and the newly placed tile was special, gain one favor for the new tile
@@ -147,10 +147,11 @@ module.exports = {
   },
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
-
     // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
-
+    
     //% Check conditions that would prevent this placement from happening (illegal move)
+
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if ( !Number.isInteger(row)
@@ -222,6 +223,8 @@ module.exports = {
   },
 
   checkAndTrade(plyrIdx, colors) {
+
+    if (this.isOver) { return false; }
 
     //* Bad Types
     if (!Number.isInteger(plyrIdx)) { return false; }
