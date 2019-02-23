@@ -1,7 +1,7 @@
 import React from "react";
 import Hero from "../Hero";
 import BeastCard from "../BeastCard";
-import colors from "./../../constants/colors";
+import * as colors from "./../../constants/colors";
 
 const Home = () => (
   <div>

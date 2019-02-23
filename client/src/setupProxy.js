@@ -12,6 +12,11 @@ module.exports = function(app) {
       target: 'http://localhost:3001/',
       headers: { Accept: 'application/json' }
     }),
+
+    proxy('/admin', {
+      target: 'http://localhost:3001/',
+      headers: { Accept: 'application/json' }
+    }),
     
   )
 }

@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-
 //* Database
 require('./config/mongoose').connection.dropDatabase(); //TODO! CHANGE, this is hard reset on server start
 
@@ -8,7 +7,9 @@ require('./config/mongoose').connection.dropDatabase(); //TODO! CHANGE, this is 
 //* Express 
 const express = require("express");
 const app = express();
-const server = require('http').Server(app); 
+const server = require('http').Server(app);
+
+const passport = require('./config/passport');
 
 //* Express Middleware
 app.use(
@@ -17,15 +18,17 @@ app.use(
   express.urlencoded({ extended: true }), // parses urlencoded payloads
   express.json(),                         // parses JSON payloads
 
-  require('helmet')(), // collection of security settings
+  // require('helmet')(), // collection of security settings
   require("cookie-session")( 
     {
       name: 'styxsess',
       secret: process.env.SESSION_SECRET,
       maxAge: 1000*60*60*24, // 1day = 1000ms, 60sec, 60min, 24hr
-      secure: true,
-      httpOnly: true,
+      // secure: true,
+      // httpOnly: true,
     }),
+  passport.initialize(),
+  passport.session()
 );
 
 // Serve up static assets (usually on heroku)
@@ -40,7 +43,8 @@ require('./config/gameSocket')(io.of('/'));
 
 
 //* Routes
-app.use("/api", require('./routes/api'));
+app.use('/api'  , require('./routes/api'  ));
+app.use('/admin', require('./routes/admin'));
 
 // Send every other request to the React app
 app.get("*", (req, res) => {

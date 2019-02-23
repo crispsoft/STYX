@@ -11,20 +11,21 @@ passport.use(
         return done(null, false, { message: "Incorrect password." });
       }
 
-      return done(null, {adminID: true});
+      return done(null, { adminSuccess: true });
     }
   ));
 
 
 passport.serializeUser( (user, done) => {
-  done(null, user.adminID);
+  done(null, user.adminSuccess);
 });
 
 passport.deserializeUser( (id, done) => {
   if (!id) {
     done({message: "Error at deserializeUser"});
   }
-  done(null, {adminID: true});
+
+  done(null, { adminSuccess: true });
 });
 
 
