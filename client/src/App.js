@@ -315,7 +315,7 @@ class App extends Component {
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
           <TopOppPanel>
-            <Points>{`Points: ${top.points}`}</Points>
+            <Points>{`Obols: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
               <LanternCards key={`top-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
@@ -326,7 +326,7 @@ class App extends Component {
 
         <LeftPane selected={this.state.oppMap[this.state.whoseTurn] === 'left'}>
           <LeftOppPanel>
-            <Points>{`Points: ${left.points}`}</Points>
+            <Points>{`Obols: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
               <LanternCards key={`left-colors-${i}`}color={App.colorMap[i]} number={qty} />
             ))}
@@ -337,7 +337,7 @@ class App extends Component {
 
         <RightPane selected={this.state.oppMap[this.state.whoseTurn] === 'right'}>
           <RightOppPanel>
-            <Points>{`Points: ${right.points}`}</Points>
+            <Points>{`Obols: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
               <LanternCards key={`right-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
@@ -364,7 +364,7 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <Points >{`Points: ${this.state.points}`}</Points>
+            <Points >{`Obols: ${this.state.points}`}</Points>
             {this.state.colorQtys.map((qty, i) => (
               <LanternCards key={`my-colors-${i}`}
                 enabled  /*//? ={isMyTurn}*/
