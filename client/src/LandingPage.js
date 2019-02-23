@@ -20,6 +20,9 @@ const NavBar = styled.div`
   justify-content: space-around;
   text-decoration: none;
   font-family: "Imprima", sans-serif;
+  position: sticky;
+  top:0;
+  z-index: 1;
   `;
   
   const StyledLink = styled(Link)`
