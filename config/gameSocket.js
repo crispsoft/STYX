@@ -233,13 +233,26 @@ module.exports = (socket) => {
     client.emit('seat', nextPlayerIdx);
     socket.emit('players', playerConnections.map(conn => !!conn))
 
+
+   
+
     //* All Players Seated
     if (playerConnections.every(conn => conn !== null)) {
       console.log("game is ready!")
       socket.emit('ready', true);
 
+
+
+      if (gameDB_id === null) {
+
       //! TODO: don't always restart the game just due to having a 4th player
       startTheGame(socket, playerConnections);
+
+      }else {
+        return
+      };
+
+
     }
 
 
@@ -263,6 +276,12 @@ module.exports = (socket) => {
 
         socket.emit('ready', false); // wait for full game
         socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
+      }
+
+      if (playerConnections.every(conn => conn === null)) {
+
+        gameDB_id = null;
+
       }
 
       //? TODO: allow for reconnects

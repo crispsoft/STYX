@@ -1,9 +1,7 @@
 ☐ indicators of player's turn or not 
-  incld:  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
-  
-☐ make a general square component, always render 49 (all) of them, 'inherit' from this to make particular components - one for with colors & one for of border
+incld:  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
 
-✔ have client handle the emit of being seated to include linking what player index are their top, left, right opponents @done(19-02-12 16:25)
+☐ make a general square component, always render 49 (all) of them, 'inherit' from this to make particular components - one for with colors & one for of border
 
 ☐ make game-logic a 'publisher', with server socketing as a 'subscribe' to changes
 
@@ -12,3 +10,5 @@
 ☐ reconfigure Squares component on client to have ID of first person perspective board index
 
 ☐ make gamelogic into 'class'
+
+✔ have client handle the emit of being seated to include linking what player index are their top, left, right opponents @done(19-02-12 16:25)

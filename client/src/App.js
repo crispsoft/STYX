@@ -4,13 +4,15 @@ import openSocket from 'socket.io-client';
 import React, { Component } from "react";
 
 import TitleCard from './components/TitleCard';
-import RulesCard from './components/RulesCard';
+import RulesModalIcon from './components/RulesModalIcon';
 import BorderSquare from './components/BorderSquare';
 import GameInfo     from './components/GameInfo';
 import LanternCards from './components/LanternCards';
 import DedicationCards from './components/DedicationCards';
 
+
 import handle from './clientHandlers';
+
 
 import styled from 'styled-components';
 
@@ -107,16 +109,8 @@ class App extends Component {
    
   }
 
-  componentWillMount() {
-
-    axios.get("/api/test")
-      .then((results) => {
-        this.setState({
-          test: results.data.a
-        })
-      })
-    ;
-      
+  constructor(props) {
+    super(props);      
 
     //* Socket -> State Handling
     const { socket } = this.state;
@@ -134,6 +128,20 @@ class App extends Component {
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
     socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
     socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
+  }
+
+  componentDidMount() {
+    axios.get("/api/test")
+    .then((results) => {
+      this.setState({
+        test: results.data.a
+      })
+    })
+    ;
+  }
+
+  componentWillUnmount() {
+    this.state.socket.close();
   }
 
 
@@ -337,7 +345,7 @@ class App extends Component {
         </p>
 
         <TitleCard />
-        <RulesCard />
+        <RulesModalIcon />
 
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
@@ -434,7 +442,7 @@ class App extends Component {
 
 
 App.boardSize = 7;
-App.colorMap = ['#6600ff', '#419B7F', '#FA6835', '#900C3F', '#CC2127', '#DD9933', '#2D83AC'];
+App.colorMap = ['#6600ff', '#3a6342', '#bf4c24', '#68062c', '#CC2127', '#DD9933', '#2D83AC'];
 
 
 export default App;

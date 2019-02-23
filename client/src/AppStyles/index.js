@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import colors from './../constants/colors';
+import * as colors from './../constants/colors';
 
 export const FullScreenView = styled.div`
   height: 100vh;
