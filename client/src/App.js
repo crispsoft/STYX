@@ -311,7 +311,7 @@ class App extends Component {
           : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn+1}'s turn.`}</p>
             : <p>It is YOUR turn.<br/>
-              You may trade in [Sins] for [Obols].<br/>
+              You may trade in [Favors] for [Obols].<br/>
               You must place a [River Tile] to end turn.</p>
       
 
