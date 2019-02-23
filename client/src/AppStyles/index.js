@@ -37,10 +37,11 @@ export const Square = styled.div`
 
   border-color: ${props => props.colors};
 
-  border-width: ${props => props.special ? '3.7vh' : '5vh'};
+  border-width: 3.7vh;
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
+  // background-url: 
 
 
   ${props =>
