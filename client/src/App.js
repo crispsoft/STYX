@@ -293,16 +293,16 @@ class App extends Component {
 
     const statusTextEl =
       !this.state.connected
-      ? <p>You are not in the game.</p>
+      ? <p>You are not in the game, hoo hoo!</p>
       : !this.state.gameReady
-        ? <p>Waiting for 4 Players to play.</p>
+        ? <p>Waiting for 4 Players to play, hoo hoo.</p>
         : this.state.gameOver
           ? <p>Game Over<br/>
             {winnerText}</p>
           : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn+1}'s turn.`}</p>
-            : <p>It is YOUR turn.<br/>
-              You may trade in [Sins] for [Obols].<br/>
+            : <p>It is YOUR turn, hoo hoo!<br/>
+              You may trade in [Favors] for [Obols].<br/>
               You must place a [River Tile] to end turn.</p>
       
 
