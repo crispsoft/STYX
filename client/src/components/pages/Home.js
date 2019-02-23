@@ -9,7 +9,7 @@ class Home extends Component {
     this.BeastRowRef = React.createRef();
   };
 
-  scrollToBeastRowRef = () => window.scrollTo(0, this.BeastRowRef.current.offsetTop);
+  scrollToBeastRowRef = () => window.scrollTo({left: 0, top: this.BeastRowRef.current.offsetTop, behavior: 'smooth'});
 
   
   render() {
