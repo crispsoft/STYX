@@ -129,15 +129,6 @@ class App extends Component {
     socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
   }
 
-  componentDidMount() {
-    axios.get("/api/test")
-    .then((results) => {
-      this.setState({
-        test: results.data.a
-      })
-    })
-    ;
-  }
 
   componentWillUnmount() {
     this.state.socket.close();
@@ -317,22 +308,6 @@ class App extends Component {
 
     return (
       <FullScreenView>
-
-        { //TODO: remove this 'server-check' message
-        }
-        <p style={{
-          position: 'fixed',
-          top: '1em',
-          left: '1em'
-        }}>
-          Server says: {this.state.test}
-          <br/>
-          Socket says: {this.state.connected}
-          <br/>
-          I'm Player #{this.state.seatIndex+1}
-          <br />
-          {this.state.gameReady ? "READY!" : "..waiting for players.."}
-        </p>
 
         <TitleCard />
         <RulesModalIcon />
