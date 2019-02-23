@@ -42,6 +42,7 @@ const LandingPage = () => (
   </Router>
 );
 
+
 const IncludeNav = () => (
   <div>
     <NavBar id="nav-bar">

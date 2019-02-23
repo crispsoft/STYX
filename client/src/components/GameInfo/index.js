@@ -1,9 +1,5 @@
 import React from "react";
 import "./style.css";
-import LanternCards from "../LanternCards";
-import App from "../../App";
-import FavorTokens from "../FavorTokens";
-
 
 
 import styled from 'styled-components';
@@ -20,7 +16,7 @@ function GameInfo({ children, ...props }) {
         {children}
       </div>
       <div className="favorTokensContainer">
-        </div>
+      </div>
     </StyledGameInfo>
   );
 }

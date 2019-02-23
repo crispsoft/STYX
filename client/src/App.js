@@ -11,9 +11,8 @@ import LanternCards from './components/LanternCards';
 import DedicationCards from './components/DedicationCards';
 
 
-
-
 import handle from './clientHandlers';
+
 
 import styled from 'styled-components';
 
@@ -109,16 +108,8 @@ class App extends Component {
    
   }
 
-  componentWillMount() {
-
-    axios.get("/api/test")
-      .then((results) => {
-        this.setState({
-          test: results.data.a
-        })
-      })
-    ;
-      
+  constructor(props) {
+    super(props);      
 
     //* Socket -> State Handling
     const { socket } = this.state;
@@ -136,6 +127,20 @@ class App extends Component {
     socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
     socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
     socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
+  }
+
+  componentDidMount() {
+    axios.get("/api/test")
+    .then((results) => {
+      this.setState({
+        test: results.data.a
+      })
+    })
+    ;
+  }
+
+  componentWillUnmount() {
+    this.state.socket.close();
   }
 
 
