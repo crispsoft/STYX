@@ -7,13 +7,13 @@ import App from "./App";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import EdGuide from "./components/pages/edGuide";
-import Hero from "./components/Hero";
-import edGuide from "./components/pages/edGuide";
+
+import { medGrey } from "./constants/colors";
 
 const NavBar = styled.div`
   display: flex;
   align-items: center;
-  background-color: #91a2bb;
+  background-color: ${medGrey};
   width: 100%;
   height: 3em;
 
@@ -23,9 +23,9 @@ const NavBar = styled.div`
   position: sticky;
   top:0;
   z-index: 1;
-  `;
+`;
   
-  const StyledLink = styled(Link)`
+const StyledLink = styled(Link)`
   color: #375170;
   &:hover {
     color: white;
