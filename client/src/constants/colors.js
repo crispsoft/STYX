@@ -2,6 +2,8 @@ export const lightWhite = '#CED3E3';
 
 export const offWhite = '#E2E2E8';
 
+export const medGrey = '#91A2BB';
+
 export const purpleFavor = '#6600FF';
 export const greenFavor = '#3A6342';
 export const orangeFavor = '#BF4C24';

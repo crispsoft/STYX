@@ -1,8 +1,9 @@
 import React from "react";
-import "./style.css";
+
 import ConditionalObols from "../ConditionalObols";
 
 import styled, { css, keyframes } from 'styled-components';
+import { medGrey } from './../../constants/colors';
 
 const bounce = keyframes`
   from {
@@ -13,35 +14,61 @@ const bounce = keyframes`
   }
 `;
 
+const ObolExchange = styled.div`
+  position: relative;
 
+  width: 11vh;
+  height: 11vh;
 
-const StyledTrade = styled.div`
-  pointer-events: ${props => props.active ? 'all' : 'none' };
+  background: ${medGrey};
+  border: 3px solid black;
+  border-radius: 3px;
 
-  ${props => 
+  text-align: center;
+  font-size: 3em;
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  
+
+  pointer-events: ${props => props.active ? 'all' : 'none'};
+
+  ${props =>
     props.active && css`
        animation: ${bounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
        cursor: pointer;
 
        &:hover {
-         border-color: #375170;
+         /* border-color: #375170; */
        }
    `}
 `;
 
+const ConditionContainer = styled.div`
+  background: #526D78;
+  border: 3px solid;
+  border-color: inherit;
+  border-radius: 3px;
+  position: absolute;
+  height: 5vh;
+  width: 10vh;
+
+  bottom: -2.5vh;
+  left: 0; right: 0;
+  margin: auto;
+`;
+
+
+
 function DedicationCards({ value, type, ...props }) {
   return (
-    <StyledTrade className="dedicationCard" {...props}>
+    <ObolExchange {...props}>
       {value || ''}
-      <div id="condition" style={{
-        fontSize: '1.5rem',
-        wordWrap: 'nowrap',
-        borderColor: 'inherit'
-      }}>
-      <ConditionalObols type={type} />
-      </div>
-    </StyledTrade>
+      <ConditionContainer>
+        <ConditionalObols type={type} />
+      </ConditionContainer>
+    </ObolExchange>
   );
 }
 
