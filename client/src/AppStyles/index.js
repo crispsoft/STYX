@@ -42,6 +42,7 @@ export const LakeTile = styled.div`
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
+  // background-url: 
 
 
   ${props =>
@@ -70,6 +71,8 @@ export const LakeTile = styled.div`
 `;
 
 export const StatusSummary = styled.div`
+  font-family: Imprima, sans serif;
+  border-radius: 3px;
   position: fixed;
   bottom: 1rem;
   right: 1rem;
