@@ -37,10 +37,11 @@ export const Square = styled.div`
 
   border-color: ${props => props.colors};
 
-  border-width: ${props => props.special ? '3.7vh' : '5vh'};
+  border-width: 3.7vh;
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
+  // background-url: 
 
 
   ${props =>
@@ -69,6 +70,8 @@ export const Square = styled.div`
 `;
 
 export const StatusSummary = styled.div`
+  font-family: Imprima, sans serif;
+  border-radius: 3px;
   position: fixed;
   bottom: 1rem;
   right: 1rem;

@@ -129,15 +129,6 @@ class App extends Component {
     socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
   }
 
-  componentDidMount() {
-    axios.get("/api/test")
-    .then((results) => {
-      this.setState({
-        test: results.data.a
-      })
-    })
-    ;
-  }
 
   componentWillUnmount() {
     this.state.socket.close();
@@ -302,15 +293,15 @@ class App extends Component {
 
     const statusTextEl =
       !this.state.connected
-      ? <p>You are not in the game.</p>
+      ? <p>You are not in the game, hoo hoo!</p>
       : !this.state.gameReady
-        ? <p>Waiting for 4 Players to play.</p>
+        ? <p>Waiting for 4 Players to play, hoo hoo.</p>
         : this.state.gameOver
           ? <p>Game Over<br/>
             {winnerText}</p>
           : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn+1}'s turn.`}</p>
-            : <p>It is YOUR turn.<br/>
+            : <p>It is YOUR turn, hoo hoo!<br/>
               You may trade in [Favors] for [Obols].<br/>
               You must place a [River Tile] to end turn.</p>
       
@@ -318,29 +309,13 @@ class App extends Component {
     return (
       <FullScreenView>
 
-        { //TODO: remove this 'server-check' message
-        }
-        <p style={{
-          position: 'fixed',
-          top: '1em',
-          left: '1em'
-        }}>
-          Server says: {this.state.test}
-          <br/>
-          Socket says: {this.state.connected}
-          <br/>
-          I'm Player #{this.state.seatIndex+1}
-          <br />
-          {this.state.gameReady ? "READY!" : "..waiting for players.."}
-        </p>
-
         <TitleCard />
         <RulesModalIcon />
 
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === 'top'}>
           <TopOppPanel>
-            <Points>{`Points: ${top.points}`}</Points>
+            <Points>{`Obols: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
               <LanternCards key={`top-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
@@ -351,7 +326,7 @@ class App extends Component {
 
         <LeftPane selected={this.state.oppMap[this.state.whoseTurn] === 'left'}>
           <LeftOppPanel>
-            <Points>{`Points: ${left.points}`}</Points>
+            <Points>{`Obols: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
               <LanternCards key={`left-colors-${i}`}color={App.colorMap[i]} number={qty} />
             ))}
@@ -362,7 +337,7 @@ class App extends Component {
 
         <RightPane selected={this.state.oppMap[this.state.whoseTurn] === 'right'}>
           <RightOppPanel>
-            <Points>{`Points: ${right.points}`}</Points>
+            <Points>{`Obols: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
               <LanternCards key={`right-colors-${i}`} color={App.colorMap[i]} number={qty} />
             ))}
@@ -389,7 +364,7 @@ class App extends Component {
           </PlayerPanelTiles>
 
           <PlayerPanel>
-            <Points >{`Points: ${this.state.points}`}</Points>
+            <Points >{`Obols: ${this.state.points}`}</Points>
             {this.state.colorQtys.map((qty, i) => (
               <LanternCards key={`my-colors-${i}`}
                 enabled  /*//? ={isMyTurn}*/

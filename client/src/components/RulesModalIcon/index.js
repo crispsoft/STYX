@@ -1,44 +1,7 @@
-// import React from "react";
-// import style from "./style.css";
-// import Modal from '@material-ui/core/Modal';
-// import RulesCard from "../RulesCard"
-
-// class RulesModalIcon extends React.Component {
-//     state = {
-//         open: false,
-//       };
-    
-//       handleOpen = () => {
-//         this.setState({ open: true });
-//       };
-    
-//       handleClose = () => {
-//         this.setState({ open: false });
-//       };
-
-//       render () {
-//           const {classes} = this.props;
-//           return (
-//               <div>
-//                   {/* <img className="info-icon" src="" /> */}
-//               <Modal open={false}>
-//               <span>Somthing</span>
-//                       {/* <RulesCard /> */}
-//                       <div className="rulescard">rules</div>
-//               </Modal>
-//               </div>
-//           )
-
-//       };
-
-
-// }
-
-// export default RulesModalIcon;
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import owlStyles from "./style.css";
 
 import Modal from '@material-ui/core/Modal';
 import RulesCard from "../RulesCard"
@@ -87,7 +50,7 @@ class SimpleModal extends React.Component {
 
     return (
       <div>
-        <img className="info-icon" src="/assets/info-icon.png" onClick={this.handleOpen}/>
+        <img className="info-icon" src="/assets/hades_owl.png" onClick={this.handleOpen}/>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
