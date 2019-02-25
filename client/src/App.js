@@ -258,7 +258,7 @@ class App extends Component {
 
         let childEl = null; // what to show IN the square (border, colors, default nothing)
 
-        if (square && square.isBorder && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
+        if (square && square.isBorder && this.state.gameReady && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
           childEl =
             <BorderSquare
               onClick={() => this.clickAvail(row, col)}
