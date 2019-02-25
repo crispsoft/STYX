@@ -291,7 +291,7 @@ module.exports = {
 
     if (!this.players[plyrIdx].hand.length) {
       // this is a last round trade-in, and should advance player turn
-      ++this.whoseTurn;
+      // ++this.whoseTurn; //? this allows for only ONE trade in during last round
       this.advanceTurnIfCantTrade();
     }
 
