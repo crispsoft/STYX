@@ -107,5 +107,5 @@ export default {
   },
 
   trades: (tradesValues) => ({ tradesValues }),
-
+  rounds: (currRound, remRounds) => ({ currRound, remRounds }),
 };

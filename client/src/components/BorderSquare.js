@@ -9,6 +9,7 @@ const StyledBorderSquare = styled.div`
   background: transparent;
   &:hover {
     border-color: white;
+    cursor: pointer;
   }
 `;
 

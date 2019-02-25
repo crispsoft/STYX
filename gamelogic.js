@@ -136,8 +136,9 @@ module.exports = {
     }
 
     if (tryPlayer >= 4) {
+      // Game Over
       this.isOver = true;
-      // console.log("GAMEOVER");
+      this.round = 0;
       this.whoseTurn = -1; //TODO: problems with this?
     }
     else {
@@ -215,8 +216,11 @@ module.exports = {
     this.whoseTurn = (this.whoseTurn + 1) % 4;
 
     // first player's turn and they have no hands in tile
-    if (this.whoseTurn === 0 && this.players[0].hand.length === 0) {
-      this.advanceTurnIfCantTrade();
+    if (this.whoseTurn === 0) {
+      ++this.round; // new round
+      if (this.players[0].hand.length === 0) { 
+        this.advanceTurnIfCantTrade();
+      }
     }
     
     return true;
@@ -301,7 +305,8 @@ module.exports = {
 
   setup() {
 
-    // Reset state
+    //* Reset state
+
     this.isOver = false;
 
     this.players = [...Array(4)].map(_ => ({ //% map is necessary because nested inner array (object)
@@ -318,6 +323,8 @@ module.exports = {
     // this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3,15); //!testing (advances to last 3+1 rounds game)
     this.tileStack = _.shuffle([...gameTiles.lakeTiles]).slice(3); // Shuffle stack of tiles, remove some tiles to make stack a multiple of # players (4 players => 32 tiles => 35 less 3 tiles)
     
+    this.maxRounds = this.tileStack.length / 4 + 1; // + 1 final round for trade-ins only
+    this.round = 1;
 
     // TODO: generators?
     this.tradeSequences = [
@@ -333,16 +340,18 @@ module.exports = {
     ],
 
 
-    // Deal three tiles per player
+    //* Deal three tiles per player
     this.players.forEach(player => {
       // player.hand = this.tileStack.splice(0,1); //!testing
       player.hand = this.tileStack.splice(0,3);
     });    
     
-    // place start tile (center at (3,3), with 0-indexed based row/col)
+
+    //* Place start tile (center at (3,3), with 0-indexed based row/col)
     this.addTileToBoard(NaN, { row: 3, col: 3, tile: gameTiles.startTile });
 
-    // signify that first player is whose turn it is
+
+    //* Signify that first player is whose turn it is
     this.whoseTurn = 0;
   }
 

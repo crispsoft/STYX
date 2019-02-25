@@ -35,10 +35,8 @@ export const LakeTile = styled.div`
   border-style: solid;
 
   border-color: ${props => props.colors};
-  /* width: 10vh; */
-  /* width: 100%; */
-  /* height: 10vh; */
-  height: 100%;
+  width: 10vh;
+  height: 10vh;
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};

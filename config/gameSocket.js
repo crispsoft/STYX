@@ -155,6 +155,12 @@ function emitReady(socket) {
   socket.emit('ready', isGameReady);
 }
 
+function emitRound(socket) {
+  const currRound = game.round;
+  const remRounds = game.maxRounds - currRound + 1;
+  socket.emit('rounds', currRound, remRounds);
+}
+
 
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
@@ -167,6 +173,7 @@ function startTheGame(socket) {
   emitColors(socket);
   emitTurn(socket);
   emitTrades(socket);
+  emitRound(socket);
 }
 
 
@@ -213,6 +220,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
 
   emitColors(socket);
 
+  emitRound(socket);
   emitTurn(socket);
   emitOver(socket);
 }
@@ -239,6 +247,7 @@ function handleTrade({ socket, clientID }, colors) {
   emitColors(socket);
   emitPoints(socket);
 
+  emitRound(socket);
   emitTurn(socket);
   emitOver(socket);
 }
@@ -273,11 +282,12 @@ module.exports = (socket) => {
       emitTiles(client.id);
       emitBoard(client.id);
 
-      emitColors(socket);
-      emitOver(socket);
       emitPoints(socket);
+      emitColors(socket);
       emitTrades(socket);
       emitTurn(socket);
+      emitRound(socket);
+      emitOver(socket);
     }
 
 

@@ -55,6 +55,8 @@ class App extends Component {
     //* Game states
     gameReady: false,
     gameOver : false,
+    currRound: NaN,
+    remRounds: NaN,
 
 
     //* Public Game Info
@@ -106,17 +108,18 @@ class App extends Component {
     socket.on('connect'   , () => this.setState(handle.connect   ));
     socket.on('disconnect', () => this.setState(handle.disconnect));
 
-    socket.on('seat'      , (index) => this.setState(handle.seat (index)));
-    socket.on('board'     , (board) => this.setState(handle.board(board)));
-    socket.on('tiles'     , (tiles) => this.setState(handle.tiles(tiles)));
+    socket.on('seat' , (index) => this.setState(handle.seat (index)));
+    socket.on('board', (board) => this.setState(handle.board(board)));
+    socket.on('tiles', (tiles) => this.setState(handle.tiles(tiles)));
     
-    socket.on('colors'    , (colors  ) => this.setState(handle.colors (colors  )));
-    socket.on('turn'      , (index   ) => this.setState(handle.turn   (index   )));
-    socket.on('ready'     , (status  ) => this.setState(handle.ready  (status  )));
-    socket.on('over'      , (status  ) => this.setState(handle.over   (status  )));
-    socket.on('players'   , (statuses) => this.setState(handle.players(statuses)));
-    socket.on('trades'    , (trades  ) => this.setState(handle.trades (trades  )));
-    socket.on('points'    , (points  ) => this.setState(handle.points (points  )));
+    socket.on('colors' , (colors   ) => this.setState(handle.colors (colors   )));
+    socket.on('turn'   , (index    ) => this.setState(handle.turn   (index    )));
+    socket.on('ready'  , (status   ) => this.setState(handle.ready  (status   )));
+    socket.on('over'   , (status   ) => this.setState(handle.over   (status   )));
+    socket.on('players', (statuses ) => this.setState(handle.players(statuses )));
+    socket.on('trades' , (trades   ) => this.setState(handle.trades (trades   )));
+    socket.on('points' , (points   ) => this.setState(handle.points (points   )));
+    socket.on('rounds' , (curr, rem) => this.setState(handle.rounds (curr, rem)));
   }
 
 
@@ -380,27 +383,24 @@ class App extends Component {
 
           <PlayerPanelTiles>
             <div style={{
-              display: 'flex',
-              flexFlow: 'row nowrap',
+              display: 'grid',
               flexGrow: 1,
-              justifyContent: 'space-around',
-              // gridTemplateRows: 'repeat(1, 10vmin)',
-              // gridTemplateColumns: 'repeat(3, 10vmin)',
-              // width : calc(70vh+12px);
-              // background: 'red',
-              // gridGap: '2px',
-              // padding: '2px'
+              flexShrink: 0,
+              justifyItems: 'center',
+              gridTemplateRows: 'repeat(1, 10vh)',
+              gridTemplateColumns: 'repeat(3, minmax(10vh, 1fr))',
+              padding: '2px',
             }}>
             {this.state.tilesInHand.map((tile, i) => (
-              tile &&
+              tile && 
               <LakeTile /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
-                style={{ gridColumn: i + 1 }}
+                style={{gridColumn: i+1}}
                 enabled
                 selected={this.state.selectedTileIndex === i}
                 colors={tile.map(v => favorColorsMap[v])}
                 onClick={() => this.rotateTileInHand(i)}
-                />
-                ))}
+              />
+            ))}
             </div>
           </PlayerPanelTiles>
 
@@ -431,7 +431,12 @@ class App extends Component {
             {squares}
           </BoardGrid>
 
-          <GameInfo values={this.state.tradesValues}>
+          <GameInfo
+            values={this.state.tradesValues}
+            currRound={this.state.currRound}
+            remRounds={this.state.remRounds}
+          >
+
             {['1-all', '3-pair', '4-kind'].map((type, idx) => (
               <DedicationCards key={type}
                 type={type}

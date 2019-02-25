@@ -17,8 +17,10 @@ const bounce = keyframes`
 const ObolExchange = styled.div`
   position: relative;
 
-  width: 11vh;
-  height: 11vh;
+  width: 30%;
+  height: 5rem;
+
+  margin-bottom: 1rem;
 
   background: ${medGrey};
   border: 3px solid black;
@@ -46,17 +48,20 @@ const ObolExchange = styled.div`
 `;
 
 const ConditionContainer = styled.div`
+  position: absolute;
   background: #526D78;
+
   border: 3px solid;
   border-color: inherit;
   border-radius: 3px;
-  position: absolute;
-  height: 5vh;
-  width: 10vh;
+  
+  width: 90%;
 
-  bottom: -2.5vh;
+  bottom: 0;
   left: 0; right: 0;
   margin: auto;
+
+  transform: translateY(50%);
 `;
 
 

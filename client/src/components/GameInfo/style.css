@@ -1,41 +1,7 @@
-#gameInfo {
-  border: 10px solid transparent;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-image: url("/assets/greek_wave.png") 32 round;
-  box-shadow: .25em 1em 5em 1em black;
-
-  height: 20vh;
-  width: 20vw;
-   display: flex;
-   flex-direction: column;
-   justify-content: space-between;
-  padding: 3vh 0vh;
-
-  background-color: #CED3E3;
-
-  animation: bob 4s ease-in-out alternate-reverse infinite;
-}
-
-
 .dedicationCardsContainer {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
-}
-
-.favorTokensContainer {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-}
-
-.lanternCardsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin-top: 1vh;
-
 }
 
 @keyframes bob{
