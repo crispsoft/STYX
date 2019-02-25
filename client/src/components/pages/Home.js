@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Hero from "../Hero";
 import BeastCard from "../BeastCard";
 import * as colors from "./../../constants/colors";
 
@@ -61,9 +60,9 @@ class Home extends Component {
               style={pStyle}
             />
             <BeastCard
-              name="Pegasus"
-              img="/assets/beasts_white/Envy_pegasus.png"
-              description="The pegasus is a noble and majestic winged horse that is said to ferry worthy heroes to the steps of Olympus itself. Earning the favor of the pegasus will surely ease your passage across the River Styx."
+              name="The Furies"
+              img="/assets/beasts_white/Greed_Furies.png"
+              description="The Furies are the daughters of Night itself and the goddesses of vengeance incarnate. Guardians of the Underworld's laws and punishers of the wicked, the Furies are not to be trifled with. Nevertheless, if your heart is pure and your cause is just, they may well grant you their collective favor."
               color={colors.greenFavor}
               style={pStyle}
             />
@@ -91,9 +90,9 @@ class Home extends Component {
               style={pStyle}
             />
             <BeastCard
-              name="The Furies"
-              img="/assets/beasts_white/Greed_Furies.png"
-              description="The Furies are the daughters of Night itself and the goddesses of vengeance incarnate. Guardians of the Underworld's laws and punishers of the wicked, the Furies are not to be trifled with. Nevertheless, if your heart is pure and your cause is just, they may well grant you their collective favor."
+              name="Pegasus"
+              img="/assets/beasts_white/Envy_pegasus.png"
+              description="The pegasus is a noble and majestic winged horse that is said to ferry worthy heroes to the steps of Olympus itself. Earning the favor of the pegasus will surely ease your passage across the River Styx."
               color={colors.yellowFavor}
               style={pStyle}
             />
