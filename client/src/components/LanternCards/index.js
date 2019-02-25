@@ -2,13 +2,15 @@ import React from "react";
 
 import styled, { css } from 'styled-components';
 
+import { offWhite } from './../../constants/colors';
+
 const StyleCard = styled.div`
   border: 3px solid;
   border-color: ${props => props.color};
   border-radius: 50%;
   
   background: ${props => props.color };
-  color: #E2E2E8;
+  color: ${offWhite};
 
   height: 7vh;
   width: 7vh;

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
+import { offWhite } from './../constants/colors';
+
 const OppNameBase = styled.div`
-  background: #E2E2E8;
+  background: ${offWhite};
   
   pointer-events: none;
   user-select: none;
