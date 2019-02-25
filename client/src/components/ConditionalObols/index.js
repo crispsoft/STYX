@@ -1,7 +1,8 @@
 import React from "react";
 import "./style.css";
 
-import App from "../../App";
+
+import { favorColorsMap } from './../../constants/colors';
 
 
 function ConditionalObols (props) {
@@ -13,15 +14,15 @@ function ConditionalObols (props) {
            return( 
            <div>
                 <div className="one-allContainer">
-                    <div className="one-all" color={App.colorMap[1]}/>
-                    <div className="one-all" color={App.colorMap[2]}/>
-                    <div className="one-all" color={App.colorMap[0]}/>
-                    <div className="one-all" color={App.colorMap[3]}/>
+                    <div className="one-all" color={favorColorsMap[1]}/>
+                    <div className="one-all" color={favorColorsMap[2]}/>
+                    <div className="one-all" color={favorColorsMap[0]}/>
+                    <div className="one-all" color={favorColorsMap[3]}/>
                 </div>
                 <div className="one-allContainer">
-                    <div className="one-all" color={App.colorMap[4]}/>
-                    <div className="one-all" color={App.colorMap[5]}/>
-                    <div className="one-all" color={App.colorMap[6]}/>
+                    <div className="one-all" color={favorColorsMap[4]}/>
+                    <div className="one-all" color={favorColorsMap[5]}/>
+                    <div className="one-all" color={favorColorsMap[6]}/>
                 </div>
             </div>
             
@@ -31,14 +32,14 @@ function ConditionalObols (props) {
            return( 
            <div>
                 <div className="three-pairContainer">
-                    <div className="three-pair" color={App.colorMap[0]}/>
-                    <div className="three-pair" color={App.colorMap[1]}/>
-                    <div className="three-pair" color={App.colorMap[2]}/>
+                    <div className="three-pair" color={favorColorsMap[0]}/>
+                    <div className="three-pair" color={favorColorsMap[1]}/>
+                    <div className="three-pair" color={favorColorsMap[2]}/>
                 </div>
                 <div className="three-pairContainer">
-                    <div className="three-pair" color={App.colorMap[0]}/>
-                    <div className="three-pair" color={App.colorMap[1]}/>
-                    <div className="three-pair" color={App.colorMap[2]}/>
+                    <div className="three-pair" color={favorColorsMap[0]}/>
+                    <div className="three-pair" color={favorColorsMap[1]}/>
+                    <div className="three-pair" color={favorColorsMap[2]}/>
                 </div>
 
             </div>
@@ -48,13 +49,13 @@ function ConditionalObols (props) {
            return (
             <div>
                 <div className="four-kindContainer">
-                    <div className="four-kind" color={App.colorMap[0]}/>
-                    <div className="four-kind" color={App.colorMap[0]}/>
+                    <div className="four-kind" color={favorColorsMap[0]}/>
+                    <div className="four-kind" color={favorColorsMap[0]}/>
                 </div>
                 
                 <div className="four-kindContainer">
-                    <div className="four-kind" color={App.colorMap[0]}/>
-                    <div className="four-kind" color={App.colorMap[0]}/>    
+                    <div className="four-kind" color={favorColorsMap[0]}/>
+                    <div className="four-kind" color={favorColorsMap[0]}/>    
                 </div>
             
             </div>
