@@ -36,14 +36,12 @@ export const LakeTile = styled.div`
 
   border-color: ${props => props.colors};
   /* width: 10vh; */
-  width: 100%;
+  /* width: 100%; */
   /* height: 10vh; */
   height: 100%;
 
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
-  // background-url: 
-
 
   ${props =>
     props.enabled && css`
@@ -58,7 +56,7 @@ export const LakeTile = styled.div`
     props.selected && css`
       animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
-      cursor: crosshair
+      cursor: crosshair;
       /* &::after {
         width: 10px;
         height: 10px;
@@ -80,6 +78,24 @@ export const StatusSummary = styled.div`
   height: 15vh;
   padding: 0.3rem;
   background: ${colors.lightWhite};
+`;
+
+export const BoardGrid = styled.div`
+  width : calc(70vh+12px);
+  height: calc(70vh+12px);
+  outline: solid;
+  outline-color: ${colors.offWhite};
+  display: grid;
+  grid-gap: 2px;
+  padding: 2px;
+  grid-template-columns: repeat(7, 10vmin);
+  grid-template-rows: repeat(7, 10vmin);
+`;
+
+export const BoardSquare = styled.div`
+  position: relative;
+  grid-row: ${props => props.gridRow};
+  grid-column: ${props => props.gridColumn};
 `;
 
 export * from './Panes.style';

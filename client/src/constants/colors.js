@@ -12,3 +12,12 @@ export const redFavor = '#CC2127';
 export const yellowFavor = '#DD9933';
 export const blueFavor = '#2D83AC';
 
+export const favorColorsMap = [
+  redFavor,
+  orangeFavor,
+  yellowFavor,
+  greenFavor,
+  blueFavor,
+  purpleFavor,
+  mahoganyFavor
+];

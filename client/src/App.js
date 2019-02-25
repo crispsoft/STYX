@@ -1,28 +1,30 @@
-import axios from 'axios';
 import openSocket from 'socket.io-client';
 
 import React, { Component } from "react";
 
-import TitleCard from './components/TitleCard';
-import RulesModalIcon from './components/RulesModalIcon';
-import BorderSquare from './components/BorderSquare';
-import GameInfo     from './components/GameInfo';
-import LanternCards from './components/LanternCards';
+import TitleCard       from './components/TitleCard';
+import RulesModalIcon  from './components/RulesModalIcon';
+import BorderSquare    from './components/BorderSquare';
+import GameInfo        from './components/GameInfo';
+import LanternCards    from './components/LanternCards';
 import DedicationCards from './components/DedicationCards';
-
+import BeastOnTile     from './components/BeastOnTile';
 
 import handle from './clientHandlers';
 
+import { beastImgsMap } from './constants/images';
 
 import styled from 'styled-components';
+import { favorColorsMap } from './constants/colors';
 
 // #region Styles
 import {
   FullScreenView,
   Points,
-  // Square,
   LakeTile,
   StatusSummary,
+  BoardGrid,
+  BoardSquare,
   
      TopPane,
    RightPane,
@@ -41,23 +43,11 @@ import {
   RightName,
 } from './AppStyles';
 
-const BoardGrid = styled.div`
-  width : calc(70vh+12px);
-  height: calc(70vh+12px);
-  outline: solid #E2E2E8;
-  display: grid;
-  grid-gap: 2px;
-  padding: 2px;
-  grid-template-columns: repeat(7, 10vmin);
-  grid-template-rows: repeat(7, 10vmin);
- 
-`;
+
 // #endregion Styles
 
 class App extends Component {
   state = {
-    test: null, //TODO: remove. this is a state holder for api/test route
-
 
     //* State from server connection
     socket: openSocket('/'),
@@ -100,7 +90,7 @@ class App extends Component {
     //* Personal Game Info
     points: 0,
     seatIndex: NaN,
-    oppMap: [], // maps seat indices from server to 'left', 'top', 'right', 'me'
+    oppMap: [], // maps seat indices (0,1,2,3) from server to 'left', 'top', 'right', 'me'
 
     tilesInHand: [null, null, null],
     selectedTileIndex: NaN,
@@ -254,48 +244,74 @@ class App extends Component {
       }
     }
 
-    const mockBoard = Array(49).fill(null);
-    mockBoard[2 * 7 + 3] = [3, 4, 1, 2];
-    mockBoard[3 * 7 + 2] = [3, 4, 1, 2];
-    mockBoard[3 * 7 + 3] = [1, 2, 3, 4];
-    mockBoard[3 * 7 + 4] = [3, 4, 1, 2];
-    mockBoard[4 * 7 + 3] = [3, 4, 1, 2];
 
     const squares =
-      // this.state.board.map((square, squareIdx) => {
-      mockBoard.map((square, squareIdx) => {
+      this.state.board.map((square, squareIdx, board) => {
+        const sz = App.boardSize;
 
-        const row = Math.floor(squareIdx / App.boardSize) + 1;
-        const col = squareIdx % App.boardSize + 1;
+        const row = Math.floor(squareIdx / sz); 
+        const col = squareIdx % sz;
 
-        let childEl = null;
+        const gridRow = row + 1; //! +1's because css grid is first index=1 based
+        const gridColumn = col + 1;
+
+
+        let childEl = null; // what to show IN the square (border, colors, default nothing)
+
         if (square && square.isBorder && isMyTurn && this.state.tilesInHand.length) { // only show border squares when it's player's turn and there are still tiles in hand
           childEl =
             <BorderSquare
-              onClick={() => this.clickAvail(row - 1, col - 1)} //! -1's because css grid is first index=1 based
+              onClick={() => this.clickAvail(row, col)}
             />
         }
 
         else if (Array.isArray(square)) { // a regular tile, with an array of border colors
-          const colors = square.map(n => App.colorMap[n]);
+
+          const nTile = (row >  0) && board[(row-1)*sz + col  ];
+          const nTileColor = nTile && nTile[2];
+          const showNBeast = /* (nTile && nTile.isBorder) || */ nTileColor === square[0];
+
+          const eTile = (col < sz) && board[ row   *sz + col+1];
+          const eTileColor = eTile && eTile[3];
+          const showEBeast = /* (eTile && eTile.isBorder) || */ eTileColor === square[1];
+
+          const sTile = (row < sz) && board[(row+1)*sz + col  ];
+          const sTileColor = sTile && sTile[0];
+          const showSBeast = /* (sTile && sTile.isBorder) || */ sTileColor === square[2];
+
+          const wTile = (col >  0) && board[ row   *sz + col-1];
+          const wTileColor = wTile && wTile[1];
+          const showWBeast = /* (wTile && wTile.isBorder) || */ wTileColor === square[3];
+
+          const colorHexes = square.map(n => favorColorsMap[n]);
+          const imageFileNames = square.map(n => beastImgsMap[n]);
+
           childEl = (
             <>
-              <LakeTile colors={colors} />
-              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
-              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
-              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
-              <img src="assets/sins_images/Anger_Ceraberos.png"></img>
+              <LakeTile colors={colorHexes} />
+
+              {/* Grain Effect */}
+              <img src="assets/tileGrain.png" style={{
+                position: 'absolute',
+                left: 0, right: 0, top: 0, bottom: 0,
+                margin: 'auto',
+                width: '100%', height: '100%',
+                opacity: '.2'
+              }} />
+
+              {showNBeast && <BeastOnTile src={`assets/beasts_white/${imageFileNames[0]}.png`} side='top' />}
+              {showEBeast && <BeastOnTile src={`assets/beasts_white/${imageFileNames[1]}.png`} side='right' />}
+              {showSBeast && <BeastOnTile src={`assets/beasts_white/${imageFileNames[2]}.png`} side='bottom' />}
+              {showWBeast && <BeastOnTile src={`assets/beasts_white/${imageFileNames[3]}.png`} side='left' />}
+
             </>
           );
         }
 
         return (
-          <div key={`square-${squareIdx}`} style={{
-            gridRow: {row},
-            gridColumn: {col}
-          }}>
+          <BoardSquare key={`square-${squareIdx}`}>
             {childEl}
-          </div>
+          </BoardSquare>
         );
 
       });
@@ -327,7 +343,7 @@ class App extends Component {
           <TopOppPanel>
             <Points>{`Obols: ${top.points}`}</Points>
             {top.colors.map((qty, i) => (
-              <LanternCards key={`top-colors-${i}`} color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`top-colors-${i}`} color={favorColorsMap[i]} number={qty} />
             ))}
           </TopOppPanel>
 
@@ -338,7 +354,7 @@ class App extends Component {
           <LeftOppPanel>
             <Points>{`Obols: ${left.points}`}</Points>
             {left.colors.map((qty, i) => (
-              <LanternCards key={`left-colors-${i}`} color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`left-colors-${i}`} color={favorColorsMap[i]} number={qty} />
             ))}
           </LeftOppPanel>
 
@@ -349,7 +365,7 @@ class App extends Component {
           <RightOppPanel>
             <Points>{`Obols: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
-              <LanternCards key={`right-colors-${i}`} color={App.colorMap[i]} number={qty} />
+              <LanternCards key={`right-colors-${i}`} color={favorColorsMap[i]} number={qty} />
             ))}
           </RightOppPanel>
 
@@ -361,25 +377,45 @@ class App extends Component {
         <BottomPane selected={isMyTurn}>
 
           <PlayerPanelTiles>
+            <div style={{
+              display: 'flex',
+              flexFlow: 'row nowrap',
+              flexGrow: 1,
+              justifyContent: 'space-around',
+              // gridTemplateRows: 'repeat(1, 10vmin)',
+              // gridTemplateColumns: 'repeat(3, 10vmin)',
+              // width : calc(70vh+12px);
+              // background: 'red',
+              // gridGap: '2px',
+              // padding: '2px'
+            }}>
             {this.state.tilesInHand.map((tile, i) => (
               tile &&
               <LakeTile /*//! TODO: think of key={}.. probably with refactor that each tile has unique ID */
+                style={{ gridColumn: i + 1 }}
                 enabled
                 selected={this.state.selectedTileIndex === i}
-                colors={tile.map(v => App.colorMap[v])}
+                colors={tile.map(v => favorColorsMap[v])}
                 onClick={() => this.rotateTileInHand(i)}
-              />
-            ))}
+                />
+                ))}
+            </div>
           </PlayerPanelTiles>
 
           <PlayerPanel>
             <Points >{`Obols: ${this.state.points}`}</Points>
+
             {this.state.colorQtys.map((qty, i) => (
               <LanternCards key={`my-colors-${i}`}
+
                 enabled  /*//? ={isMyTurn}*/
                 selected={this.state.colorsSelected[i]}
-                color={App.colorMap[i]} number={qty}
-                onClick={() => this.toggleColor(i)} />
+
+                color={favorColorsMap[i]}
+                number={qty}
+
+                onClick={() => this.toggleColor(i)}
+              />
             ))}
           </PlayerPanel>
 
@@ -417,7 +453,6 @@ class App extends Component {
 
 
 App.boardSize = 7;
-App.colorMap = ['#6600ff', '#3a6342', '#bf4c24', '#68062c', '#CC2127', '#DD9933', '#2D83AC'];
 
 
 export default App;
