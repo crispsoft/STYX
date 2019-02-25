@@ -18,14 +18,14 @@ app.use(
   express.urlencoded({ extended: true }), // parses urlencoded payloads
   express.json(),                         // parses JSON payloads
 
-  // require('helmet')(), // collection of security settings
+  require('helmet')(), // collection of security settings
   require("cookie-session")( 
     {
       name: 'styxsess',
       secret: process.env.SESSION_SECRET,
       maxAge: 1000*60*60*24, // 1day = 1000ms, 60sec, 60min, 24hr
-      // secure: true,
-      // httpOnly: true,
+      httpOnly: true,
+      // secure: true, //! cant, requires https?
     }),
   passport.initialize(),
   passport.session()

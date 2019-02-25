@@ -65,21 +65,17 @@ class GameLogin extends Component {
       }
     });
 
-    console.log(name, value);
+    // console.log(name, value);
   }
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-    const { target } = event;
 
-    console.log("form submit", target, target.elements);
+    // const { target } = event;
+    // console.log("form submit", target, target.elements);
 
     axios.post('/admin/login', this.state.form)
-
-      .then((...args) => {
-        console.log(args.length, "post results:", ...args);
-      })
-
+      .then(this.props.onLogin)
       .catch(error => {})
     ; 
 
