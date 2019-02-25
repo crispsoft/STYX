@@ -5,6 +5,8 @@ const gameDB = require('./../api/gameDB');
 const BOARD_ROT_MAPs = [
   //% Player 1 is basis of BOARD perspective
 
+  , //! empty at index 0
+
   //* Player 2 perspective
   [ 6, 13, 20, 27, 34, 41, 48,
     5, 12, 19, 26, 33, 40, 47,
@@ -35,8 +37,11 @@ const BOARD_ROT_MAPs = [
 ];
 
 const TILE_ROT_MAPs = [
-  //% Player 1 is basis of TILE perspective
   //% last index is for special characteristics
+
+  //% Player 1 is basis of TILE perspective
+
+  , //! empty at index 0
 
   //* Player 2 perspective
   [1, 2, 3, 0, 4],
@@ -51,50 +56,71 @@ const TILE_ROT_MAPs = [
 
 const playerConnections = Array(4).fill(null);
 const playerConnMap = new Map();
+let isGameReady = false;
 let gameDB_id = null;
 
+const playerBoard = (index) => {
 
-function emitBoard() {
-  //% Player 1 is basis of board perspective
-  playerConnections[0].emit('board', game.board);
+  if (index === 0){
+    //% Player 1 (index 0) is basis of board perspective
+    return game.board;
+  }
 
-  //% Players 2,3,4 have rotated board perspective
-  playerConnections.slice(1).forEach((conn, connIdx) => {
-    const theirTileMapper = TILE_ROT_MAPs[connIdx]; // stored to maintain throughout board mapping
+  //% other players 2,3,4 have ROTated board perspective
 
-    const theirBoard = BOARD_ROT_MAPs[connIdx].map(boardRot => {
+  const theirTileMapper = TILE_ROT_MAPs[index]; // stored to maintain throughout board mapping
 
-      // see if there is any tile at that location, and if so rotate its colors
-      let theirTile = game.board[boardRot];
-      if (theirTile && !theirTile.isBorder) {
-        theirTile = theirTileMapper.map(tileRot => game.board[boardRot][tileRot]);
-      }
+  const theirBoard = BOARD_ROT_MAPs[index].map(boardRot => {
 
-      return theirTile;
+    // see if there is any tile at that location, and if so rotate its colors
+    let theirTile = game.board[boardRot];
+    if (theirTile && !theirTile.isBorder) {
+      theirTile = theirTileMapper.map(tileRot => game.board[boardRot][tileRot]);
+    }
 
-    });
-
-    conn.emit('board', theirBoard);
+    return theirTile;
 
   });
+
+  return theirBoard;
+
+}
+
+function emitBoard(...clientIDs) {
+
+  if (clientIDs.length) {
+    clientIDs.filter(id => playerConnMap.has(id)).forEach(id => {
+      const index = playerConnMap.get(id);
+      playerConnections[index].emit('board', playerBoard(index));
+    });
+  }
+  
+  else {
+    playerConnections.forEach((conn, connIdx) => {
+      if (conn) {
+        conn.emit('board', playerBoard(connIdx));
+      }
+    });
+  }
 
 }
 
 function emitTiles(...clientIDs) {
 
   if (clientIDs.length) {
-    clientIDs.forEach(id => {
+    clientIDs.filter(id => playerConnMap.has(id)).forEach(id => {
       const index = playerConnMap.get(id);
-      playerConnections[index].emit('tiles', game.players[index].hand);
+      playerConnections[index].emit('tiles', game.players[index].hand)
     });
   }
 
   // otherwise if empty parameters, emit tiles to ALL connections
   else {
     playerConnections.forEach((conn, connIdx) => {
-      const theirHandTiles = game.players[connIdx].hand;
-      // console.log(theirHandTiles);
-      conn.emit('tiles', theirHandTiles);
+      if (conn) {
+        const theirHandTiles = game.players[connIdx].hand;
+        conn.emit('tiles', theirHandTiles);
+      }
     })
   }
 
@@ -102,7 +128,6 @@ function emitTiles(...clientIDs) {
 
 function emitColors(socket) {
   const colors = game.players.map(player => player.colors);
-  // console.log(colors);
   socket.emit('colors', colors);
 }
 
@@ -113,18 +138,21 @@ function emitTurn(socket) {
 
 function emitTrades(socket) {
   const trades = game.tradeValues;
-  // console.log('emit trade', trades);
   socket.emit('trades', trades);
 }
 
 function emitPoints(socket) {
-  const points = game.players.map(p => p.points);
+  const points = game.players.map(player => player.points);
   socket.emit('points', points);
 }
 
 function emitOver(socket) {
   const isOver = game.isOver;
   socket.emit('over', isOver);
+}
+
+function emitReady(socket) {
+  socket.emit('ready', isGameReady);
 }
 
 
@@ -148,9 +176,10 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
     return console.log("\n\t\t'@ handle Place, from unknown client!?\n\t", clientID);
   }
 
+  if (!isGameReady) { return false; }
+
 
   const playerIdx = playerConnMap.get(clientID);
-  // console.log("\n\t\t@ handle Place\n", playerIdx, { row, col, tile, indexInHand });
 
   // transform row/col & tile BACK to Player 1 - perspective
   const rowOrig = row; 
@@ -179,10 +208,12 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   }
 
   emitBoard();
+
   emitTiles(clientID);
+
   emitColors(socket);
+
   emitTurn(socket);
-  emitTrades(socket);
   emitOver(socket);
 }
 
@@ -192,6 +223,8 @@ function handleTrade({ socket, clientID }, colors) {
   if (!playerConnMap.has(clientID)) {
     return console.log("\n\t\t'@ handle Trade, from unknown client!?\n\t", clientID);
   }
+
+  if (!isGameReady) { return false; }
   
 
   const playerIdx = playerConnMap.get(clientID);
@@ -201,9 +234,11 @@ function handleTrade({ socket, clientID }, colors) {
     //TODO: gameDB add info to turn
   }
 
-  emitColors(socket);
   emitTrades(socket);
+  
+  emitColors(socket);
   emitPoints(socket);
+
   emitTurn(socket);
   emitOver(socket);
 }
@@ -214,12 +249,10 @@ module.exports = (socket) => {
 
   socket.on('connection', client => {
 
-    // console.log("\nconnection", /* Object.keys(client), */ client.id, playerConnMap.size)
-
     const nextPlayerIdx = playerConnections.findIndex(conn => conn === null);
 
     if (nextPlayerIdx < 0) { // No room for another player
-      console.log("\tFull game, disconnecting", client.id);
+      // console.log("\tFull game, disconnecting", client.id);
       client.disconnect();
       //? TODO: send message game is full
       return;
@@ -227,70 +260,71 @@ module.exports = (socket) => {
 
 
     //* Add player connection
-    console.log("\nseating", client.id, "at index", nextPlayerIdx);
     playerConnections[nextPlayerIdx] = client;
     playerConnMap.set(client.id, nextPlayerIdx);
+
     client.emit('seat', nextPlayerIdx);
-    socket.emit('players', playerConnections.map(conn => !!conn))
+    socket.emit('players', playerConnections.map(conn => !!conn));
 
 
-   
+    //* Player reconnecting to game in progress
+    if (gameDB_id !== null) {
+      // give them all the states
+      emitTiles(client.id);
+      emitBoard(client.id);
+
+      emitColors(socket);
+      emitOver(socket);
+      emitPoints(socket);
+      emitTrades(socket);
+      emitTurn(socket);
+    }
+
 
     //* All Players Seated
     if (playerConnections.every(conn => conn !== null)) {
-      console.log("game is ready!")
-      socket.emit('ready', true);
-
-
+      isGameReady = true;
+      emitReady(socket);
 
       if (gameDB_id === null) {
-
-      //! TODO: don't always restart the game just due to having a 4th player
-      startTheGame(socket, playerConnections);
-
-      }else {
-        return
-      };
-
-
+        //! TODO: don't always restart the game just due to having a 4th player
+        startTheGame(socket, playerConnections);
+      }
     }
 
 
     client.on('reconnect', () => {
-      console.log("reconn?");
-    })
+      console.log("reconnect!?");
+    });
 
 
     //* Disconnect
     client.on('disconnect', () => {
-      console.log("\ndisconn", client.id);
 
+      const idx = playerConnMap.get(client.id);
+      if (idx !== undefined) { // Player had been seated
 
-      if (playerConnMap.has(client.id)) { // Player was seated
-        console.log("\tremoving from array & map");
-
-        const idx = playerConnMap.get(client.id);
+        // removing from array & map connection variables
         playerConnections[idx] = null;
-
         playerConnMap.delete(client.id);
 
-        socket.emit('ready', false); // wait for full game
+        isGameReady = false
+        emitReady(socket); // wait for full game
+        
         socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
       }
 
       if (playerConnections.every(conn => conn === null)) {
-
+        // abandon/stop game if no player connections left
+        //TODO: remove from DB
         gameDB_id = null;
-
       }
 
-      //? TODO: allow for reconnects
     });
 
 
-    //* Interactions from Client
+    //* Interactions FROM Client
     client.on('place', ({ row, col, tile, indexInHand } = {}) => {
-      // console.log(row, col, tile, indexInHand);
       handlePlaceTile({ socket, clientID: client.id }, { row, col, tile, indexInHand })
     });
 
