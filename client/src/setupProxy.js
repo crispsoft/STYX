@@ -5,7 +5,8 @@ module.exports = function(app) {
 
     proxy('/socket.io', {
       target: 'http://localhost:3001/',
-      ws: true
+      ws: true,
+      logLevel: 'error'
     }),
 
     proxy('/api', {
