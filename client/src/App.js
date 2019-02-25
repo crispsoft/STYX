@@ -14,7 +14,6 @@ import handle from './clientHandlers';
 
 import { beastImgsMap } from './constants/images';
 
-import styled from 'styled-components';
 import { favorColorsMap } from './constants/colors';
 
 // #region Styles
@@ -291,7 +290,7 @@ class App extends Component {
               <LakeTile colors={colorHexes} />
 
               {/* Grain Effect */}
-              <img src="assets/tileGrain.png" style={{
+              <img src="assets/tileGrain.png" alt="" style={{
                 position: 'absolute',
                 left: 0, right: 0, top: 0, bottom: 0,
                 margin: 'auto',
@@ -309,7 +308,10 @@ class App extends Component {
         }
 
         return (
-          <BoardSquare key={`square-${squareIdx}`}>
+          <BoardSquare key={`square-${squareIdx}`}
+            gridRow={gridRow}
+            gridColumn={gridColumn}>
+
             {childEl}
           </BoardSquare>
         );

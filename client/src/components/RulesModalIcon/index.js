@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import owlStyles from "./style.css";
+
+import "./style.css";
 
 import Modal from '@material-ui/core/Modal';
 import RulesCard from "../RulesCard"
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
+/* function getModalStyle() {
   const top = 50 + rand();
   const left = 50 + rand();
 
@@ -19,7 +17,7 @@ function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
   };
-}
+} */
 
 const styles = theme => ({
   paper: {
@@ -46,11 +44,11 @@ class SimpleModal extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     return (
       <div>
-        <img className="info-icon" src="/assets/hades_owl.png" onClick={this.handleOpen}/>
+        <img className="info-icon" alt="Hades Screech Owl, here to help you" src="/assets/hades_owl.png" onClick={this.handleOpen}/>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"

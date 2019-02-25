@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import style from "./style.css";
+import React from 'react';
+
 import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+// import PropTypes from "prop-types";
+// import { withStyles } from "@material-ui/core/styles";
 
-// function rand() {
-//   return Math.round(Math.random() * 20) - 10;
-// }
+import "./style.css";
 
+
+/*
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -29,10 +29,11 @@ const styles = theme => ({
     outline: "none"
   }
 });
+ */
 
 class RulesCard extends React.Component {
   render() {
-    const { classes } = this.props;
+    // const { classes } = this.props;
     return (
       <div className="rulescard">
         <div className="modal-title">
