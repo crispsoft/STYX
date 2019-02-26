@@ -1,6 +1,6 @@
 // require('./config/mongoose') //? assume mongoose connection has been initiated already?
 
-const { Game, Turn } = require('./../models');
+const { Game } = require('./../models');
 
 
 const errorLog = (title, error) => {
