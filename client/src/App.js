@@ -358,23 +358,24 @@ class App extends Component {
       );
     });
 
-    const statusTextEl = !this.state.connected ? (
-      <p>You are not in the game, hoo hoo!</p>
-    ) : !this.state.gameReady ? (
-      <p>Waiting for 4 Players to play, hoo hoo.</p>
-    ) : this.state.gameOver ? (
-      <p>
-        Game Over
-        <br />
-        {winnerText}
+    const statusTextEl =
+      !this.state.connected
+      ? <p>You are not in the game, hoo hoo!</p>
+
+      : !this.state.gameReady
+        ? <p>Waiting for 4 Players to play, hoo hoo.</p>
+
+        : this.state.gameOver
+          ?<p>Game Over
+          <br/>{winnerText}
       </p>
-    ) : !isMyTurn ? (
-      <p>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
-    ) : (
-      <p>It is YOUR turn, hoo hoo! 
-        <br /> Click me to see the rules!
+
+            : !isMyTurn
+            ? <p>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
+            : <p>It is YOUR turn, hoo hoo!
+              <br/>Click me to see the rules!
       </p>
-    );
+    ;
 
     return (
       <FullScreenView>
