@@ -223,6 +223,10 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   emitRound(socket);
   emitTurn(socket);
   emitOver(socket);
+
+  if (game.isOver){
+    gameDB.end(gameDB_id);
+  }
 }
 
 
@@ -250,6 +254,10 @@ function handleTrade({ socket, clientID }, colors) {
   emitRound(socket);
   emitTurn(socket);
   emitOver(socket);
+  
+  if (game.isOver){
+    gameDB.end(gameDB_id);
+  }
 }
 
 

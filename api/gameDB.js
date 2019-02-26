@@ -43,7 +43,14 @@ module.exports = {
       })
   ),
 
-  addTurn: (_id, tilePlace ) => {
+  end: (_id) => (
+    Game.findByIdAndUpdate(_id, 
+      { isEnded: true }
+    ).catch(error => {
+      errorLog("Game End update", error)
+      throw error;
+    })
+  ),
 
     const turnDoc = new Turn({ tilePlace });
 
