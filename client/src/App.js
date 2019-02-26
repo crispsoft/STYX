@@ -298,7 +298,7 @@ class App extends Component {
                 left: 0, right: 0, top: 0, bottom: 0,
                 margin: 'auto',
                 width: '100%', height: '100%',
-                opacity: '.2'
+                opacity: '.5'
               }} />
 
               {showNBeast && <BeastOnTile src={`assets/beasts_white/${imageFileNames[0]}.png`} side='top' />}
