@@ -370,7 +370,9 @@ class App extends Component {
     ) : !isMyTurn ? (
       <p>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
     ) : (
-      <p>It is YOUR turn, hoo hoo!</p>
+      <p>It is YOUR turn, hoo hoo! 
+        <br /> Click me to see the rules!
+      </p>
     );
 
     return (

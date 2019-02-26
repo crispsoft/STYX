@@ -70,13 +70,13 @@ function DedicationCards({ value, type, ...props }) {
   let title = "";
   switch (type) {
     case "1-all":
-      title = "blah blah";
+      title = "Trade one of each favor";
       break;
     case "3-pair":
-      title = "blah bldfdfdfah";
+      title = "Trade three pairs of favors";
       break;
     case "4-kind":
-      title = "blah blhhhhah";
+      title = "Trade four of the same favor";
       break;
   }
   return (
