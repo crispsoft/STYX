@@ -126,10 +126,10 @@ class App extends Component {
 
     this.state.socket.emit("place",
       {
-      row,
-      col,
+        row,
+        col,
         tile,
-      indexInHand: idx
+        indexInHand: idx
       }
     );
 
@@ -489,6 +489,8 @@ class App extends Component {
                 <DedicationCards
                   key={type}
                   type={type}
+                  colors={this.state.colorQtys}
+                  selected={this.state.colorsSelected}
                   value={this.state.tradesValues[idx]}
                   active={this.state.tradesActive[idx]}
                   onClick={this.state.tradesActive[idx] ? (() => this.handleTrade(type)) : undefined}

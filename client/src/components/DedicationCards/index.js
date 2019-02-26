@@ -63,7 +63,8 @@ const ConditionContainer = styled.div`
   transform: translateY(50%);
 `;
 
-function DedicationCards({ value, type, ...props }) {
+function DedicationCards({ value, type, colors, selected, ...props }) {
+
   let title = "";
   switch (type) {
     case "1-all":
@@ -77,17 +78,18 @@ function DedicationCards({ value, type, ...props }) {
       break;
     default:;
   }
+
   return (
     <Tooltip title={title} placement="top">
       <ObolExchange {...props}>
         {value || ""}
         <ConditionContainer>
-          <ConditionalObols type={type} />
-          {/* <div className="tooltiptext">Turn in one of each Beast Favor</div> */}
+          <ConditionalObols type={type} colors={colors} selected={selected} />
         </ConditionContainer>
       </ObolExchange>
     </Tooltip>
   );
+
 }
 
 export default DedicationCards;
