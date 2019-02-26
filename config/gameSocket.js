@@ -1,5 +1,6 @@
 const game = require('./../gamelogic');
 const gameDB = require('./../api/gameDB');
+const { Turn } = require('./../models');
 
 
 const BOARD_ROT_MAPs = [
@@ -58,6 +59,7 @@ const playerConnections = Array(4).fill(null);
 const playerConnMap = new Map();
 let isGameReady = false;
 let gameDB_id = null;
+let currentTurnDoc = null;
 
 const playerBoard = (index) => {
 
@@ -165,8 +167,10 @@ function emitRound(socket) {
 function startTheGame(socket) {
   //% care: https://mongoosejs.com/docs/queries.html#queries-are-not-promises
   gameDB.new().then(({ _id }) => gameDB_id = _id).catch(); // TODO: error handling
-
+  
   game.setup();
+
+  currentTurnDoc = new Turn({ playerIdx: game.whoseTurn });
 
   emitBoard();
   emitTiles();
@@ -191,7 +195,7 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   // transform row/col & tile BACK to Player 1 - perspective
   const rowOrig = row; 
   const colOrig = col;
-  
+
   const [n,e,s,w,special] = tile;
   if (playerIdx === 1) {
     row = colOrig;
@@ -210,8 +214,11 @@ function handlePlaceTile({ socket, clientID }, { row, col, tile, indexInHand }) 
   }
 
   if (game.checkAndPlace(playerIdx, { row, col, tile, indexInHand })) {
-    // successfully placed
-    gameDB.addTurn(gameDB_id, { row, col, tile });
+    // successfully placed    
+    currentTurnDoc.tilePlace = { row, col, tile }
+    gameDB.endTurn(gameDB_id, currentTurnDoc);
+
+    currentTurnDoc = new Turn({ playerIdx: game.whoseTurn });
   }
 
   emitBoard();
@@ -243,7 +250,7 @@ function handleTrade({ socket, clientID }, colors) {
 
   if (game.checkAndTrade(playerIdx, colors)) {
     // successfully traded
-    //TODO: gameDB add info to turn
+    currentTurnDoc.trades.push(colors);
   }
 
   emitTrades(socket);
@@ -253,6 +260,12 @@ function handleTrade({ socket, clientID }, colors) {
 
   emitRound(socket);
   emitTurn(socket);
+
+  if (game.whoseTurn !== currentTurnDoc.playerIdx) {
+    gameDB.endTurn(gameDB_id, currentTurnDoc);
+    currentTurnDoc = new Turn({ playerIdx: game.whoseTurn });
+  }
+
   emitOver(socket);
   
   if (game.isOver){

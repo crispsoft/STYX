@@ -52,15 +52,13 @@ module.exports = {
     })
   ),
 
-    const turnDoc = new Turn({ tilePlace });
-
-    return Game.findByIdAndUpdate(_id, 
+  endTurn: (_id, turnDoc) => (
+    Game.findByIdAndUpdate(_id, 
       { $push: { turns: turnDoc } }
     ).catch(error => {
-      errorLog("Game Add Turn", error)
+      errorLog("Game End Turn", error)
       throw error;
     })
-    
-  },
-    
+  ),
+
 }
