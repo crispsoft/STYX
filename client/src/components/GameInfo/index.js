@@ -34,13 +34,13 @@ function GameInfo({ children, currRound, remRounds, ...props }) {
   let roundText = ' ';
 
   if (currRound && remRounds) {
-    roundText = `Round ${currRound} (${remRounds} remaining)`;
+    roundText = `Round ${currRound} / ${currRound + remRounds - 1}`;
   }
   else if (remRounds === 0) {
-    roundText = 'Game Over!'
+    roundText = `Final Round to Trade for Obols`;
   }
-  else if (remRounds === 1){
-    roundText = `Final Round! (Trade Favors for Obols only)`;
+  else if (currRound === 0) {
+    roundText = 'Game Over!'
   }
 
   return (

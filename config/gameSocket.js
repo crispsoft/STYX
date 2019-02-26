@@ -157,7 +157,7 @@ function emitReady(socket) {
 
 function emitRound(socket) {
   const currRound = game.round;
-  const remRounds = game.maxRounds - currRound + 1;
+  const remRounds = game.maxRounds - currRound;
   socket.emit('rounds', currRound, remRounds);
 }
 
