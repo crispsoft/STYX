@@ -2,13 +2,13 @@ import openSocket from "socket.io-client";
 
 import React, { Component } from "react";
 
-import TitleCard from "./components/TitleCard";
-import RulesModalIcon from "./components/RulesModalIcon";
-import BorderSquare from "./components/BorderSquare";
-import GameInfo from "./components/GameInfo";
-import LanternCards from "./components/LanternCards";
+import TitleCard       from "./components/TitleCard";
+import RulesModalIcon  from "./components/RulesModalIcon";
+import BorderSquare    from "./components/BorderSquare";
+import GameInfo        from "./components/GameInfo";
+import LanternCards    from "./components/LanternCards";
 import DedicationCards from "./components/DedicationCards";
-import BeastOnTile from "./components/BeastOnTile";
+import BeastOnTile     from "./components/BeastOnTile";
 
 import handle from "./clientHandlers";
 
@@ -229,19 +229,18 @@ class App extends Component {
       //TODO tie breakers
       switch (this.state.leaderIndices.length) {
         case 1:
-          winnerText = `Player ${this.state.leaderIndices[0] +
-            1} is the winner!`;
+          winnerText = 
+          `Player ${this.state.leaderIndices[0]+1} is the winner!`;
           break;
 
         case 2:
-          winnerText = `Players ${this.state.leaderIndices[0] + 1} and ${this
-            .state.leaderIndices[1] + 1} both tied to win!`;
+          winnerText = 
+          `Players ${this.state.leaderIndices[0]+1} and ${this.state.leaderIndices[1] + 1} both tied to win!`;
           break;
 
         case 3:
-          winnerText = `Players ${this.state.leaderIndices[0] + 1}, ${this.state
-            .leaderIndices[1] + 1}, and ${this.state.leaderIndices[2] +
-            1} all tied to win!`;
+          winnerText = 
+          `Players ${this.state.leaderIndices[0]+1}, ${this.state.leaderIndices[1]+1}, and ${this.state.leaderIndices[2]+1} all tied to win!`;
           break;
 
         case 4:
@@ -379,8 +378,8 @@ class App extends Component {
 
     return (
       <FullScreenView>
+
         <TitleCard />
-        <RulesModalIcon />
 
         {/** Opponents **/}
         <TopPane selected={this.state.oppMap[this.state.whoseTurn] === "top"}>
@@ -413,9 +412,7 @@ class App extends Component {
           <LeftName>{left.status}</LeftName>
         </LeftPane>
 
-        <RightPane
-          selected={this.state.oppMap[this.state.whoseTurn] === "right"}
-        >
+        <RightPane selected={this.state.oppMap[this.state.whoseTurn] === "right"}>
           <RightOppPanel>
             <Points>{`Obols: ${right.points}`}</Points>
             {right.colors.map((qty, i) => (
@@ -473,6 +470,7 @@ class App extends Component {
               />
             ))}
           </PlayerPanel>
+          
         </BottomPane>
 
         {/** Board & Info **/}
@@ -501,6 +499,8 @@ class App extends Component {
         </CenterPane>
 
         <StatusSummary>{statusTextEl}</StatusSummary>
+        <RulesModalIcon />
+
       </FullScreenView>
     );
   }
