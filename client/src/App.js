@@ -58,7 +58,7 @@ class App extends Component {
     whoseTurn: NaN,
     tradesValues: Array(3).fill(0),
     tradesActive: Array(3).fill(false),
-    leaderIndices: [],
+    leaderIndices: Array(4).fill(NaN),
 
     //* Opponent's (public) Game Info
     opponents: {
