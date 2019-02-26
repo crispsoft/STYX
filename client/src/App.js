@@ -97,21 +97,21 @@ class App extends Component {
 
     //* Socket -> State Handling
     const { socket } = this.state;
-    socket.on("connect", () => this.setState(handle.connect));
+    socket.on("connect"   , () => this.setState(handle.connect   ));
     socket.on("disconnect", () => this.setState(handle.disconnect));
 
-    socket.on("seat", index => this.setState(handle.seat(index)));
+    socket.on("seat" , index => this.setState(handle.seat (index)));
     socket.on("board", board => this.setState(handle.board(board)));
     socket.on("tiles", tiles => this.setState(handle.tiles(tiles)));
 
-    socket.on("colors", colors => this.setState(handle.colors(colors)));
-    socket.on("turn", index => this.setState(handle.turn(index)));
-    socket.on("ready", status => this.setState(handle.ready(status)));
-    socket.on("over", status => this.setState(handle.over(status)));
-    socket.on("players", statuses => this.setState(handle.players(statuses)));
-    socket.on("trades", trades => this.setState(handle.trades(trades)));
-    socket.on("points", points => this.setState(handle.points(points)));
-    socket.on("rounds", (curr, rem) => this.setState(handle.rounds(curr, rem)));
+    socket.on("colors" , colors      => this.setState(handle.colors (colors   )));
+    socket.on("turn"   , index       => this.setState(handle.turn   (index    )));
+    socket.on("ready"  , status      => this.setState(handle.ready  (status   )));
+    socket.on("over"   , status      => this.setState(handle.over   (status   )));
+    socket.on("players", statuses    => this.setState(handle.players(statuses )));
+    socket.on("trades" , trades      => this.setState(handle.trades (trades   )));
+    socket.on("points" , points      => this.setState(handle.points (points   )));
+    socket.on("rounds" , (curr, rem) => this.setState(handle.rounds (curr, rem)));
   }
 
   componentWillUnmount() {
