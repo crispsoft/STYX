@@ -20,7 +20,7 @@ const NavBar = styled.div`
   justify-content: space-around;
   text-decoration: none;
   font-family: "Imprima", sans-serif;
-  position: sticky;
+  position: fixed;
   top:0;
   z-index: 1;
 `;
@@ -36,7 +36,7 @@ const StyledLink = styled(Link)`
 const LandingPage = () => (
   <Router>
     <Switch>
-      <Route path="/game" component={App} /> {/*only game will show up*/}
+      <Route path="/play" component={App} /> {/*only game will show up*/}
       <Route component={IncludeNav} />
     </Switch>
   </Router>
@@ -47,7 +47,7 @@ const IncludeNav = () => (
   <div>
     <NavBar id="nav-bar">
       <StyledLink to="/">Home</StyledLink>
-      <StyledLink to="/game">Play!</StyledLink>
+      <StyledLink to="/play">Play!</StyledLink>
       <StyledLink to="/about">About Us</StyledLink>
       <StyledLink to="/ed">Teaching Guide</StyledLink>
     </NavBar>

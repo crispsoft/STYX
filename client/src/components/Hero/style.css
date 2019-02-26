@@ -17,16 +17,16 @@
   color: #e2e2e8;
 
   position: absolute;
-  top: 50vh;
-  left: 50vw;
-  transform: translate(-50%, -50%);
+  top: 10rem;
+  left: 0; right: 0;
+  margin: auto;
+  text-align: center;
 }
 
 
 .game-lore {
-
   position: absolute;
-  top: 55vh;
+  top: 50vh;
 
   margin-left: 30%;
   margin-right: 30%;
@@ -34,8 +34,6 @@
   font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 70;
   color: #e2e2e8;
-
-
 }
 
 .intro-tag {
@@ -52,12 +50,12 @@
   width: 100px;
   height: 100px;
   border-radius: 100%;
-  top: 95vh;
-  left: 46vw;
+  bottom: 3vh;
+  left: 0; right: 0;
+  margin: auto;
 }
 
-span {
-  z-index: 10;
+.round span {
   height: 3px;
   margin: 1px;
   width: 30px;
@@ -65,7 +63,7 @@ span {
   transition: 0.4s ease;
 }
 
-span:first-child {
+.round span:first-child {
   display: block;
   position: absolute;
   transform: rotate(45deg);
@@ -73,7 +71,7 @@ span:first-child {
   bottom: 35%;
 }
 
-span:nth-child(2) {
+.round span:nth-child(2) {
   display: block;
   position: absolute;
   transform: rotate(-45deg);
@@ -81,7 +79,7 @@ span:nth-child(2) {
   bottom: 35%;
 }
 
-span:nth-child(3) {
+.round span:nth-child(3) {
   display: block;
   position: absolute;
   transform: rotate(45deg);
@@ -89,7 +87,7 @@ span:nth-child(3) {
   bottom: 54%;
 }
 
-span:nth-child(4) {
+.round span:nth-child(4) {
   display: block;
   position: absolute;
   transform: rotate(-45deg);

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import BeastCard from "../BeastCard";
+
+import { WavyBackground } from './page.styles';
 import * as colors from "./../../constants/colors";
 
 const pStyle = {
@@ -50,7 +52,7 @@ class Home extends Component {
           </div>
         </div>
 
-        <div className="hero-img">
+        <WavyBackground>
           <div ref={this.BeastRowRef} className="beasts-row">
             <BeastCard
               name="Cerberus"
@@ -104,9 +106,7 @@ class Home extends Component {
               style={pStyle}
             />
           </div>
-        </div>
-
-        <div className="hero-img" />
+        </WavyBackground>
       </div>
     );
   }
