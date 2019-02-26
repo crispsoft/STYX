@@ -465,7 +465,7 @@ class App extends Component {
                   colors={this.state.colorQtys}
                   selected={this.state.colorsSelected}
                   value={this.state.tradesValues[idx]}
-                  active={this.state.tradesActive[idx]}
+                  active={isMyTurn && this.state.tradesActive[idx]}
                   onClick={this.state.tradesActive[idx] ? (() => this.handleTrade(type)) : undefined}
                 />
               
