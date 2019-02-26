@@ -25,6 +25,16 @@ module.exports = {
         throw error;
       })
   ),
+
+  removeByID: (_id) => (
+    Game.findByIdAndDelete(_id)
+      .catch(error => {
+        errorLog("Game Deletion", error)
+        throw error;
+      })
+  ),
+
+  
   new: () => (
     Game.create({})
       .catch(error => {

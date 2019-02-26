@@ -326,7 +326,11 @@ module.exports = (socket) => {
 
       if (playerConnections.every(conn => conn === null)) {
         // abandon/stop game if no player connections left
-        //TODO: remove from DB
+
+        if (gameDB_id && !game.isOver) { // remove games that did not finish
+          gameDB.removeByID(gameDB_id)
+        }
+
         gameDB_id = null;
       }
 
