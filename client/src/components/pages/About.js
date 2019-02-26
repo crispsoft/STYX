@@ -1,33 +1,33 @@
 import React from "react";
-import Hero from "../Hero";
-import BeastCard from "../BeastCard";
+import AboutHero from "../AboutHero";
+import AboutCard from "../AboutCard";
 import * as colors from "./../../constants/colors";
 
 const About = () => (
   <div>
-  <Hero />
+  <AboutHero />
 
   <div className="hero-img">
     <div className="beasts-row">
-      <BeastCard
+      <AboutCard
         name="Andrew Gaurin"
         img=""
-        description="Back End"
+        description="Andrew Gaurin is a software engineer focused on designing both code and its architecture to be maintainable, extensible, comprehendible, and secure."
         color={colors.purpleFavor}
       />
-      <BeastCard name="Ashley Wang"
+      <AboutCard name="Ashley Wang"
         img=""
-        description="Front End" 
+        description="From gaining experience in web development and insight into the tech world, she decided to merge these skills and experiences with her graphic skills as well as design experience along with my passion of working cooperatively with others. She enjoys long walks on the beach and eating food." 
         color={colors.greenFavor}
         />
-      <BeastCard name="Abigail Jackson"
+      <AboutCard name="Abigail Jackson"
         img=""
-        description="Back End" 
+        description="Abigail Jackson is a front-end web developer, designer, + creative living and working in Chicago. She loves collaborating with other dreamers and writing code to that one lo-fi hiphop video on Youtube." 
         color={colors.orangeFavor}
         />
-      <BeastCard name="Alice O'Connell"
+      <AboutCard name="Alice O'Connell"
         img=""
-        description="Alice is a Chicago native and a 3L at the Loyola University Chicago School of Law. Her passion for web development emerged from a broader appreciation for technology as a tool for social utility and societal good. She is thrilled to present STYX as a learning experience first and foremost. She plans to move to Washington, D.C. after graduation to work as a legislative aide in the U.S. House of Representatives."
+        description="Alice is a Chicago native and a 3L at the Loyola University Chicago School of Law. Her passion for web development emerged from a broader appreciation for technology as a tool for social utility and societal good."
         color={colors.mahoganyFavor}
         />
     </div>
