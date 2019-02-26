@@ -38,6 +38,11 @@ const BeastImg = styled.img`
   background: ${props => props.color};
 `;
 
+const BeastDescript = styled.p`
+  font-family: 'Imprima', 'sansSerif';
+  text-align: center;
+`;
+
 
 function BeastCard(props) {
   return (
@@ -45,9 +50,9 @@ function BeastCard(props) {
 
       <BeastImg alt={props.name} src={props.img} color={props.color}/>
 
-      <BeastTitle>{props.name}</BeastTitle>
+      <BeastTitle as="h3">{props.name}</BeastTitle>
 
-      <p className="beast-description" style={props.style}>{props.description}</p>
+      <BeastDescript>{props.description}</BeastDescript>
 
     </StyledBeastCard>
   )
