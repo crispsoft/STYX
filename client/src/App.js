@@ -118,17 +118,20 @@ class App extends Component {
     this.state.socket.close();
   }
 
-  clickAvail = (row, col) => {
+  handleTilePlacement = (row, col) => {
     const { selectedTileIndex: idx } = this.state;
+    const tile = this.state.tilesInHand[idx];
 
-    if (!Number.isInteger(idx) || !this.state.tilesInHand[idx]) return;
+    if (!Number.isInteger(idx) || !tile) return;
 
-    this.state.socket.emit("place", {
+    this.state.socket.emit("place",
+      {
       row,
       col,
-      tile: this.state.tilesInHand[idx],
+        tile,
       indexInHand: idx
-    });
+      }
+    );
 
     this.setState({ selectedTileIndex: NaN });
   };
@@ -269,7 +272,7 @@ class App extends Component {
         this.state.tilesInHand.length
       ) {
         // only show border squares when it's player's turn and there are still tiles in hand
-        childEl = <BorderSquare onClick={() => this.clickAvail(row, col)} />;
+        childEl = <BorderSquare onClick={() => this.handleTilePlacement(row, col)} />;
       } else if (Array.isArray(square)) {
         // a regular tile, with an array of border colors
 
