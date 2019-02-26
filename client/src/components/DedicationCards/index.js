@@ -75,6 +75,7 @@ function DedicationCards({ value, type, ...props }) {
     case "4-kind":
       title = "Trade four of the same favor";
       break;
+    default:;
   }
   return (
     <Tooltip title={title} placement="top">
