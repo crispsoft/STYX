@@ -34,7 +34,7 @@ import {
   LeftOppPanel,
   RightOppPanel,
   PlayerPanel,
-  PlayerPanelTiles,
+  PlayerPanelTilesGrid,
   TopName,
   LeftName,
   RightName
@@ -301,34 +301,34 @@ class App extends Component {
         const imageFileNames = square.map(n => beastImgsMap[n]);
 
         childEl = (<>
-            <LakeTile colors={colorHexes} />
+          <LakeTile colors={colorHexes} />
 
           <GrainOverlay src="assets/tileGrain.png" alt="" />
 
-            {showNBeast && (
-              <BeastOnTile
-                src={`assets/beasts_white/${imageFileNames[0]}.png`}
-                side="top"
-              />
-            )}
-            {showEBeast && (
-              <BeastOnTile
-                src={`assets/beasts_white/${imageFileNames[1]}.png`}
-                side="right"
-              />
-            )}
-            {showSBeast && (
-              <BeastOnTile
-                src={`assets/beasts_white/${imageFileNames[2]}.png`}
-                side="bottom"
-              />
-            )}
-            {showWBeast && (
-              <BeastOnTile
-                src={`assets/beasts_white/${imageFileNames[3]}.png`}
-                side="left"
-              />
-            )}
+          {showNBeast && (
+            <BeastOnTile
+              src={`assets/beasts_white/${imageFileNames[0]}.png`}
+              side="top"
+            />
+          )}
+          {showEBeast && (
+            <BeastOnTile
+              src={`assets/beasts_white/${imageFileNames[1]}.png`}
+              side="right"
+            />
+          )}
+          {showSBeast && (
+            <BeastOnTile
+              src={`assets/beasts_white/${imageFileNames[2]}.png`}
+              side="bottom"
+            />
+          )}
+          {showWBeast && (
+            <BeastOnTile
+              src={`assets/beasts_white/${imageFileNames[3]}.png`}
+              side="left"
+            />
+          )}
         </>);
       }
 
@@ -353,13 +353,13 @@ class App extends Component {
         : this.state.gameOver
           ?<p>Game Over
           <br/>{winnerText}
-      </p>
+          </p>
 
             : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
             : <p>It is YOUR turn, hoo hoo!
               <br/>Click me to see the rules!
-      </p>
+              </p>
     ;
 
     return (
@@ -415,18 +415,8 @@ class App extends Component {
 
         {/** Player **/}
         <BottomPane selected={isMyTurn}>
-          <PlayerPanelTiles>
-            <div
-              style={{
-                display: "grid",
-                flexGrow: 1,
-                flexShrink: 0,
-                justifyItems: "center",
-                gridTemplateRows: "repeat(1, 10vh)",
-                gridTemplateColumns: "repeat(3, minmax(10vh, 1fr))",
-                padding: "2px"
-              }}
-            >
+        
+          <PlayerPanelTilesGrid>
               {this.state.tilesInHand.map(
                 (tile, i) =>
                   tile && (
@@ -439,8 +429,7 @@ class App extends Component {
                     />
                   )
               )}
-            </div>
-          </PlayerPanelTiles>
+          </PlayerPanelTilesGrid>
 
           <PlayerPanel>
             <Points>{`Obols: ${this.state.points}`}</Points>
