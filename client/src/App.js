@@ -489,7 +489,7 @@ class App extends Component {
                   type={type}
                   value={this.state.tradesValues[idx]}
                   active={this.state.tradesActive[idx]}
-                  onClick={this.state.tradesActive[idx] && (() => this.handleTrade(type))}
+                  onClick={this.state.tradesActive[idx] ? (() => this.handleTrade(type)) : undefined}
                 />
               
             ))}
