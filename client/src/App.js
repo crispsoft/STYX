@@ -120,6 +120,8 @@ class App extends Component {
   }
 
   handleTilePlacement = (row, col) => {
+    if (this.state.whoseTurn !== this.state.seatIndex) return; // don't place tiles out of turn
+
     const { selectedTileIndex: idx } = this.state;
     const tile = this.state.tilesInHand[idx];
 
