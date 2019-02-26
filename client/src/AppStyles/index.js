@@ -94,7 +94,7 @@ export const BoardSquare = styled.div`
   position: relative;
   grid-row: ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
-`;
+  `;
 
 export * from './Panes.style';
 export * from './Panels.style';
