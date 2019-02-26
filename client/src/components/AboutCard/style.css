@@ -1,0 +1,26 @@
+.about-card {
+  height: 80vh;
+  width: 40vh;
+  background-color: grey;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+
+  margin: auto;
+  margin-top: -70vh;
+  border-radius: 10px;
+
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.about-circle {
+  border-radius: 50%;
+  height: 30vh;
+  width: 30vh;
+
+  background-color: white;
+}
