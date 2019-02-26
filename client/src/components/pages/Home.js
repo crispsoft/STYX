@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+
 import BeastCard from "../BeastCard";
+
+import styled from 'styled-components';
 
 import { WavyBackground } from './page.styles';
 import * as colors from "./../../constants/colors";
@@ -10,6 +13,20 @@ const pStyle = {
   fontFamily: "Imprima, sansSerif",
   textAlign: 'center'
 }
+
+const HeroText = styled.span`
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 10em;
+  color: #e2e2e8;
+
+  position: absolute;
+  top: 10rem;
+  left: 0; right: 0;
+  margin: auto;
+  text-align: center;
+`;
 
 class Home extends Component {
 
@@ -29,7 +46,7 @@ class Home extends Component {
     return (<>
 
       <WavyBackground>
-        <h1 className="hero-text">STYX</h1>
+        <HeroText as="h1">STYX</HeroText>
         <br />
         <div className="game-lore">
           <div className="intro-tag">

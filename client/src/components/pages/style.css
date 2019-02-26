@@ -1,18 +1,3 @@
-.hero-text {
-  font-family: ff-providence-sans-web-pro, sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 10em;
-  color: #e2e2e8;
-
-  position: absolute;
-  top: 10rem;
-  left: 0; right: 0;
-  margin: auto;
-  text-align: center;
-}
-
-
 .game-lore {
   position: absolute;
   top: 50vh;
