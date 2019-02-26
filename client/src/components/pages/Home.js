@@ -4,6 +4,8 @@ import BeastCard from "../BeastCard";
 import { WavyBackground } from './page.styles';
 import * as colors from "./../../constants/colors";
 
+import './style.css';
+
 const pStyle = {
   fontFamily: "Imprima, sansSerif",
   textAlign: "center"
