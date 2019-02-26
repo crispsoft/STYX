@@ -2,10 +2,6 @@ const router = require('express').Router();
 
 const gameDB = require('./../api/gameDB');
 
-router.get('/test', (req, res) => {
-  res.json({'a': 'AAAA-OK'});
-})
-
 
 router.get('/games/latest', async (req, res) => {
 
@@ -17,24 +13,26 @@ router.get('/games/latest', async (req, res) => {
 
   catch (error) {
     console.log("\t\t@ GET /games/latest:\n", error);
-    res.status(500).send("Internal Games retrieval Error");
+    res.status(500).send({ message: "Internal Games retrieval Error" });
   }
 
 })
 
 
-/* router.route('/games')
-  .all((req, res, next) => {
-    next();
-  })
+router.get('/games/:id', async ({ params: { id } }, res) => {
 
-  //* GET
-  .get((req, res) => {
-    res.json({ 'b': 'cool' })
-  })
+  try {
+    const gameObj = await gameDB.byID(id);
 
-; // router.route('/') */
+    return res.json(gameObj);
+  }
+
+  catch (error) {
+    console.log("\t\t@ GET /games/latest:\n", error);
+    res.status(500).send({ message: "Internal Games retrieval Error" });
+  }
+
+})
+
 
 module.exports = router;
-
-
