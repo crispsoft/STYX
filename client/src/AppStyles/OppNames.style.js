@@ -18,7 +18,7 @@ const OppNameBase = styled.div`
 `;
 
 
-const TopName = styled(OppNameBase)`
+export const TopName = styled(OppNameBase)`
   padding: 0.1rem 0.5rem;
   bottom: -1em;
   border-top: none;
@@ -35,17 +35,10 @@ const SideName = styled(OppNameBase)`
   top: 50%; transform: translate(0,-50%);
 `;
 
-const LeftName = styled(SideName)`
+export const LeftName = styled(SideName)`
   right: -1em;
 `;
 
-const RightName = styled(SideName)`
+export const RightName = styled(SideName)`
   left: -1em;
 `;
-
-
-export {
-  TopName,
-  LeftName,
-  RightName,
-};
