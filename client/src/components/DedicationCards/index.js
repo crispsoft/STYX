@@ -1,9 +1,9 @@
 import React from "react";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import ConditionalObols from "../ConditionalObols";
 
-import styled, { css, keyframes } from 'styled-components';
-import { medGrey } from './../../constants/colors';
+import styled, { css, keyframes } from "styled-components";
+import { medGrey } from "./../../constants/colors";
 
 const bounce = keyframes`
   from {
@@ -31,49 +31,64 @@ const ObolExchange = styled.div`
   font-family: ff-providence-sans-web-pro, sans-serif;
   font-weight: 700;
   font-style: normal;
-  
 
-  pointer-events: ${props => props.active ? 'all' : 'none'};
+  // pointer-events: ${props => (props.active ? "all" : "none")};
 
   ${props =>
-    props.active && css`
-       animation: ${bounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
+    props.active &&
+    css`
+      animation: ${bounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+        alternate-reverse infinite;
 
-       cursor: pointer;
+      cursor: pointer;
 
-       &:hover {
-         /* border-color: #375170; */
-       }
-   `}
+      &:hover {
+        /* border-color: #375170; */
+      }
+    `}
 `;
 
 const ConditionContainer = styled.div`
   position: absolute;
-  background: #526D78;
+  background: #526d78;
 
   border: 3px solid;
   border-color: inherit;
   border-radius: 3px;
-  
+
   width: 90%;
 
   bottom: 0;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   margin: auto;
 
   transform: translateY(50%);
 `;
 
-
-
 function DedicationCards({ value, type, ...props }) {
+  let title = "";
+  switch (type) {
+    case "1-all":
+      title = "Trade one of each favor";
+      break;
+    case "3-pair":
+      title = "Trade three pairs of favors";
+      break;
+    case "4-kind":
+      title = "Trade four of the same favor";
+      break;
+  }
   return (
-    <ObolExchange {...props}>
-      {value || ''}
-      <ConditionContainer>
-        <ConditionalObols type={type} />
-      </ConditionContainer>
-    </ObolExchange>
+    <Tooltip title={title} placement="top">
+      <ObolExchange {...props}>
+        {value || ""}
+        <ConditionContainer>
+          <ConditionalObols type={type} />
+          {/* <div className="tooltiptext">Turn in one of each Beast Favor</div> */}
+        </ConditionContainer>
+      </ObolExchange>
+    </Tooltip>
   );
 }
 

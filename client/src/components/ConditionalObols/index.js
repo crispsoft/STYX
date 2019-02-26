@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { favorColorsMap } from './../../constants/colors';
 
@@ -12,7 +12,8 @@ function ConditionalObols (props) {
     switch (type) {
         case "1-all":
            return( 
-           <div>
+               <div>
+                 
                 <div className="one-allContainer">
                     <div className="one-all" color={favorColorsMap[1]}/>
                     <div className="one-all" color={favorColorsMap[2]}/>
@@ -24,7 +25,8 @@ function ConditionalObols (props) {
                     <div className="one-all" color={favorColorsMap[5]}/>
                     <div className="one-all" color={favorColorsMap[6]}/>
                 </div>
-            </div>
+                {/* <div className="tooltiptext">Turn in one of each Beast Favor</div> */}
+                </div>
             
            );
 

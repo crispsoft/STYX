@@ -12,3 +12,24 @@
     width: 1vh;
     margin: 2px;
 }
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 10000;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+
+}
+  .one-all:hover, .three-pair:hover, .four-kind:hover {
+    visibility: visible;
+    opacity: 1;
+  }
