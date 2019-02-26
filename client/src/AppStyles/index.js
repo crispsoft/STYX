@@ -44,7 +44,10 @@ export const LakeTile = styled.div`
 
   ${props =>
     props.enabled && !props.selected && css`
+      box-shadow: 3px 3px 3px black;
+
       &:hover {
+        box-shadow: 5px 5px 5px black;
         transform: scale(1.2);
         cursor: pointer;
       }
@@ -53,6 +56,7 @@ export const LakeTile = styled.div`
 
   ${props =>
     props.selected && css`
+      box-shadow: 5px 5px 5px black;
       animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
       cursor: url('./assets/redo-alt-solid.svg'), crosshair;
