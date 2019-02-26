@@ -18,6 +18,13 @@ module.exports = {
       })
   ),
 
+  byID: (_id) => (
+    Game.findById(_id)
+      .catch(error => {
+        errorLog("Game Find by ID", error)
+        throw error;
+      })
+  ),
   new: () => (
     Game.create({})
       .catch(error => {
