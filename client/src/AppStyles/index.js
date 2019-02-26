@@ -30,11 +30,6 @@ const squareBounce = keyframes`
   }
 `;
 
-const rotate = keyframes`
-  to {
-    transform: rotate(90deg);
-  }
-`
 
 export const LakeTile = styled.div`
   border-width: 3.7vh;

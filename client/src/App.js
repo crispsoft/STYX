@@ -1,7 +1,6 @@
 import openSocket from "socket.io-client";
 
 import React, { Component } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import TitleCard from "./components/TitleCard";
 import RulesModalIcon from "./components/RulesModalIcon";
