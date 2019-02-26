@@ -21,6 +21,7 @@ import {
   FullScreenView,
   Points,
   LakeTile,
+  GrainOverlay,
   StatusSummary,
   BoardGrid,
   BoardSquare,
@@ -297,26 +298,10 @@ class App extends Component {
         const colorHexes = square.map(n => favorColorsMap[n]);
         const imageFileNames = square.map(n => beastImgsMap[n]);
 
-        childEl = (
-          <>
+        childEl = (<>
             <LakeTile colors={colorHexes} />
 
-            {/* Grain Effect */}
-            <img
-              src="assets/tileGrain.png"
-              alt=""
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                margin: "auto",
-                width: "100%",
-                height: "100%",
-                opacity: ".5"
-              }}
-            />
+          <GrainOverlay src="assets/tileGrain.png" alt="" />
 
             {showNBeast && (
               <BeastOnTile
@@ -342,8 +327,7 @@ class App extends Component {
                 side="left"
               />
             )}
-          </>
-        );
+        </>);
       }
 
       return (

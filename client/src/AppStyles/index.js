@@ -92,7 +92,20 @@ export const BoardSquare = styled.div`
   position: relative;
   grid-row: ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
-  `;
+`;
+
+export const GrainOverlay = styled.img`
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  left: 0;  right: 0;
+  top: 0;  bottom: 0;
+  margin: auto;
+  
+  opacity: .5;
+`;
 
 export * from './Panes.style';
 export * from './Panels.style';
