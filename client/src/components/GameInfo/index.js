@@ -31,12 +31,15 @@ const StyledGameInfo = styled.div`
 `;
 
 function GameInfo({ children, currRound, remRounds, ...props }) {
-  let roundText = 'Game Over';
+  let roundText = ' ';
 
-  if (currRound && remRounds){
+  if (currRound && remRounds) {
     roundText = `Round ${currRound} (${remRounds} remaining)`;
   }
-  if (remRounds === 1){
+  else if (remRounds === 0) {
+    roundText = 'Game Over!'
+  }
+  else if (remRounds === 1){
     roundText = `Final Round! (Trade Favors for Obols only)`;
   }
 
