@@ -11,4 +11,6 @@ incld:  const style = {cursor: yourTurn? 'pointer' : 'no-drop'}
 
 ☐ make gamelogic into 'class'
 
+☐ have lake tiles do transform rotate (allow for transition/anim effect)
+
 ✔ have client handle the emit of being seated to include linking what player index are their top, left, right opponents @done(19-02-12 16:25)
