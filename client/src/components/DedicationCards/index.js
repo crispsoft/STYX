@@ -18,7 +18,7 @@ const ObolExchange = styled.div`
   position: relative;
 
   width: 30%;
-  height: 5rem;
+  height: 6rem;
 
   margin-bottom: 1rem;
 

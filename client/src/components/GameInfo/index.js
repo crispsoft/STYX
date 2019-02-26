@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 
 const StyledGameInfo = styled.div`
-  width: 18vw;
+  width: 22vw;
 
   overflow: hidden;
 
