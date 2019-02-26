@@ -15,8 +15,8 @@ const SingleFavorProgress = styled.div`
   border-radius: 50%;
   border: 1px solid;
   
-  height: 1vh;
-  width: 1vh;
+  height: 2vh;
+  width: 2vh;
   margin: 2px;
 
   ${props =>
@@ -32,8 +32,8 @@ const QuestionMarkOverlay = styled.p`
   left: 0; right: 0;
   bottom: 0;
   margin: 0 auto;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
+  font-size: 3vh;
+  line-height: 3vh;
   font-family: ff-providence-sans-web-pro, sans-serif;
 `;
 
