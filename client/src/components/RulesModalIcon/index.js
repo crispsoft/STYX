@@ -8,17 +8,6 @@ import Modal from '@material-ui/core/Modal';
 import RulesCard from "../RulesCard"
 
 
-/* function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-} */
-
 const styles = theme => ({
   paper: {
     position: 'absolute',
@@ -44,11 +33,14 @@ class SimpleModal extends React.Component {
   };
 
   render() {
-    // const { classes } = this.props;
 
     return (
       <div>
-        <img className="info-icon" alt="Hades Screech Owl, here to help you" src="/assets/hades_owl.png" onClick={this.handleOpen}/>
+        <img className="info-icon"
+          alt="Hades Screech Owl, here to help you"
+          src="/assets/hades_owl.png"
+          onClick={this.handleOpen} />
+
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
