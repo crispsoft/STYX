@@ -30,6 +30,12 @@ const squareBounce = keyframes`
   }
 `;
 
+const rotate = keyframes`
+  to {
+    transform: rotate(90deg);
+  }
+`
+
 export const LakeTile = styled.div`
   border-width: 3.7vh;
   border-style: solid;
@@ -54,17 +60,14 @@ export const LakeTile = styled.div`
     props.selected && css`
       animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
-      cursor: crosshair;
-      /* &::after {
-        width: 10px;
-        height: 10px;
-        background: red;
-      } */
+      cursor: url('./assets/redo-alt-solid.svg'), crosshair;
     `
   }
 
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 `;
+
+
 
 export const StatusSummary = styled.div`
   font-family: Imprima, sans serif;
