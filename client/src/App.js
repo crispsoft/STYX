@@ -248,8 +248,7 @@ class App extends Component {
           winnerText = "Everybody tied to win!";
           break;
 
-        default:
-          winnerText = "";
+        default:;
       }
     }
 
