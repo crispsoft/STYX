@@ -43,10 +43,10 @@ export const LakeTile = styled.div`
   grid-column: ${props => props.gridColumn};
 
   ${props =>
-    props.enabled && css`
+    props.enabled && !props.selected && css`
       &:hover {
         transform: scale(1.2);
-        box-shadow: 2px;
+        cursor: pointer;
       }
     `
   }
