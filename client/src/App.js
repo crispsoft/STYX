@@ -487,9 +487,9 @@ class App extends Component {
                 <DedicationCards
                   key={type}
                   type={type}
-                  active={this.state.tradesActive[idx]}
                   value={this.state.tradesValues[idx]}
-                  onClick={() => this.handleTrade(type)}
+                  active={this.state.tradesActive[idx]}
+                  onClick={this.state.tradesActive[idx] && (() => this.handleTrade(type))}
                 />
               
             ))}

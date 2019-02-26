@@ -32,11 +32,8 @@ const ObolExchange = styled.div`
   font-weight: 700;
   font-style: normal;
 
-  // pointer-events: ${props => (props.active ? "all" : "none")};
-
   ${props =>
-    props.active &&
-    css`
+    props.active && css`
       animation: ${bounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
         alternate-reverse infinite;
 
