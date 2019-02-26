@@ -297,7 +297,7 @@ module.exports = (socket) => {
       emitReady(socket);
 
       if (gameDB_id === null) {
-        //! TODO: don't always restart the game just due to having a 4th player
+        // only start a new game if a game is not already in progress
         startTheGame(socket, playerConnections);
       }
     }
