@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 //* Database
-require('./config/mongoose').connection.dropDatabase(); //TODO! CHANGE, this is hard reset on server start
+require('./config/mongoose');
 
 
 //* Express 
