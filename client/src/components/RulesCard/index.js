@@ -47,8 +47,11 @@ class RulesCard extends React.Component {
               Turn Sequence
             </Typography>
             <Typography variant="body1" id="rules-text">
-                <p>Exchange: Trade in your Beast Favors (colors) for Obols (points).</p>
-                <p>Place Tile: End your turn by placing a River Tile. You will receive a Beast Favor matching the color oriented towards you. You will gain an additional Beast Favor for matching two tiles of the same color.</p>
+                <p><strong>Exchange:</strong> Trade in your Beast Favors (colors) for Obols (points).</p>
+                <p><strong>Place Tile:</strong> End your turn by placing a River Tile.
+                  <br/><br/>Everyone will receive a Beast Favor matching the color oriented towards them.
+                  <br/><br/>You will gain additional Beast Favors for matching two tiles of the same color.
+                </p>
             </Typography>
           </div>
           <div className="rules-column">
