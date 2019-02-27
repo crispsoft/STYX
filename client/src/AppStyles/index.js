@@ -37,15 +37,23 @@ const splash = keyframes`
     animation-timing-function: ease-in;
     z-index: 10;
   }
-  70% {
-    transform: scale(0.6);
-    opacity: 0.2;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  33% {
+    transform: scale(1);
+    opacity: 1;
+    filter: none;
+  }
+  34% {
+    opacity: 0.4;
+    filter: blur(2px);
+  }
+  66% {
+    transform: scale(0.7);
+    opacity: 0.1;
   }
   100% {
-    transform: none;
+    filter: none;
+    transform: scale(1);
     opacity: 1;
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
 
@@ -66,7 +74,7 @@ export const LakeTile = styled.div`
 
   ${props => 
     !props.enabled && css`
-      animation: ${splash} 0.5s forwards;
+      animation: ${splash} 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     `
   }
 
@@ -126,9 +134,7 @@ export const BoardGrid = styled.div`
   height: calc(70vh+12px);
   
   border: 3px solid;
-  /* outline: solid; */
   border-color: ${colors.offWhite};
-  /* outline-color: ${colors.offWhite}; */
 
   display: grid;
   grid-gap: 2px;
@@ -137,20 +143,15 @@ export const BoardGrid = styled.div`
   grid-template-rows: repeat(7, minmax(10vmin,10vmin));
 `;
 
-
-
-
-
 export const BoardSquare = styled.div`
   position: relative;
   grid-row: ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
 `;
 
-
-const grainSplashDelay = keyframes`
+const revealGrainAfterSplash = keyframes`
   to {
-    opacity: .5;
+    opacity: 0.5;
   }
 `;
 
@@ -164,8 +165,10 @@ export const GrainOverlay = styled.img`
   top: 0;  bottom: 0;
   margin: auto;
   opacity: 0;
-  
-  animation: ${grainSplashDelay} 0s 0.5s forwards
+
+  z-index: 11; /* keep above Lake Tile */
+
+  animation: ${revealGrainAfterSplash} 1s forwards;
 `;
 
 export * from './Panes.style';
