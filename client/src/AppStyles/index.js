@@ -30,6 +30,23 @@ const squareBounce = keyframes`
   }
 `;
 
+const splash = keyframes`
+  0% {
+    transform: scale(1.5);
+    opacity: 1;
+    animation-timing-function: ease-in;
+  }
+  70% {
+    transform: scale(0.6);
+    opacity: 0.2;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+`;
 
 export const LakeTile = styled.div`
   border-width: 3.7vh;
@@ -43,6 +60,12 @@ export const LakeTile = styled.div`
   grid-column: ${props => props.gridColumn};
 
   position: relative;
+
+  ${props => 
+    !props.enabled && css`
+      animation: ${splash} 0.5s forwards;
+    `
+  }
 
   ${props =>
     props.enabled && css`
@@ -98,19 +121,34 @@ export const StatusSummary = styled.div`
 export const BoardGrid = styled.div`
   width : calc(70vh+12px);
   height: calc(70vh+12px);
-  outline: solid;
-  outline-color: ${colors.offWhite};
+  
+  border: 3px solid;
+  /* outline: solid; */
+  border-color: ${colors.offWhite};
+  /* outline-color: ${colors.offWhite}; */
+
   display: grid;
   grid-gap: 2px;
   padding: 2px;
-  grid-template-columns: repeat(7, 10vmin);
-  grid-template-rows: repeat(7, 10vmin);
+  grid-template-columns: repeat(7, minmax(10vmin,10vmin));
+  grid-template-rows: repeat(7, minmax(10vmin,10vmin));
 `;
+
+
+
+
 
 export const BoardSquare = styled.div`
   position: relative;
   grid-row: ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
+`;
+
+
+const grainSplashDelay = keyframes`
+  to {
+    opacity: .5;
+  }
 `;
 
 export const GrainOverlay = styled.img`
@@ -122,8 +160,9 @@ export const GrainOverlay = styled.img`
   left: 0;  right: 0;
   top: 0;  bottom: 0;
   margin: auto;
+  opacity: 0;
   
-  opacity: .5;
+  animation: ${grainSplashDelay} 0s 0.5s forwards
 `;
 
 export * from './Panes.style';

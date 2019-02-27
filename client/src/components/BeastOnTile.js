@@ -1,12 +1,21 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+
+const beastSplashDelay = keyframes`
+  to {
+    opacity: 1;
+  }
+`;
 
 const BeastImgBase = styled.img`
   position: absolute;
   margin: auto;
   object-fit: cover;
+  opacity: 0;
+
+  animation: ${beastSplashDelay} 0s 0.5s forwards
 `;
 
 
