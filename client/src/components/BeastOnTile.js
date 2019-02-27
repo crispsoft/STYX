@@ -3,8 +3,15 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 
-const beastSplashDelay = keyframes`
+const blurInAfterSplash = keyframes`
+  from {
+    transform: scale(1.2);
+    filter: blur(5px);
+  }
+
   to {
+    filter: none;
+    transform: none;
     opacity: 1;
   }
 `;
@@ -15,7 +22,7 @@ const BeastImgBase = styled.img`
   object-fit: cover;
   opacity: 0;
 
-  animation: ${beastSplashDelay} 0s 0.5s forwards
+  animation: ${blurInAfterSplash} 1s 0.5s forwards ease-in-out
 `;
 
 
