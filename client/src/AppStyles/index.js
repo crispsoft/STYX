@@ -42,10 +42,24 @@ export const LakeTile = styled.div`
   grid-row   : ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
 
+  position: relative;
+
   ${props =>
-    props.enabled && !props.selected && css`
+    props.enabled && css`
       box-shadow: 3px 3px 3px black;
 
+      &:before {
+        content: "";
+        position: absolute;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        box-shadow: inset 3px 3px 3px black;
+      }
+    `
+  }
+
+  ${props =>
+    props.enabled && !props.selected && css`
       &:hover {
         box-shadow: 5px 5px 5px black;
         transform: scale(1.2);
@@ -57,9 +71,10 @@ export const LakeTile = styled.div`
   ${props =>
     props.selected && css`
       box-shadow: 5px 5px 5px black;
-      animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
       cursor: url('./assets/redo-alt-solid.svg'), crosshair;
+
+      animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
     `
   }
 
