@@ -28,6 +28,24 @@ const HeroText = styled.span`
   text-align: center;
 `;
 
+const GameLore = styled.div`
+  position: absolute;
+  top: 50vh;
+
+  padding: 1rem;
+
+  max-width: 750px;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  font-family: ff-providence-sans-web-pro, sans-serif;
+  font-weight: 70;
+  color: #e2e2e8;
+  text-align: center;
+`;
+
+
 class Home extends Component {
 
   constructor(props) {
@@ -48,7 +66,7 @@ class Home extends Component {
       <WavyBackground>
         <HeroText as="h1">STYX</HeroText>
         <br />
-        <div className="game-lore">
+        <GameLore>
           <div className="intro-tag">
             Welcome, brave adventurers, to the shores of the River Styx.
               </div>
@@ -61,7 +79,7 @@ class Home extends Component {
             of Greek myth; earn their favor, and Hades' treasure will be
             yours!
               </p>
-        </div>
+        </GameLore>
         <div onClick={this.scrollToBeastRowRef} className="round">
           <span />
           <span />
