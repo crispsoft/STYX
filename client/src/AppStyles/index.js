@@ -35,6 +35,7 @@ const splash = keyframes`
     transform: scale(1.5);
     opacity: 1;
     animation-timing-function: ease-in;
+    z-index: 10;
   }
   70% {
     transform: scale(0.6);
@@ -60,6 +61,8 @@ export const LakeTile = styled.div`
   grid-column: ${props => props.gridColumn};
 
   position: relative;
+
+  z-index: 0;
 
   ${props => 
     !props.enabled && css`
