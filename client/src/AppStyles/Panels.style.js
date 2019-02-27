@@ -11,7 +11,7 @@ const HorizPanel = styled(PanelBase)`
   flex-flow: row nowrap;
 `;
 
-const TopOppPanel = styled(HorizPanel)`
+export const TopOppPanel = styled(HorizPanel)`
   height: 90%;
 `;
 
@@ -20,21 +20,16 @@ const VertPanel = styled(PanelBase)`
   flex-flow: column nowrap;
 `;
 
-const LeftOppPanel = VertPanel;
-const RightOppPanel = VertPanel;
+export const LeftOppPanel = VertPanel;
+export const RightOppPanel = VertPanel;
 
 
+export const PlayerPanel = HorizPanel;
 
-const PlayerPanelTiles = HorizPanel;
-
-const PlayerPanel = HorizPanel;
-
-
-export {
-  TopOppPanel,
-  LeftOppPanel,
-  RightOppPanel,
-
-  PlayerPanel,
-  PlayerPanelTiles,
-};
+export const PlayerPanelTilesGrid = styled.div`
+  display: grid;
+  flex-grow: 1;
+  justify-items: center;
+  grid-template-rows: repeat(1, 10vh);
+  grid-template-columns: repeat(3, minmax(10vh, 1fr));
+`;

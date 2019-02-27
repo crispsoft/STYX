@@ -30,6 +30,7 @@ const squareBounce = keyframes`
   }
 `;
 
+
 export const LakeTile = styled.div`
   border-width: 3.7vh;
   border-style: solid;
@@ -42,29 +43,30 @@ export const LakeTile = styled.div`
   grid-column: ${props => props.gridColumn};
 
   ${props =>
-    props.enabled && css`
+    props.enabled && !props.selected && css`
+      box-shadow: 3px 3px 3px black;
+
       &:hover {
+        box-shadow: 5px 5px 5px black;
         transform: scale(1.2);
-        box-shadow: 2px;
+        cursor: pointer;
       }
     `
   }
 
   ${props =>
     props.selected && css`
+      box-shadow: 5px 5px 5px black;
       animation: ${squareBounce} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) alternate-reverse infinite;
 
-      cursor: crosshair;
-      /* &::after {
-        width: 10px;
-        height: 10px;
-        background: red;
-      } */
+      cursor: url('./assets/redo-alt-solid.svg'), crosshair;
     `
   }
 
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 `;
+
+
 
 export const StatusSummary = styled.div`
   font-family: Imprima, sans serif;
@@ -94,7 +96,20 @@ export const BoardSquare = styled.div`
   position: relative;
   grid-row: ${props => props.gridRow};
   grid-column: ${props => props.gridColumn};
-  `;
+`;
+
+export const GrainOverlay = styled.img`
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  left: 0;  right: 0;
+  top: 0;  bottom: 0;
+  margin: auto;
+  
+  opacity: .5;
+`;
 
 export * from './Panes.style';
 export * from './Panels.style';

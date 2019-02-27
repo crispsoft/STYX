@@ -1,7 +1,7 @@
 module.exports =
 `
 <div class="intro-tag">
-  Thank you for adding Styx to your history education portfolio.
+Thank you for adding Styx to your history education portfolio.
 </div>
 <br />
 STYX is an educational, historical tribute to the MENSA-award winning board game "Lanterns" by Renegade Game Studios. In this game, players employ spacial reasoning skills to earn enough tokens to cross the River Styx and earn a gift of legendary treasure from Hades, the god of the underworld.

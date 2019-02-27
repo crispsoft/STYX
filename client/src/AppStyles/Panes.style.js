@@ -35,42 +35,32 @@ const VertPane = styled(BasePane)`
 `;
 
 
-const TopPane = styled(HorizPane)`
+export const TopPane = styled(HorizPane)`
   top: 0;  
   width: 60vh; /*! equal to vert panel height */
   min-width: 40%;
   height: 8.5vw; max-height: 11%; 
 `;
 
-const BottomPane = styled(HorizPane)`
+export const BottomPane = styled(HorizPane)`
   bottom: 0;
   width: 60vw; 
   height: 8.5vw; max-height: 12%;
 `;
 
-const LeftPane = styled(VertPane)`
+export const LeftPane = styled(VertPane)`
   left: 0;
 `;
 
-const RightPane = styled(VertPane)`
+export const RightPane = styled(VertPane)`
   right: 0;
 `;
 
 
-const CenterPane = styled.div`
+export const CenterPane = styled.div`
   width: 80%;
   display: flex;
   
   justify-content: space-evenly;
   align-items: center;
 `;
-
-
-export {
-  TopPane, 
-  RightPane, 
-  BottomPane, 
-  LeftPane, 
-
-  CenterPane,
-};

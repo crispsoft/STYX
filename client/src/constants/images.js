@@ -1,11 +1,11 @@
 export const beastImgsMap = [
   // compare to colorMap
   // TODO? combine to single array of objects with both properties?
-  'Lust_Sirens',    // red 
-  'Pride_Griffin',  // orange
-  'Envy_pegasus',   // yellow
+  'Anger_Ceraberos',// purple
   'Greed_Furies',   // green
+  'Pride_Griffin',  // orange
+  'Gluttony_Charybdis', // mahogany
+  'Lust_Sirens',    // red 
+  'Envy_pegasus',   // yellow
   'Sloth_Sphinx',   // blue
-  'Anger_Ceraberos',// voilet
-  'Gluttony_Charybdis' // mahogany
 ];

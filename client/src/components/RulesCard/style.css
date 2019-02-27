@@ -1,12 +1,12 @@
 .rulescard {
   color: red;
-  height: 50vh;
+  height: 60vh;
   width: 40vw;
   background-color: #ced3e3;
   /* position: absolute;
     top: 45vh;
     left: 45vw; */
-  margin: 30vh auto;
+  margin: 20vh auto;
   border-radius: 10px;
 }
 
@@ -24,6 +24,7 @@
   text-align: center;
   border: 10px solid transparent;
   border-image: url("/assets/greek_wave.png") 32 round;
+  padding: 1em 0 .5em 0;
 }
 
 #modal-title-text,
@@ -40,4 +41,5 @@
 
 #rules-text {
   font-family: "Imprima", sans-serif;
+  text-align: justify;
 }

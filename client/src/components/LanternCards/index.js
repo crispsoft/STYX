@@ -22,7 +22,7 @@ const StyleCard = styled.div`
   font-weight: 700;
   font-style: normal;
 
-  pointer-events: ${props => props.enabled ? 'auto' : 'none'};
+  // pointer-events: ${props => props.enabled ? 'auto' : 'none'};
 
   /* Show point/click & hover if number > 0  */
   ${props =>

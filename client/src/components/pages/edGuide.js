@@ -7,12 +7,7 @@ import GameLogin from "../GameLogin";
 
 import styled from 'styled-components';
 import { offWhite } from './../../constants/colors';
-
-
-const WavyBackground = styled.div`
-  min-height: 100vh;
-  background-image: url("/assets/wave.gif");
-`;
+import { WavyBackground } from './page.styles';
 
 const HeroText = styled.h1`
   text-align: center;

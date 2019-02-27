@@ -72,7 +72,7 @@ export default {
     const { left, top, right } = opponents;
 
 
-    let leaderIndices = []; // below forEach will push 0 (index) as first element
+    let leaderIndices = []; // the below forEach will push 0 (index) as first element
     let leadingPoints = points[0];
 
     const newPoints = {};

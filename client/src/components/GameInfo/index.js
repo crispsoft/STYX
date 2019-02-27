@@ -2,11 +2,11 @@ import React from "react";
 import "./style.css";
 
 
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 
 const StyledGameInfo = styled.div`
-  width: 18vw;
+  width: 22vw;
 
   overflow: hidden;
 
@@ -31,13 +31,16 @@ const StyledGameInfo = styled.div`
 `;
 
 function GameInfo({ children, currRound, remRounds, ...props }) {
-  let roundText = 'Game Over';
+  let roundText = ' ';
 
-  if (currRound && remRounds){
-    roundText = `Round ${currRound} (${remRounds} remaining)`;
+  if (currRound && remRounds) {
+    roundText = `Round ${currRound} / ${currRound + remRounds - 1}`;
   }
-  if (remRounds === 1){
-    roundText = `Final Round! (Trade Favors for Obols only)`;
+  else if (remRounds === 0) {
+    roundText = `Final Round to Trade for Obols`;
+  }
+  else if (currRound === 0) {
+    roundText = 'Game Over!'
   }
 
   return (
