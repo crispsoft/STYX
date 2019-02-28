@@ -4,7 +4,7 @@ import React from "react";
 import styled from 'styled-components';
 
 const StyledBeastCard = styled.div`
-  height: 65vh;
+  // height: 65vh;
   width: 40vh;
   background-color: grey;
 
