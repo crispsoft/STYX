@@ -14,15 +14,10 @@ const pStyle = {
   textAlign: 'center'
 }
 
-const HeroText = styled.span`
-  font-family: ff-providence-sans-web-pro, sans-serif;
-  font-weight: 700;
-  font-style: normal;
-  font-size: 10em;
-  color: #e2e2e8;
+const Logo = styled.span`
 
   position: absolute;
-  top: 10rem;
+  top: 5rem;
   left: 0; right: 0;
   margin: auto;
   text-align: center;
@@ -64,7 +59,7 @@ class Home extends Component {
     return (<>
 
       <WavyBackground>
-        <HeroText as="h1">STYX</HeroText>
+        <Logo ><img id="styx-logo" src="/assets/styx_logo/styx_logo.png"></img> </Logo>
         <br />
         <GameLore>
           <div className="intro-tag">

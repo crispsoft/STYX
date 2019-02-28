@@ -3,7 +3,7 @@ import React from "react";
 import styled from 'styled-components';
 
 const StyledAboutCard = styled.div`
-  height: 65vh;
+  // height: 65vh;
   width: 40vh;
 
   background-color: grey;
@@ -15,7 +15,7 @@ const StyledAboutCard = styled.div`
   position: relative;
 
   margin: auto;
-  margin-top: 20vh;
+  margin-top: 50vh;
   margin-bottom: 5vh;
   padding: 0.7rem;
 
