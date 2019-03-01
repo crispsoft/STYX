@@ -12,6 +12,8 @@ import BeastOnTile     from "./components/BeastOnTile";
 
 import handle from "./clientHandlers";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 import { beastImgsMap } from "./constants/images";
 
 import { favorColorsMap } from "./constants/colors";
@@ -435,14 +437,16 @@ class App extends Component {
             <Points>{`Obols: ${this.state.points}`}</Points>
 
             {this.state.colorQtys.map((qty, i) => (
-              <LanternCards
-                key={`my-colors-${i}`}
-                enabled /*//? ={isMyTurn}*/
-                selected={this.state.colorsSelected[i]}
-                color={favorColorsMap[i]}
-                number={qty}
-                onClick={() => this.toggleColor(i)}
-              />
+              <Tooltip title={`${beastImgsMap[i]} favors`} placement="top">
+                <LanternCards
+                  key={`my-colors-${i}`}
+                  enabled /*//? ={isMyTurn}*/
+                  selected={this.state.colorsSelected[i]}
+                  color={favorColorsMap[i]}
+                  number={qty}
+                  onClick={() => this.toggleColor(i)}
+                />
+              </Tooltip>
             ))}
           </PlayerPanel>
           
