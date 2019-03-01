@@ -249,7 +249,7 @@ class App extends Component {
 
         case 3:
           winnerText = didIWin
-          ? `You, Player ${filterOpp[0]+1}, and ${filterOpp[1]+1} all tied to win!`
+          ? `You and Players ${filterOpp[0]+1} & ${filterOpp[1]+1} all tied to win!`
           : `Players ${this.state.leaderIndices[0]+1}, ${this.state.leaderIndices[1]+1}, and ${this.state.leaderIndices[2]+1} all tied to win!`;
           break;
 
