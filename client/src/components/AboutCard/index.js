@@ -3,7 +3,6 @@ import React from "react";
 import styled from 'styled-components';
 
 const StyledAboutCard = styled.div`
-  // height: 65vh;
   width: 40vh;
 
   background-color: grey;
@@ -15,7 +14,7 @@ const StyledAboutCard = styled.div`
   position: relative;
 
   margin: auto;
-  margin-top: 50vh;
+  margin-top: 15rem;
   margin-bottom: 5vh;
   padding: 0.7rem;
 
@@ -44,22 +43,6 @@ const AboutDescript = styled.p`
   text-align: center;
 `;
 
-const AboutLinks = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  
-  display: flex;
-  justify-content: space-evenly;
-
-  height: 20px;
-  background: black;
-  opacity: 0.5;
-`;
-
 
 function AboutCard({ name, img, color, description }) {
   return (
@@ -70,10 +53,6 @@ function AboutCard({ name, img, color, description }) {
       <AboutTitle as="h3">{name}</AboutTitle>
 
       <AboutDescript>{description}</AboutDescript>
-
-
-      <AboutLinks>
-      </AboutLinks>
 
     </StyledAboutCard>
   )
