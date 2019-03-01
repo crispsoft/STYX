@@ -10,8 +10,8 @@ const revealBeastAfterSplash = keyframes`
   }
 
   100% {
-    transform: none;
-    filter: none;
+    transform: scale(1);
+    filter: blur(0);
     opacity: 1;
   }
 `;
@@ -22,7 +22,7 @@ const BeastImgBase = styled.img`
   object-fit: cover;
   opacity: 0;
 
-  animation: ${revealBeastAfterSplash} 1s 1.5s ease forwards;
+  animation: ${revealBeastAfterSplash} 0.7s 1.5s ease forwards;
 `;
 
 
