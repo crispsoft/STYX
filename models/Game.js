@@ -6,14 +6,14 @@ const TurnSchema = require('./TurnSchema');
 
 const GameSchema = new Schema({
 
-  //* `title` is article's headline
+  //* `isEnded` is flag for if game has ended 
   isEnded: {
     type: Boolean,
     required: true,
     default: false,
   },
 
-  //* `turns` is array of Turn (models)
+  //* `turns` is array of Turn (models) 
   turns: [TurnSchema]
 
   /*//? TODO:
