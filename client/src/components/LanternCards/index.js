@@ -22,6 +22,11 @@ const StyleCard = styled.div`
   font-weight: 700;
   font-style: normal;
 
+  ${props =>
+    !props.enabled && css`
+      pointer-events: none;
+  `}
+
   ${props => 
     props.number && props.enabled && css`
       box-shadow: 3px 3px 3px black;
