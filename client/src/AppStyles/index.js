@@ -151,7 +151,7 @@ export const BoardSquare = styled.div`
 
 const revealGrainAfterSplash = keyframes`
   to {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 `;
 
