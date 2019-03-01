@@ -34,24 +34,34 @@ const splash = keyframes`
   0% {
     transform: scale(1.5);
     opacity: 1;
-    animation-timing-function: ease-in;
     z-index: 10;
+
+    animation-timing-function: ease-in;
   }
+
+  /* just before submerge */
   33% {
     transform: scale(1);
     opacity: 1;
     filter: none;
   }
+  /* just after 'submerge' */
   34% {
-    opacity: 0.4;
-    filter: blur(2px);
+    opacity: 0.5;
+    filter: blur(5px);
   }
-  66% {
+  /* lowest 'depth' */
+  66% { 
+    opacity: 0.2;
     transform: scale(0.7);
-    opacity: 0.1;
+    filter: blur(10px);
+  } 
+
+  99% {
+    opacity: 0.7;
   }
   100% {
-    filter: none;
+    filter: blur(0);
     transform: scale(1);
     opacity: 1;
   }
@@ -74,7 +84,7 @@ export const LakeTile = styled.div`
 
   ${props => 
     !props.enabled && css`
-      animation: ${splash} 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation: ${splash} 1.5s forwards;
     `
   }
 
@@ -168,7 +178,7 @@ export const GrainOverlay = styled.img`
 
   z-index: 11; /* keep above Lake Tile */
 
-  animation: ${revealGrainAfterSplash} 1s forwards;
+  animation: ${revealGrainAfterSplash} 0s 1s forwards;
 `;
 
 export * from './Panes.style';

@@ -22,7 +22,7 @@ const BeastImgBase = styled.img`
   object-fit: cover;
   opacity: 0;
 
-  animation: ${revealBeastAfterSplash} 1s 1s ease forwards;
+  animation: ${revealBeastAfterSplash} 1s 1.5s ease forwards;
 `;
 
 
