@@ -231,21 +231,26 @@ class App extends Component {
 
     let winnerText = "";
     if (this.state.gameOver) {
+      const didIWin = this.state.leaderIndices.includes(this.state.seatIndex);
+      const filterOpp = this.state.leaderIndices.filter(playerIdx => playerIdx !== this.state.seatIndex);
       //TODO tie breakers
       switch (this.state.leaderIndices.length) {
         case 1:
-          winnerText = 
-          `Player ${this.state.leaderIndices[0]+1} is the winner!`;
+          winnerText = didIWin
+          ? `You Won!`
+          : `Player ${this.state.leaderIndices[0]+1} is the winner!`;
           break;
 
         case 2:
-          winnerText = 
-          `Players ${this.state.leaderIndices[0]+1} and ${this.state.leaderIndices[1] + 1} both tied to win!`;
+          winnerText = didIWin
+          ? `You and Player ${filterOpp[0]+1} both tied to win!`
+          : `Players ${this.state.leaderIndices[0]+1} and ${this.state.leaderIndices[1] + 1} both tied to win!`;
           break;
 
         case 3:
-          winnerText = 
-          `Players ${this.state.leaderIndices[0]+1}, ${this.state.leaderIndices[1]+1}, and ${this.state.leaderIndices[2]+1} all tied to win!`;
+          winnerText = didIWin
+          ? `You, Player ${filterOpp[0]+1}, and ${filterOpp[1]+1} all tied to win!`
+          : `Players ${this.state.leaderIndices[0]+1}, ${this.state.leaderIndices[1]+1}, and ${this.state.leaderIndices[2]+1} all tied to win!`;
           break;
 
         case 4:
