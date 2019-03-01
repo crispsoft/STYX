@@ -59,7 +59,7 @@ class Home extends Component {
     return (<>
 
       <WavyBackground>
-        <Logo ><img id="styx-logo" src="/assets/styx_logo/styx_logo.png"></img> </Logo>
+        <Logo ><img id="styx-logo" alt="Charon in his ferry on the river styx" src="/assets/styx_logo/styx_logo.png"></img> </Logo>
         <br />
         <GameLore>
           <div className="intro-tag">
