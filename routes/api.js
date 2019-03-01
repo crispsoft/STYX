@@ -12,7 +12,7 @@ router.get('/games/latest', async (req, res) => {
   }
 
   catch (error) {
-    console.log("\t\t@ GET /games/latest:\n", error);
+    console.log("\t\t@ GET /games/latest, error:\n", error);
     res.status(500).send({ message: "Internal Games retrieval Error" });
   }
 
@@ -28,7 +28,7 @@ router.get('/games/:id', async ({ params: { id } }, res) => {
   }
 
   catch (error) {
-    console.log("\t\t@ GET /games/latest:\n", error);
+    console.log("\t\t@ GET /games/:id, error:\n", error);
     res.status(500).send({ message: "Internal Games retrieval Error" });
   }
 

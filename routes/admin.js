@@ -3,22 +3,6 @@ const passport = require('./../config/passport');
 
 const teachingGuideContent = require('./../TeachingGuide')
 
-// router.use(
-  /* (req, res, next) => {
-    console.log(`\n\t\t@routes/admin.js ${req.method.toUpperCase()} on ${req.baseUrl}${req.path} (${req.originalUrl})`);
-    next();
-  }, */
-
-  /* //* No Cache
-  (req, res, next) => {
-    res.append('Surrogate-Control', "no-store");
-    res.append('Cache-Control', "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.append('Pragma', "no-cache");
-    res.append('Expires', "0");
-
-    next();
-  } */
-// );
 
 router.get("/", (req, res) => {
 
@@ -29,7 +13,6 @@ router.get("/", (req, res) => {
   return res.status(401).send({});
 
 });
-
 
 
 router.post('/login',
@@ -54,7 +37,6 @@ router.post('/login',
     passport.authenticate('local',
       
       (error, user, info) => {
-        // console.log('auth return:', error, user, info);
 
         if (error) {
           console.log("Authentication error:\n", error);
@@ -70,6 +52,7 @@ router.post('/login',
           if (err) { return next(err); }
           return next();
         });
+
       })(req, res, next);
   },
 
@@ -81,7 +64,6 @@ router.post('/login',
 
   //* Post-Authenticate check - WITHOUT errors
   (req, res, next) => {
-    // console.log('post-auth, no err', req.user);
     return res.redirect('.');
   }
 )
