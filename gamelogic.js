@@ -148,7 +148,6 @@ module.exports = {
   },
 
   checkAndPlace(plyrIdx, { row, col, tile, indexInHand } = {}) {
-    // console.log("\n\t\tCheck\n", plyrIdx, row, col, tile, indexInHand);
     
     //% Check conditions that would prevent this placement from happening (illegal move)
 
@@ -178,7 +177,7 @@ module.exports = {
     ) { return false; }
 
 
-    //% reference for the tile inthis  player's hand as server knows it
+    //% reference for the tile in this  player's hand as server knows it
     const serversTile = this.players[plyrIdx].hand[indexInHand]; 
 
 

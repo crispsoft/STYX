@@ -58,21 +58,15 @@ class GameLogin extends Component {
   }
 
   handleInputChange = ({ target: { name, value } }) => {
-
     this.setState({
       form: {...this.state.form, 
         [name]: value
       }
     });
-
-    // console.log(name, value);
   }
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-
-    // const { target } = event;
-    // console.log("form submit", target, target.elements);
 
     axios.post('/admin/login', this.state.form)
       .then(this.props.onLogin)

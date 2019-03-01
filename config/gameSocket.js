@@ -282,7 +282,6 @@ module.exports = (socket) => {
     const nextPlayerIdx = playerConnections.findIndex(conn => conn === null);
 
     if (nextPlayerIdx < 0) { // No room for another player
-      // console.log("\tFull game, disconnecting", client.id);
       client.disconnect();
       //? TODO: send message game is full
       return;

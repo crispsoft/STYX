@@ -8,7 +8,7 @@ STYX is an educational, historical tribute to the MENSA-award winning board game
 <br /><br />
 This game is designed with a twofold educational purpose, and can be adapted to fit the needs of any history or social studies curriculum while also encouraging critical thinking skills for students between the ages of 9 and 18.
 <br /><br />
-This app is free to use and incorporate into a teaching curriculum in any fashion that you feel is best. Should you require pedagocical inspiration, please refer to this teaching guide as a framework upon which to base your instructional usage of STYX.
+This app is free to use and incorporate into a teaching curriculum in any fashion that you feel is best. Should you require pedagogical inspiration, please refer to this teaching guide as a framework upon which to base your instructional usage of STYX.
 <br /><br />
 
 <h3>The Benefits of Greek Mythology</h3>

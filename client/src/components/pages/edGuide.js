@@ -45,14 +45,12 @@ class EdGuide extends Component {
     axios.get('/admin')
 
       .then(results => {
-        // console.log('axios GET /admin results', results);
         this.setState({
           authOnlyData: results.data
         })
       })
 
-      .catch(err => {
-        // console.log('axios GET /admin error', err)
+      .catch(_ => {
         this.setState({
           authOnlyData: null
         })
