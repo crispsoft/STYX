@@ -44,7 +44,8 @@ export const TopPane = styled(HorizPane)`
 
 export const BottomPane = styled(HorizPane)`
   bottom: 0;
-  width: 60vw; 
+  width: ${props => props.spectator ? '60vh' : '60vw'};
+  min-width: 40%;
   height: 8.5vw; max-height: 12%;
 `;
 

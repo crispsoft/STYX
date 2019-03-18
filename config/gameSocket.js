@@ -57,6 +57,8 @@ const TILE_ROT_MAPs = [
 
 const playerConnections = Array(4).fill(null);
 const playerConnMap = new Map();
+const spectatorConnections = new Map();
+
 let isGameReady = false;
 let gameDB_id = null;
 let currentTurnDoc = null;
@@ -91,18 +93,30 @@ const playerBoard = (index) => {
 function emitBoard(...clientIDs) {
 
   if (clientIDs.length) {
-    clientIDs.filter(id => playerConnMap.has(id)).forEach(id => {
-      const index = playerConnMap.get(id);
-      playerConnections[index].emit('board', playerBoard(index));
+
+    clientIDs.forEach(id => {
+
+      if (playerConnMap.has(id)) {
+        const index = playerConnMap.get(id);
+        playerConnections[index].emit('board', playerBoard(index));
+        return;
+      }
+
+      if (spectatorConnections.has(id)) {
+        const conn = spectatorConnections.get(id);
+        conn.emit('board', playerBoard(0)); //% spectators have Player 1's POV
+      }
+
     });
+
   }
   
   else {
     playerConnections.forEach((conn, connIdx) => {
-      if (conn) {
-        conn.emit('board', playerBoard(connIdx));
-      }
+      conn && conn.emit('board', playerBoard(connIdx));
     });
+
+    spectatorConnections.forEach(spectConn => spectConn && spectConn.emit('board', playerBoard(0)))
   }
 
 }
@@ -128,39 +142,39 @@ function emitTiles(...clientIDs) {
 
 }
 
-function emitColors(socket) {
+function emitColors(conn) {
   const colors = game.players.map(player => player.colors);
-  socket.emit('colors', colors);
+  conn.emit('colors', colors);
 }
 
-function emitTurn(socket) {
+function emitTurn(conn) {
   const playerIndex = game.whoseTurn;
-  socket.emit('turn', playerIndex);
+  conn.emit('turn', playerIndex);
 }
 
-function emitTrades(socket) {
+function emitTrades(conn) {
   const trades = game.tradeValues;
-  socket.emit('trades', trades);
+  conn.emit('trades', trades);
 }
 
-function emitPoints(socket) {
+function emitPoints(conn) {
   const points = game.players.map(player => player.points);
-  socket.emit('points', points);
+  conn.emit('points', points);
 }
 
-function emitOver(socket) {
+function emitOver(conn) {
   const isOver = game.isOver;
-  socket.emit('over', isOver);
+  conn.emit('over', isOver);
 }
 
-function emitReady(socket) {
-  socket.emit('ready', isGameReady);
+function emitReady(conn) {
+  conn.emit('ready', isGameReady);
 }
 
-function emitRound(socket) {
+function emitRound(conn) {
   const currRound = game.round;
   const remRounds = game.maxRounds - currRound;
-  socket.emit('rounds', currRound, remRounds);
+  conn.emit('rounds', currRound, remRounds);
 }
 
 
@@ -279,58 +293,67 @@ module.exports = (socket) => {
 
   socket.on('connection', client => {
 
-    const nextPlayerIdx = playerConnections.findIndex(conn => conn === null);
+    //! not sure under what conditions this fires
+    /* client.on('reconnect', () => {
+      console.log("reconnect!?");
+    }); */
 
-    if (nextPlayerIdx < 0) { // No room for another player
-      client.disconnect();
+
+    const nextPlayerIdx = playerConnections.indexOf(null);
+
+
+    //* Add connection as spectator
+    if (nextPlayerIdx < 0) { //* No room for another player
+
+      console.log(`${client.id} (spect) conn'd.`);
+      
       //? TODO: send message game is full
+
+      spectatorConnections.set(client.id, client);
+      client.emit('seat', -1);
+      client.emit('players', playerConnections.map(conn => !!conn));
+
+      //* Spectator Disconnect
+      client.on('disconnect', () => { 
+        console.log(`${client.id} (spect?) disconn'd.`);
+        
+        spectatorConnections.delete(client.id);
+      });
+
+
+      //* Spectators connect to games in progress
+      // if (gameDB_id !== null) {
+        // give them all the states
+        emitBoard(client.id);
+        client.emit('tiles', []); // this will be sure to clear any tiles they may have as a previous player
+
+        emitReady(client);
+        emitTurn(client);
+
+        emitPoints(client);
+        emitColors(client);
+        emitTrades(client);
+        emitRound(client);
+        emitOver(client);
+      // }
+
       return;
     }
 
 
-    //* Add player connection
+    // else { 
+
+    //* Add connection as player
     playerConnections[nextPlayerIdx] = client;
     playerConnMap.set(client.id, nextPlayerIdx);
 
     client.emit('seat', nextPlayerIdx);
     socket.emit('players', playerConnections.map(conn => !!conn));
 
-
-    //* Player reconnecting to game in progress
-    if (gameDB_id !== null) {
-      // give them all the states
-      emitTiles(client.id);
-      emitBoard(client.id);
-
-      emitPoints(socket);
-      emitColors(socket);
-      emitTrades(socket);
-      emitTurn(socket);
-      emitRound(socket);
-      emitOver(socket);
-    }
-
-
-    //* All Players Seated
-    if (playerConnections.every(conn => conn !== null)) {
-      isGameReady = true;
-      emitReady(socket);
-
-      if (gameDB_id === null) {
-        // only start a new game if a game is not already in progress
-        startTheGame(socket, playerConnections);
-      }
-    }
-
-
-    client.on('reconnect', () => {
-      console.log("reconnect!?");
-    });
-
-
-    //* Disconnect
+    //* Player Disconnect
     client.on('disconnect', () => {
 
+      //* Player Disconnect
       const idx = playerConnMap.get(client.id);
       if (idx !== undefined) { // Player had been seated
 
@@ -338,26 +361,27 @@ module.exports = (socket) => {
         playerConnections[idx] = null;
         playerConnMap.delete(client.id);
 
-        isGameReady = false
+        isGameReady = false;
         emitReady(socket); // wait for full game
         
         socket.emit('players', playerConnections.map(conn => !!conn)); // update players joined
-      }
 
-      if (playerConnections.every(conn => conn === null)) {
-        // abandon/stop game if no player connections left
 
-        if (gameDB_id && !game.isOver) { // remove games that did not finish
-          gameDB.removeByID(gameDB_id)
+        if (playerConnections.every(conn => conn === null)) {
+          // abandon/stop game if no player connections left
+  
+          if (gameDB_id && !game.isOver) { // remove games that did not finish
+            gameDB.removeByID(gameDB_id);
+            spectatorConnections.forEach(conn => conn.disconnect());
+          }
+  
+          gameDB_id = null;
         }
-
-        gameDB_id = null;
       }
-
     });
 
 
-    //* Interactions FROM Client
+    //* Interactions FROM Player Client
     client.on('place', ({ row, col, tile, indexInHand } = {}) => {
       handlePlaceTile({ socket, clientID: client.id }, { row, col, tile, indexInHand })
     });
@@ -365,6 +389,32 @@ module.exports = (socket) => {
     client.on('trade', (colors) => {
       handleTrade({ socket, clientID: client.id }, colors);
     });
+
+
+    //* check if All Players Seated
+    if (playerConnections.every(conn => conn !== null)) {
+      isGameReady = true;
+      emitReady(socket);
+
+      //* start new game if not in progress
+      if (gameDB_id === null) {
+        startTheGame(socket, playerConnections);
+      }
+    }
+
+    //* Player re/connecting to game in progress
+    if (gameDB_id !== null) {
+      // give them all the states
+      emitTiles(client.id); 
+      emitBoard(client.id);
+
+      emitTurn(client);
+      emitPoints(client);
+      emitColors(client);
+      emitTrades(client);
+      emitRound(client);
+      emitOver(client);
+    }
 
   });
 }

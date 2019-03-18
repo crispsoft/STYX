@@ -225,6 +225,7 @@ class App extends Component {
   };
 
   render() {
+    const amSpectating = this.state.seatIndex < 0;
     const isMyTurn = this.state.whoseTurn === this.state.seatIndex;
 
     const { top, left, right } = this.state.opponents;
@@ -351,6 +352,7 @@ class App extends Component {
     });
 
     const statusTextEl =
+
       !this.state.connected
       ? <p>You are not in the game, hoo hoo!</p>
 
@@ -359,14 +361,17 @@ class App extends Component {
 
         : this.state.gameOver
           ?<p>Game Over
-          <br/>{winnerText}
-          </p>
+           <br/>{winnerText}
+           </p>
+
+            : amSpectating 
+            ? <p>You are Spectating.
+              <br/>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
 
             : !isMyTurn
             ? <p>{`It is Player ${this.state.whoseTurn + 1}'s turn.`}</p>
             : <p>It is YOUR turn, hoo hoo!
-              <br/>Click me to see the rules!
-              </p>
+              <br/>Click me to see the rules!</p>
     ;
 
     return (
@@ -421,8 +426,9 @@ class App extends Component {
         </RightPane>
 
         {/** Player **/}
-        <BottomPane selected={isMyTurn}>
+        <BottomPane spectator={amSpectating} selected={isMyTurn}>
         
+          {!amSpectating &&
           <PlayerPanelTilesGrid>
               {this.state.tilesInHand.map(
                 (tile, i) =>
@@ -437,6 +443,7 @@ class App extends Component {
                   )
               )}
           </PlayerPanelTilesGrid>
+          }
 
           <PlayerPanel>
             <Points>{`Obols: ${this.state.points}`}</Points>
@@ -445,11 +452,11 @@ class App extends Component {
               <Tooltip title={`${beastImgsMap[i]} favors`} placement="top">
                 <LanternCards
                   key={`my-colors-${i}`}
-                  enabled /*//? ={isMyTurn}*/
+                  enabled={!amSpectating} /*//? ={&& isMyTurn}*/
                   selected={this.state.colorsSelected[i]}
                   color={favorColorsMap[i]}
                   number={qty}
-                  onClick={() => this.toggleColor(i)}
+                  onClick={amSpectating ? undefined : () => this.toggleColor(i)}
                 />
               </Tooltip>
             ))}

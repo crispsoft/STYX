@@ -4,12 +4,14 @@ export default {
   disconnect: () => ({ connected: false }),
 
   seat : (index) => {
+    const relIndex = index < 0 ? 0 : index; // an index less than 0 is a spectator, whose POV will be player 1 (index 0)
+
     //! the values ('left','right', ) are important as they relate to other object property keys
     const oppMap = Array(4);
-    oppMap[(index+0)%4] = 'me'; //? unnecessary
-    oppMap[(index+1)%4] = 'left';
-    oppMap[(index+2)%4] = 'top';
-    oppMap[(index+3)%4] = 'right';
+    oppMap[(relIndex+0)%4] = 'me'; //? unnecessary
+    oppMap[(relIndex+1)%4] = 'left';
+    oppMap[(relIndex+2)%4] = 'top';
+    oppMap[(relIndex+3)%4] = 'right';
 
     return {
       seatIndex: index,
