@@ -20,8 +20,3 @@ Graphic Design:
 Ashley & Abigail
 
 We all designed this app together; it is our baby.
-  
-------
-## Demo Videos (Gameplay)
-1. [Gameplay Demo, 1 of 2](https://drive.google.com/file/d/1L4mA4DT3WEqa3sDQLTH6btbgwa3pC9tS/view)
-1. [Gameplay Demo, 2 of 2](https://drive.google.com/file/d/18Id0XB4imH3vPp1099vOkod2nfhJOPPL/view)
