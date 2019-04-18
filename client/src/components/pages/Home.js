@@ -70,7 +70,7 @@ class Home extends Component {
             Hades, the Greek God of the Underworld, has grown bored with his
             role as jailer. He has promised great riches to those who can
             successfully cross the river and enter into the underworld.
-            Discover ancient wonders and learn about the beasts and creaures
+            Discover ancient wonders and learn about the beasts and creatures
             of Greek myth; earn their favor, and Hades' treasure will be
             yours!
               </p>
